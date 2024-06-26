@@ -1,28 +1,24 @@
 #ifndef SYMBOL_TABLE_H
 #define SYMBOL_TABLE_H
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+typedef enum {
+    TYPE_INT,
+    TYPE_FLOAT,
+    TYPE_CHAR,
+    TYPE_STRING
+    // Agrega más tipos según sea necesario
+} DataType;
 
-// Estructuras de datos
 typedef struct Symbol {
-    char *name;
-    char *type;
-    int scope;
-    struct Symbol *next;
+    char *name;          
+    DataType type;
+    int value;           // Agrega un campo para almacenar valores
+    struct Symbol *next; 
 } Symbol;
 
-typedef struct {
-    Symbol **symbols;
-    int size;
-} SymbolTable;
+extern Symbol *symbolTable;  // Declaración externa de symbolTable
 
-// Funciones de la tabla de símbolos
-SymbolTable *create_symbol_table(int size);
-void free_symbol_table(SymbolTable *table);
-Symbol *add_symbol(SymbolTable *table, const char *name, const char *type, int scope);
-Symbol *find_symbol(SymbolTable *table, const char *name, int scope);
-void print_symbol_table(SymbolTable *table);
+void insert_symbol(char *name, DataType type);
+Symbol *find_symbol(char *name);
 
 #endif // SYMBOL_TABLE_H

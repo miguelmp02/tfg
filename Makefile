@@ -1,38 +1,49 @@
 CC = gcc
-CFLAGS = -Isrc -g -Wall
-LFLAGS = -lfl
+CFLAGS = -I. -g -Isrc/
 
-BIN = compilador
-SRC_DIR = src
-OBJ_DIR = obj
+# Define los archivos objeto
+OBJS = src/generacion/lex.yy.o src/generacion/y.tab.o src/symbol_table.o src/semantic.o src/codegen.o src/main.o
 
-SOURCES = $(SRC_DIR)/main.c $(SRC_DIR)/symbol_table.c
-OBJECTS = $(SOURCES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
-LEX_SRC = $(SRC_DIR)/alfa.l
-YACC_SRC = $(SRC_DIR)/alfa.y
-LEX_OBJ = $(LEX_SRC:$(SRC_DIR)/%.l=$(OBJ_DIR)/%.o)
-YACC_OBJ = $(YACC_SRC:$(SRC_DIR)/%.y=$(OBJ_DIR)/%.o)
+# Nombre del ejecutable final
+EXEC = compiler
 
-all: bison flex $(BIN)
+all: $(EXEC)
 
-bison:
-	bison -d -o $(SRC_DIR)/alfa.tab.c $(YACC_SRC)
+$(EXEC): $(OBJS)
+	$(CC) -o $@ $(OBJS) -ly -lfl
 
-flex:
-	flex -o $(SRC_DIR)/lex.yy.c $(LEX_SRC)
+# Genera el código objeto para el analizador léxico
+src/generacion/lex.yy.o: src/lex.l src/generacion/y.tab.h
+	flex -o src/generacion/lex.yy.c src/lex.l
+	$(CC) $(CFLAGS) -c src/generacion/lex.yy.c -o src/generacion/lex.yy.o
 
-$(BIN): $(OBJECTS) $(LEX_OBJ) $(YACC_OBJ)
-	$(CC) $(CFLAGS) $^ -o $@ $(LFLAGS)
+# Genera el código objeto para el analizador sintáctico
+src/generacion/y.tab.o: src/syntax.y
+	bison -yd -o src/generacion/y.tab.c src/syntax.y
+	$(CC) $(CFLAGS) -c src/generacion/y.tab.c -o src/generacion/y.tab.o
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+# Asegúrate de que y.tab.h se genere a partir del archivo correcto
+src/generacion/y.tab.h: src/syntax.y
+	bison -yd -o src/generacion/y.tab.c src/syntax.y
 
-$(LEX_OBJ): $(LEX_SRC) $(YACC_SRC)
-	$(CC) $(CFLAGS) -c $(SRC_DIR)/lex.yy.c -o $(LEX_OBJ)
-	$(CC) $(CFLAGS) -c $(SRC_DIR)/alfa.tab.c -o $(YACC_OBJ)
+# Genera el código objeto para la tabla de símbolos
+src/symbol_table.o: src/symbol_table.c src/symbol_table.h
+	$(CC) $(CFLAGS) -c src/symbol_table.c -o src/symbol_table.o
+
+# Genera el código objeto para el análisis semántico
+src/semantic.o: src/semantic.c src/semantic.h src/symbol_table.h
+	$(CC) $(CFLAGS) -c src/semantic.c -o src/semantic.o
+
+# Genera el código objeto para la generación de código
+src/codegen.o: src/codegen.c src/codegen.h
+	$(CC) $(CFLAGS) -c src/codegen.c -o src/codegen.o
+
+# Genera el código objeto para el archivo principal
+src/main.o: src/main.c src/codegen.h
+	$(CC) $(CFLAGS) -c src/main.c -o src/main.o
 
 clean:
-	rm -f $(BIN) $(OBJ_DIR)/*.o $(SRC_DIR)/lex.yy.c $(SRC_DIR)/alfa.tab.c $(SRC_DIR)/alfa.tab.h
+	rm -f src/*.o src/generacion/*.o src/generacion/lex.yy.c src/generacion/y.tab.c src/generacion/y.tab.h $(EXEC)
 
-.PHONY: all clean bison flex
+.PHONY: all clean
+

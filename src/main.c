@@ -1,22 +1,18 @@
-#include "alfa.tab.h"  // Asegúrate de que este archivo incluya las definiciones necesarias de Bison y Flex
-
-extern FILE *yyin;    // Asegura que yyin es reconocido como externo si no está en alfa.tab.h
+#include <stdio.h>
+#include <string.h>
+#include "codegen.h"
 
 int main(int argc, char **argv) {
-    if (argc > 1) {
-        FILE *file = fopen(argv[1], "r");
-        if (!file) {
-            fprintf(stderr, "No se pudo abrir el archivo: %s\n", argv[1]);
-            return 1;
-        }
-        yyin = file;
+    char filename[256];
+
+    if (argc < 2) {
+        printf("Enter the source file path: ");
+        scanf("%s", filename);
+    } else {
+        strcpy(filename, argv[1]);
     }
 
-    yyparse();
-
-    if (yyin != stdin) {
-        fclose(yyin);
-    }
-
+    printf("Compiling %s\n", filename);
+    generate_code();
     return 0;
 }
