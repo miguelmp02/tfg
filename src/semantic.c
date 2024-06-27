@@ -33,10 +33,8 @@ void process_assignment(char *varName, DataType expressionType) {
     if (var) {
         if (var->type != expressionType) {
             printf("Semantic Error: Type mismatch in assignment to '%s'. Expected type %d, got type %d.\n", varName, var->type, expressionType);
-            // Manejar error
         }
     } else {
         printf("Semantic Error: Variable '%s' not declared.\n", varName);
-        // Manejar error
     }
 }

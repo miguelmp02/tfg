@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -I. -g -Isrc/
 
 # Define los archivos objeto
-OBJS = src/generacion/lex.yy.o src/generacion/y.tab.o src/symbol_table.o src/semantic.o src/codegen.o src/main.o
+OBJS = src/generacion/lex.yy.o src/generacion/y.tab.o src/generacion/symbol_table.o src/generacion/semantic.o src/generacion/codegen.o src/generacion/main.o
 
 # Nombre del ejecutable final
 EXEC = compiler
