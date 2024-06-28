@@ -27,20 +27,20 @@ src/generacion/y.tab.h: src/syntax.y
 	bison -yd -o src/generacion/y.tab.c src/syntax.y
 
 # Genera el código objeto para la tabla de símbolos
-src/symbol_table.o: src/symbol_table.c src/symbol_table.h
-	$(CC) $(CFLAGS) -c src/symbol_table.c -o src/symbol_table.o
+src/generacion/symbol_table.o: src/symbol_table.c src/symbol_table.h
+	$(CC) $(CFLAGS) -c src/symbol_table.c -o src/generacion/symbol_table.o
 
 # Genera el código objeto para el análisis semántico
-src/semantic.o: src/semantic.c src/semantic.h src/symbol_table.h
-	$(CC) $(CFLAGS) -c src/semantic.c -o src/semantic.o
+src/generacion/semantic.o: src/semantic.c src/semantic.h src/symbol_table.h
+	$(CC) $(CFLAGS) -c src/semantic.c -o src/generacion/semantic.o
 
 # Genera el código objeto para la generación de código
-src/codegen.o: src/codegen.c src/codegen.h
-	$(CC) $(CFLAGS) -c src/codegen.c -o src/codegen.o
+src/generacion/codegen.o: src/codegen.c src/codegen.h
+	$(CC) $(CFLAGS) -c src/codegen.c -o src/generacion/codegen.o
 
 # Genera el código objeto para el archivo principal
-src/main.o: src/main.c src/codegen.h
-	$(CC) $(CFLAGS) -c src/main.c -o src/main.o
+src/generacion/main.o: src/main.c src/codegen.h
+	$(CC) $(CFLAGS) -c src/main.c -o src/generacion/main.o
 
 clean:
 	rm -f src/*.o src/generacion/*.o src/generacion/lex.yy.c src/generacion/y.tab.c src/generacion/y.tab.h $(EXEC)
