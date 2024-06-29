@@ -1,9 +1,7 @@
 %{
 #include "y.tab.h"
 #include "symbol_table.h"
-int yywrap() {
-    return 1;  
-}
+int yywrap(void);
 
 %}
 
@@ -25,3 +23,6 @@ int yywrap() {
 "}"                   { return RBRACE; }
 
 %%
+int yywrap(void) {
+    return 1;
+}
