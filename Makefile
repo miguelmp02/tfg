@@ -7,7 +7,15 @@ OBJS = src/generacion/lex.yy.o src/generacion/y.tab.o src/generacion/symbol_tabl
 # Nombre del ejecutable final
 EXEC = compiler
 
-all: $(EXEC)
+MKDIR_P = mkdir -p
+OUT_DIR = src/generacion
+
+all: directories $(EXEC)
+
+directories: ${OUT_DIR}
+
+${OUT_DIR}:
+	${MKDIR_P} ${OUT_DIR}
 
 $(EXEC): $(OBJS)
 	 $(CC) -o $@ $(OBJS)
