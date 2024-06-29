@@ -54,9 +54,9 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    NEWLINE = 258,                 /* NEWLINE  */
+    IDENTIFIER = 258,              /* IDENTIFIER  */
     NUMBER = 259,                  /* NUMBER  */
-    IDENTIFIER = 260,              /* IDENTIFIER  */
+    NEWLINE = 260,                 /* NEWLINE  */
     PLUS = 261,                    /* PLUS  */
     MINUS = 262,                   /* MINUS  */
     TIMES = 263,                   /* TIMES  */
@@ -75,9 +75,9 @@ extern int yydebug;
 #define YYEOF 0
 #define YYerror 256
 #define YYUNDEF 257
-#define NEWLINE 258
+#define IDENTIFIER 258
 #define NUMBER 259
-#define IDENTIFIER 260
+#define NEWLINE 260
 #define PLUS 261
 #define MINUS 262
 #define TIMES 263
@@ -91,7 +91,17 @@ extern int yydebug;
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 12 "src/syntax.y"
+
+    int ival;
+    char* sval;
+
+#line 102 "src/generacion/y.tab.h"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif

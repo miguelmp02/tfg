@@ -454,8 +454,12 @@ char *yytext;
 #line 2 "src/lex.l"
 #include "y.tab.h"
 #include "symbol_table.h"
-#line 457 "src/generacion/lex.yy.c"
-#line 458 "src/generacion/lex.yy.c"
+int yywrap() {
+    return 1;  
+}
+
+#line 461 "src/generacion/lex.yy.c"
+#line 462 "src/generacion/lex.yy.c"
 
 #define INITIAL 0
 
@@ -672,10 +676,10 @@ YY_DECL
 		}
 
 	{
-#line 6 "src/lex.l"
+#line 10 "src/lex.l"
 
 
-#line 678 "src/generacion/lex.yy.c"
+#line 682 "src/generacion/lex.yy.c"
 
 	while ( /*CONSTCOND*/1 )		/* loops until end-of-file is reached */
 		{
@@ -734,81 +738,81 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 8 "src/lex.l"
+#line 12 "src/lex.l"
 { /* Ignorar espacios en blanco. */ }
 	YY_BREAK
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 9 "src/lex.l"
+#line 13 "src/lex.l"
 { return NEWLINE; }
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 10 "src/lex.l"
-{ yylval = atoi(yytext); return NUMBER; }
+#line 14 "src/lex.l"
+{ yylval.ival = atoi(yytext); return NUMBER; }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 11 "src/lex.l"
-{ yylval = strdup(yytext); return IDENTIFIER; }
+#line 15 "src/lex.l"
+{ yylval.sval = strdup(yytext); return IDENTIFIER; }
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 12 "src/lex.l"
+#line 16 "src/lex.l"
 { return PLUS; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 13 "src/lex.l"
+#line 17 "src/lex.l"
 { return MINUS; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 14 "src/lex.l"
+#line 18 "src/lex.l"
 { return TIMES; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 15 "src/lex.l"
+#line 19 "src/lex.l"
 { return DIVIDE; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 16 "src/lex.l"
+#line 20 "src/lex.l"
 { return EQUAL; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 17 "src/lex.l"
+#line 21 "src/lex.l"
 { return SEMICOLON; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 18 "src/lex.l"
+#line 22 "src/lex.l"
 { return LPAREN; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 19 "src/lex.l"
+#line 23 "src/lex.l"
 { return RPAREN; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 20 "src/lex.l"
+#line 24 "src/lex.l"
 { return LBRACE; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 21 "src/lex.l"
+#line 25 "src/lex.l"
 { return RBRACE; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 23 "src/lex.l"
+#line 27 "src/lex.l"
 ECHO;
 	YY_BREAK
-#line 811 "src/generacion/lex.yy.c"
+#line 815 "src/generacion/lex.yy.c"
 case YY_STATE_EOF(INITIAL):
 	yyterminate();
 
@@ -1813,6 +1817,6 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 23 "src/lex.l"
+#line 27 "src/lex.l"
 
 

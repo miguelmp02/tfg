@@ -10,8 +10,9 @@ EXEC = compiler
 all: $(EXEC)
 
 $(EXEC): $(OBJS)
-	$(CC) -o $@ $(OBJS) -ly -lfl
+	 $(CC) -o $@ $(OBJS)
 
+#	#$(CC) -o $@ $(OBJS) -ly -lfl
 # Genera el código objeto para el analizador léxico
 src/generacion/lex.yy.o: src/lex.l src/generacion/y.tab.h
 	flex -o src/generacion/lex.yy.c src/lex.l

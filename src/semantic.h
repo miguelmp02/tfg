@@ -1,10 +1,9 @@
 #ifndef SEMANTIC_H
 #define SEMANTIC_H
 
-#include "symbol_table.h"  // Asumiendo que tienes un archivo para la tabla de símbolos
+#include "symbol_table.h"  
 
-// Posiblemente necesites incluir otros tipos definidos en y.tab.h o un archivo común
-//#include "y.tab.h"
+void eval_expression(int exprValue);
 
 // Define aquí cualquier estructura de datos que necesites para el análisis semántico
 typedef struct {

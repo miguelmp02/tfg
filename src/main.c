@@ -13,6 +13,6 @@ int main(int argc, char **argv) {
     }
 
     printf("Compiling %s\n", filename);
-    generate_code();
+    generate_code(filename);
     return 0;
 }

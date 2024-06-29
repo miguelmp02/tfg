@@ -38,3 +38,7 @@ void process_assignment(char *varName, DataType expressionType) {
         printf("Semantic Error: Variable '%s' not declared.\n", varName);
     }
 }
+void eval_expression(int exprValue) {
+    // Implementa la lógica para evaluar la expresión
+    printf("Evaluating expression with value: %d\n", exprValue);
+}

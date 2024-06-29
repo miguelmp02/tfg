@@ -70,6 +70,7 @@
 #line 1 "src/syntax.y"
 
 #include <stdio.h>
+#include "y.tab.h"
 #include "symbol_table.h"
 #include "semantic.h"
 #include "codegen.h"
@@ -77,7 +78,7 @@
 extern int yylex(void);
 void yyerror(const char *s) { fprintf(stderr, "%s\n", s); }
 
-#line 81 "src/generacion/y.tab.c"
+#line 82 "src/generacion/y.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -108,9 +109,9 @@ enum yysymbol_kind_t
   YYSYMBOL_YYEOF = 0,                      /* "end of file"  */
   YYSYMBOL_YYerror = 1,                    /* error  */
   YYSYMBOL_YYUNDEF = 2,                    /* "invalid token"  */
-  YYSYMBOL_NEWLINE = 3,                    /* NEWLINE  */
+  YYSYMBOL_IDENTIFIER = 3,                 /* IDENTIFIER  */
   YYSYMBOL_NUMBER = 4,                     /* NUMBER  */
-  YYSYMBOL_IDENTIFIER = 5,                 /* IDENTIFIER  */
+  YYSYMBOL_NEWLINE = 5,                    /* NEWLINE  */
   YYSYMBOL_PLUS = 6,                       /* PLUS  */
   YYSYMBOL_MINUS = 7,                      /* MINUS  */
   YYSYMBOL_TIMES = 8,                      /* TIMES  */
@@ -452,7 +453,7 @@ union yyalloc
 /* YYFINAL -- State number of the termination state.  */
 #define YYFINAL  2
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   36
+#define YYLAST   35
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  16
@@ -512,8 +513,8 @@ static const yytype_int8 yytranslate[] =
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    20,    20,    21,    25,    26,    30,    31,    32,    33,
-      34,    35,    36
+       0,    29,    29,    30,    34,    35,    39,    40,    41,    42,
+      43,    44,    45
 };
 #endif
 
@@ -529,8 +530,8 @@ static const char *yysymbol_name (yysymbol_kind_t yysymbol) YY_ATTRIBUTE_UNUSED;
    First, the terminals, then, starting at YYNTOKENS, nonterminals.  */
 static const char *const yytname[] =
 {
-  "\"end of file\"", "error", "\"invalid token\"", "NEWLINE", "NUMBER",
-  "IDENTIFIER", "PLUS", "MINUS", "TIMES", "DIVIDE", "EQUAL", "SEMICOLON",
+  "\"end of file\"", "error", "\"invalid token\"", "IDENTIFIER", "NUMBER",
+  "NEWLINE", "PLUS", "MINUS", "TIMES", "DIVIDE", "EQUAL", "SEMICOLON",
   "LPAREN", "RPAREN", "LBRACE", "RBRACE", "$accept", "program",
   "statement", "expression", YY_NULLPTR
 };
@@ -542,7 +543,7 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-8)
+#define YYPACT_NINF (-10)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
@@ -556,9 +557,9 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      -8,     0,    -8,    -8,    -7,    -3,    -8,    19,    -3,    -8,
-      11,    -3,    -3,    -3,    -3,    -8,    25,    -8,    13,    13,
-      -8,    -8,    -8
+     -10,     0,   -10,    -9,   -10,     3,   -10,    18,     3,   -10,
+      10,     3,     3,     3,     3,   -10,    24,   -10,     5,     5,
+     -10,   -10,   -10
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -566,7 +567,7 @@ static const yytype_int8 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
-       2,     0,     1,     6,     7,     0,     3,     0,     0,     7,
+       2,     0,     1,     7,     6,     0,     3,     0,     0,     7,
        0,     0,     0,     0,     0,     5,     0,    12,     8,     9,
       10,    11,     4
 };
@@ -574,7 +575,7 @@ static const yytype_int8 yydefact[] =
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-      -8,    -8,    -8,     2
+     -10,   -10,   -10,    -3
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
@@ -588,25 +589,25 @@ static const yytype_int8 yydefgoto[] =
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
 static const yytype_int8 yytable[] =
 {
-       2,     3,     9,     8,     3,     4,     0,    10,     0,     5,
-      16,     0,     5,    18,    19,    20,    21,    11,    12,    13,
-      14,    13,    14,     0,    17,    11,    12,    13,    14,     0,
-      15,    11,    12,    13,    14,     0,    22
+       2,     8,    10,     3,     4,    16,     9,     4,    18,    19,
+      20,    21,     5,    13,    14,     5,    11,    12,    13,    14,
+       0,     0,     0,    17,    11,    12,    13,    14,     0,    15,
+      11,    12,    13,    14,     0,    22
 };
 
 static const yytype_int8 yycheck[] =
 {
-       0,     4,     5,    10,     4,     5,    -1,     5,    -1,    12,
-       8,    -1,    12,    11,    12,    13,    14,     6,     7,     8,
-       9,     8,     9,    -1,    13,     6,     7,     8,     9,    -1,
-      11,     6,     7,     8,     9,    -1,    11
+       0,    10,     5,     3,     4,     8,     3,     4,    11,    12,
+      13,    14,    12,     8,     9,    12,     6,     7,     8,     9,
+      -1,    -1,    -1,    13,     6,     7,     8,     9,    -1,    11,
+       6,     7,     8,     9,    -1,    11
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,    17,     0,     4,     5,    12,    18,    19,    10,     5,
+       0,    17,     0,     3,     4,    12,    18,    19,    10,     3,
       19,     6,     7,     8,     9,    11,    19,    13,    19,    19,
       19,    19,    11
 };
@@ -1086,49 +1087,61 @@ yyreduce:
   switch (yyn)
     {
   case 4: /* statement: IDENTIFIER EQUAL expression SEMICOLON  */
-#line 25 "src/syntax.y"
-                                            { process_assignment(yyvsp[-3], yyvsp[-1]); }
-#line 1092 "src/generacion/y.tab.c"
+#line 34 "src/syntax.y"
+                                            { process_assignment((yyvsp[-3].sval), (yyvsp[-1].ival)); }
+#line 1093 "src/generacion/y.tab.c"
     break;
 
   case 5: /* statement: expression SEMICOLON  */
-#line 26 "src/syntax.y"
-                                            { eval_expression(yyvsp[-1]); }
-#line 1098 "src/generacion/y.tab.c"
+#line 35 "src/syntax.y"
+                                            { eval_expression((yyvsp[-1].ival)); }
+#line 1099 "src/generacion/y.tab.c"
+    break;
+
+  case 6: /* expression: NUMBER  */
+#line 39 "src/syntax.y"
+                                            { (yyval.ival) = (yyvsp[0].ival); }
+#line 1105 "src/generacion/y.tab.c"
+    break;
+
+  case 7: /* expression: IDENTIFIER  */
+#line 40 "src/syntax.y"
+                                            { (yyval.ival) = find_symbol((yyvsp[0].sval))->value; }
+#line 1111 "src/generacion/y.tab.c"
     break;
 
   case 8: /* expression: expression PLUS expression  */
-#line 32 "src/syntax.y"
-                                           { yyval = yyvsp[-2] + yyvsp[0]; }
-#line 1104 "src/generacion/y.tab.c"
+#line 41 "src/syntax.y"
+                                            { (yyval.ival) = (yyvsp[-2].ival) + (yyvsp[0].ival); }
+#line 1117 "src/generacion/y.tab.c"
     break;
 
   case 9: /* expression: expression MINUS expression  */
-#line 33 "src/syntax.y"
-                                           { yyval = yyvsp[-2] - yyvsp[0]; }
-#line 1110 "src/generacion/y.tab.c"
+#line 42 "src/syntax.y"
+                                            { (yyval.ival) = (yyvsp[-2].ival) - (yyvsp[0].ival); }
+#line 1123 "src/generacion/y.tab.c"
     break;
 
   case 10: /* expression: expression TIMES expression  */
-#line 34 "src/syntax.y"
-                                           { yyval = yyvsp[-2] * yyvsp[0]; }
-#line 1116 "src/generacion/y.tab.c"
+#line 43 "src/syntax.y"
+                                            { (yyval.ival) = (yyvsp[-2].ival) * (yyvsp[0].ival); }
+#line 1129 "src/generacion/y.tab.c"
     break;
 
   case 11: /* expression: expression DIVIDE expression  */
-#line 35 "src/syntax.y"
-                                           { yyval = yyvsp[-2] / yyvsp[0]; }
-#line 1122 "src/generacion/y.tab.c"
+#line 44 "src/syntax.y"
+                                            { (yyval.ival) = (yyvsp[-2].ival) / (yyvsp[0].ival); }
+#line 1135 "src/generacion/y.tab.c"
     break;
 
   case 12: /* expression: LPAREN expression RPAREN  */
-#line 36 "src/syntax.y"
-                                           { yyval = yyvsp[-1]; }
-#line 1128 "src/generacion/y.tab.c"
+#line 45 "src/syntax.y"
+                                            { (yyval.ival) = (yyvsp[-1].ival); }
+#line 1141 "src/generacion/y.tab.c"
     break;
 
 
-#line 1132 "src/generacion/y.tab.c"
+#line 1145 "src/generacion/y.tab.c"
 
       default: break;
     }
@@ -1321,5 +1334,5 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 39 "src/syntax.y"
+#line 47 "src/syntax.y"
 
