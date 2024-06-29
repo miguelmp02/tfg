@@ -29,10 +29,10 @@ void generate_code(const char* filename) {
         fclose(file);
         return;
     }
-
     char line[1024];
     while (fgets(line, sizeof(line), file) != NULL) {
         char var[100], value[100];
+        // Asumiendo un formato simple de 'var = value;'
         if (sscanf(line, "%s = %[^;];", var, value) == 2) {
             agregar_cuadrupla(":=", value, "", var);
         }
@@ -40,16 +40,16 @@ void generate_code(const char* filename) {
 
     fclose(file);
 
-    // Imprimir y escribir cuádruplas generadas en el archivo de salida
+    // Imprimir cuádruplas generadas
     for (int i = 0; i < numero_de_cuadruplas; i++) {
-        fprintf(outputFile, "%s, %s, %s, %s\n",
+        printf("%s, %s, %s, %s\n",
             cuadruplas[i].operador,
             cuadruplas[i].operando1,
             cuadruplas[i].operando2,
             cuadruplas[i].resultado);
     }
-    
     fclose(outputFile); // Cerrar el archivo de salida
     printf("Compilation complete. Output written to %s\n", outputFilename);
 }
+
 
