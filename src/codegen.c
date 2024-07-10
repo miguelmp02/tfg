@@ -1,54 +1,61 @@
 #include "codegen.h"
+#include "node.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-Cuadrupla cuadruplas[1000];
+// Definimos un tamaño máximo para el almacenamiento de cuádruplas
+#define MAX_CUADRUPLAS 1000
+
+Cuadrupla cuadruplas[MAX_CUADRUPLAS];
 int numero_de_cuadruplas = 0;
 
-void agregar_cuadrupla(char* op, char* op1, char* op2, char* res) {
-    if (numero_de_cuadruplas < 1000) {
-        Cuadrupla c = {strdup(op), strdup(op1), strdup(op2), strdup(res)};
-        cuadruplas[numero_de_cuadruplas++] = c;
-        printf("Adding Cuadrupla: %s, %s, %s, %s\n", op, op1, op2, res);
+// Función para agregar cuádruplas al almacenamiento
+void agregar_cuadrupla(char* operador, char* operando1, char* operando2, char* resultado) {
+    if (numero_de_cuadruplas >= MAX_CUADRUPLAS) {
+        fprintf(stderr, "Límite de cuádruplas alcanzado.\n");
+        return;
     }
+    cuadruplas[numero_de_cuadruplas++] = (Cuadrupla){strdup(operador), strdup(operando1), strdup(operando2), strdup(resultado)};
 }
 
-void generate_code(const char* filename) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        perror("Error opening file");
-        return;
-    }
-
-    char outputFilename[1024];
-    sprintf(outputFilename, "%s.out", filename);
-    FILE *outputFile = fopen(outputFilename, "w");
-    if (outputFile == NULL) {
-        perror("Error opening output file");
-        fclose(file);
-        return;
-    }
-
-    char line[1024];
-    while (fgets(line, sizeof(line), file) != NULL) {
-        char var[100], value[100];
-        if (sscanf(line, "%s = %[^;];", var, value) == 2) {
-            agregar_cuadrupla(":=", value, "", var);
-        }
-    }
-
-    fclose(file);
-
-    // Escribir cuádruplas en el archivo de salida
+// Función para imprimir todas las cuádruplas generadas
+void print_cuadruplas() {
     for (int i = 0; i < numero_de_cuadruplas; i++) {
-        fprintf(outputFile, "%s, %s, %s, %s\n",
+        printf("%s, %s, %s, %s\n",
             cuadruplas[i].operador,
             cuadruplas[i].operando1,
             cuadruplas[i].operando2,
             cuadruplas[i].resultado);
     }
-
-    fclose(outputFile);
-    printf("Compilation complete. Output written to %s\n", outputFilename);
 }
+
+void generate_code_from_tree(ASTNode* node) {
+    if (!node) return;
+
+    switch (node->type) {
+        case NODE_BINARY_OP: {
+            char* tmp = malloc(20);
+            sprintf(tmp, "t%d", numero_de_cuadruplas);  // Crear un nuevo nombre temporal para el resultado
+
+            generate_code_from_tree(node->binary.left);
+            generate_code_from_tree(node->binary.right);
+            agregar_cuadrupla(node->binary.op, node->binary.left->result, node->binary.right->result, tmp);
+            node->result = tmp;  // Actualizar el resultado del nodo actual al temporal creado
+            break;
+        }
+        case NODE_ASSIGNMENT: {
+            generate_code_from_tree(node->binary.right);
+            agregar_cuadrupla(":=", node->binary.right->result, "", node->binary.left->identifier);
+            break;
+        }
+        case NODE_IDENTIFIER:
+        case NODE_CONSTANT: {
+            node->result = strdup(node->identifier);  // Asumiendo que identificador también se usa para constantes
+            break;
+        }
+        default:
+            fprintf(stderr, "Tipo de nodo desconocido.\n");
+    }
+}
+

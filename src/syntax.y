@@ -1,47 +1,55 @@
 %{
-#include <stdio.h>
-#include "y.tab.h"
-#include "symbol_table.h"
-#include "semantic.h"
-#include "codegen.h"
-
-extern int yylex(void);
-void yyerror(const char *s) { fprintf(stderr, "%s\n", s); }
+#include "node.h"
+#include <stdlib.h>
+void yyerror(const char *s);
+int yylex(void);
 %}
 
 %union {
-    int ival;
-    char* sval;
+    struct ASTNode* node;  
+    int ival;       
+    char *sval;      
 }
-
-%token <sval> IDENTIFIER  // Sólo necesitas esto para los tokens
 %token <ival> NUMBER
-%token NEWLINE PLUS MINUS TIMES DIVIDE EQUAL SEMICOLON LPAREN RPAREN LBRACE RBRACE
+%token <sval> IDENTIFIER
+%token EQUAL SEMICOLON PLUS MINUS TIMES DIVIDE
+%token NEWLINE LPAREN RPAREN LBRACE RBRACE
+%type <node> expression statement program
 
-%type <ival> expression  // %type para los no terminales que necesitan un tipo
-
-%right EQUAL
 %left PLUS MINUS
 %left TIMES DIVIDE
-%nonassoc LPAREN RPAREN
+%right EQUAL
 
 %%
 program:
+    /* Vacío */
+    { $$ = NULL; }
     | program statement
+    { $$ = ($1 == NULL) ? $2 : create_program_node($1, $2); }
     ;
 
 statement:
-    IDENTIFIER EQUAL expression SEMICOLON   { process_assignment($1, $3); }
-    | expression SEMICOLON                  { eval_expression($1); }
+    IDENTIFIER EQUAL expression SEMICOLON {
+        $$ = create_assignment_node($1, $3);
+    }
+    | expression SEMICOLON {
+        $$ = $1;
+    }
     ;
 
 expression:
-    NUMBER                                  { $$ = $1; }
-    | IDENTIFIER                            { $$ = find_symbol($1)->value; }  // Asegúrate de que esta línea maneje adecuadamente el tipo y los datos
-    | expression PLUS expression            { $$ = $1 + $3; }
-    | expression MINUS expression           { $$ = $1 - $3; }
-    | expression TIMES expression           { $$ = $1 * $3; }
-    | expression DIVIDE expression          { $$ = $1 / $3; }
-    | LPAREN expression RPAREN              { $$ = $2; }
+    expression PLUS expression
+    { $$ = create_binary_op_node("+", $1, $3); }
+    | expression MINUS expression
+    { $$ = create_binary_op_node("-", $1, $3); }
+    | expression TIMES expression
+    { $$ = create_binary_op_node("*", $1, $3); }
+    | expression DIVIDE expression
+    { $$ = create_binary_op_node("/", $1, $3); }
+    | NUMBER
+    { $$ = create_constant_node($1); }
+    | IDENTIFIER {
+        $$ = create_identifier_node($1); // Aquí $1 es una cadena (char*), no un ASTNode*
+    }
     ;
 %%

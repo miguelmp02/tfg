@@ -1,14 +1,12 @@
 CC = gcc
 CFLAGS = -I. -g -Isrc/
-
-# Define los archivos objeto
-OBJS = src/generacion/lex.yy.o src/generacion/y.tab.o src/generacion/symbol_table.o src/generacion/semantic.o src/generacion/codegen.o src/generacion/main.o
-
-# Nombre del ejecutable final
-EXEC = compiler
-
+FLEX = flex
+BISON = bison
 MKDIR_P = mkdir -p
 OUT_DIR = src/generacion
+EXEC = compiler
+
+OBJS = $(OUT_DIR)/lex.yy.o $(OUT_DIR)/y.tab.o $(OUT_DIR)/symbol_table.o $(OUT_DIR)/semantic.o $(OUT_DIR)/codegen.o $(OUT_DIR)/node.o $(OUT_DIR)/parser.o $(OUT_DIR)/main.o
 
 all: directories $(EXEC)
 
@@ -18,41 +16,35 @@ ${OUT_DIR}:
 	${MKDIR_P} ${OUT_DIR}
 
 $(EXEC): $(OBJS)
-	 $(CC) -o $@ $(OBJS)
+	$(CC) -o $@ $(OBJS) -lcomdlg32
 
-#	#$(CC) -o $@ $(OBJS) -ly -lfl
-# Genera el código objeto para el analizador léxico
-src/generacion/lex.yy.o: src/lex.l src/generacion/y.tab.h
-	flex -o src/generacion/lex.yy.c src/lex.l
-	$(CC) $(CFLAGS) -c src/generacion/lex.yy.c -o src/generacion/lex.yy.o
+$(OUT_DIR)/y.tab.o $(OUT_DIR)/y.tab.h: src/syntax.y
+	$(BISON) -yd -o $(OUT_DIR)/y.tab.c src/syntax.y
+	$(CC) $(CFLAGS) -c $(OUT_DIR)/y.tab.c -o $(OUT_DIR)/y.tab.o
 
-# Genera el código objeto para el analizador sintáctico
-src/generacion/y.tab.o: src/syntax.y
-	bison -yd -o src/generacion/y.tab.c src/syntax.y
-	$(CC) $(CFLAGS) -c src/generacion/y.tab.c -o src/generacion/y.tab.o
+$(OUT_DIR)/lex.yy.o: src/lex.l $(OUT_DIR)/y.tab.h
+	$(FLEX) -o $(OUT_DIR)/lex.yy.c src/lex.l
+	$(CC) $(CFLAGS) -c $(OUT_DIR)/lex.yy.c -o $@
 
-# Asegúrate de que y.tab.h se genere a partir del archivo correcto
-src/generacion/y.tab.h: src/syntax.y
-	bison -yd -o src/generacion/y.tab.c src/syntax.y
+$(OUT_DIR)/symbol_table.o: src/symbol_table.c src/symbol_table.h
+	$(CC) $(CFLAGS) -c src/symbol_table.c -o $@
 
-# Genera el código objeto para la tabla de símbolos
-src/generacion/symbol_table.o: src/symbol_table.c src/symbol_table.h
-	$(CC) $(CFLAGS) -c src/symbol_table.c -o src/generacion/symbol_table.o
+$(OUT_DIR)/semantic.o: src/semantic.c src/semantic.h src/symbol_table.h
+	$(CC) $(CFLAGS) -c src/semantic.c -o $@
 
-# Genera el código objeto para el análisis semántico
-src/generacion/semantic.o: src/semantic.c src/semantic.h src/symbol_table.h
-	$(CC) $(CFLAGS) -c src/semantic.c -o src/generacion/semantic.o
+$(OUT_DIR)/codegen.o: src/codegen.c src/codegen.h
+	$(CC) $(CFLAGS) -c src/codegen.c -o $@
 
-# Genera el código objeto para la generación de código
-src/generacion/codegen.o: src/codegen.c src/codegen.h
-	$(CC) $(CFLAGS) -c src/codegen.c -o src/generacion/codegen.o
+$(OUT_DIR)/node.o: src/node.c src/node.h
+	$(CC) $(CFLAGS) -c src/node.c -o $@
 
-# Genera el código objeto para el archivo principal
-src/generacion/main.o: src/main.c src/codegen.h
-	$(CC) $(CFLAGS) -c src/main.c -o src/generacion/main.o
+$(OUT_DIR)/parser.o: src/parser.c src/parser.h
+	$(CC) $(CFLAGS) -c src/parser.c -o $@
+	
+$(OUT_DIR)/main.o: src/main.c src/codegen.h
+	$(CC) $(CFLAGS) -c src/main.c -o $@
 
 clean:
-	rm -f src/*.o src/generacion/*.o src/generacion/lex.yy.c src/generacion/y.tab.c src/generacion/y.tab.h $(EXEC)
+	rm -f $(OUT_DIR)/*.o $(OUT_DIR)/*.c $(OUT_DIR)/*.h $(EXEC)
 
-.PHONY: all clean
-
+.PHONY: all clean directories

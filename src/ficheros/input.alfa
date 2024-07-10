@@ -1,3 +1,91 @@
-x = 5;
-y = x + 3;
-z = 1;
+main
+{
+
+  array int [4] DIVIDENDO, DIVISOR, RESULTADO;
+
+  int NUMCUATROCIFRAS, COCIENTE, RESTO;
+  int COUNT, MUL;
+  int UNO, DOS, TRES, CUATRO, DIVISORAUX;
+  boolean CAPICUA;
+  int * SMALLEST;
+  int I;
+
+ 
+  scanf NUMCUATROCIFRAS;
+  CAPICUA = false;
+
+  DIVIDENDO[ 0 ] = NUMCUATROCIFRAS;
+  DIVISOR[ 0 ] = 1000;
+  DIVISOR[ 1 ] = 100;
+  DIVISOR[ 2 ] = 10;
+
+	for (I = 0 ; 2 )
+	{
+		  COCIENTE = 0;
+		  RESTO = DIVIDENDO[ I ];
+		  DIVISORAUX = DIVISOR[ I ];
+		  if ((RESTO == DIVISORAUX)) 
+			{
+		       SMALLEST = & DIVISORAUX;
+			}
+		  else
+			{
+		       if ((RESTO <= DIVISORAUX))
+					{
+		            SMALLEST = & RESTO;
+		      	}
+				 else
+					{
+		            SMALLEST = & DIVISORAUX;
+					}
+		  	}
+		  while (( *SMALLEST == DIVISORAUX))
+			{
+		       COCIENTE = COCIENTE + 1;
+		       MUL = COCIENTE * DIVISORAUX;
+		       COUNT = 0;
+		       while (((MUL + 1) <= DIVIDENDO[ I ])) 
+					{
+		            COUNT = COUNT + 1;
+		            MUL = MUL + 1;
+					}
+		       RESTO = COUNT;
+		       if ((RESTO == DIVISORAUX))
+					{
+		            SMALLEST =  &DIVISORAUX;
+					}
+		       else
+					{
+		            if ((RESTO <= DIVISORAUX))
+							{
+		                 SMALLEST = & RESTO;
+							}
+		            else
+							{
+		                 SMALLEST = & DIVISORAUX;
+							}
+		       	}
+		    }
+		  RESULTADO[ I ] = COCIENTE;
+		  DIVIDENDO[ I + 1 ] = RESTO;
+	}
+	RESULTADO[ I + 1 ] = RESTO;
+
+	UNO = RESULTADO[ 0 ];
+	DOS = RESULTADO[ 1 ];
+	TRES = RESULTADO[ 2 ];
+	CUATRO = RESULTADO[ 3 ];
+
+	if ( (UNO == CUATRO) && (DOS == TRES) )
+	{
+		CAPICUA = true;
+	}
+
+
+  printf UNO;
+  printf DOS;
+  printf TRES;
+  printf CUATRO;
+  printf CAPICUA;
+
+}
