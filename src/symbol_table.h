@@ -6,19 +6,19 @@ typedef enum {
     TYPE_FLOAT,
     TYPE_CHAR,
     TYPE_STRING
-    // Agrega más tipos según sea necesario
 } DataType;
 
 typedef struct Symbol {
     char *name;          
     DataType type;
-    int value;           // Agrega un campo para almacenar valores
+    int value;          
     struct Symbol *next; 
 } Symbol;
 
-extern Symbol *symbolTable;  // Declaración externa de symbolTable
+extern Symbol *symbolTable; 
 
 void insert_symbol(char *name, DataType type);
 Symbol *find_symbol(char *name);
+int print_symbol_table();
 
-#endif // SYMBOL_TABLE_H
+#endif 

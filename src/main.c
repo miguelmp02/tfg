@@ -1,6 +1,7 @@
 #include <windows.h>
 #include "generacion/y.tab.h"
 #include <stdio.h>
+#include "symbol_table.h" 
 
 extern int yylex();  // Función generada por Flex
 extern char* yytext; // Texto del token actual generado por Flex
@@ -64,6 +65,8 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 void openFileAndProcess(HWND hwnd) {
     OPENFILENAME ofn;
     char file_name[100];
+    BOOL lexError = FALSE; 
+    BOOL symbolTableError = FALSE;
 
     ZeroMemory(&ofn, sizeof(OPENFILENAME));
     ofn.lStructSize = sizeof(OPENFILENAME);
@@ -79,9 +82,27 @@ void openFileAndProcess(HWND hwnd) {
         if (yyin) {
             int token;
             while ((token = yylex()) != 0) {
-                printf("Token: %d (%s)\n", token, yytext);
+                //printf("Token: %d (%s)\n", token, yytext);
+                if (token == ERROR_TOKEN) {  // Suponiendo que yylex() puede retornar ERROR_TOKEN
+                    lexError = TRUE;
+                } 
             }
             fclose(yyin);
+            if (!print_symbol_table()) {
+                    symbolTableError = TRUE;
+            }
+           // print_symbol_table();  // Imprime la tabla de símbolos después del análisis
+           if (!lexError && !symbolTableError) {
+                printf("Analisis lexico completado de forma correcta.\n");
+                printf("Tabla de simbolos completada de forma correcta.\n");
+            } else {
+                if (lexError) {
+                    printf("Error en el análisis léxico.\n");
+                }
+                if (symbolTableError) {
+                    printf("Error en la tabla de símbolos.\n");
+                }
+            }
         } else {
             MessageBox(hwnd, "Failed to open the file.", "Error", MB_OK | MB_ICONERROR);
         }

@@ -1,25 +1,19 @@
 #ifndef CODEGEN_H
 #define CODEGEN_H
 
-#include "node.h"  // Asumimos que node.h define la estructura para los nodos del AST.
+#include "node.h"  // Asumiendo que node.h contiene la definición de ASTNode
 
-// Definición de la estructura Cuadrupla para manejar las operaciones intermedias.
-typedef struct {
-    char* operador;
-    char* operando1;
-    char* operando2;
-    char* resultado;
+// Estructura para representar una cuádrupla
+typedef struct Cuadrupla {
+    char* op;     // Operador
+    char* arg1;   // Primer argumento
+    char* arg2;   // Segundo argumento
+    char* resultado;  // Resultado
 } Cuadrupla;
 
-// Funciones públicas que deben ser accesibles desde otros módulos del compilador.
-
-// Inicia la generación de código a partir del árbol sintáctico abstracto.
-void generate_code_from_tree(struct ASTNode* root);
-
-// Agrega una cuádrupla al conjunto de cuádruplas gestionadas por este módulo.
-void agregar_cuadrupla(char* operador, char* operando1, char* operando2, char* resultado);
-
-// Imprime todas las cuádruplas generadas para depuración.
-void print_cuadruplas();
+// Funciones para la generación de cuádruplas
+void agregar_cuadrupla(char* op, char* arg1, char* arg2, char* resultado);
+void generar_codigo_desde_arbol(struct ASTNode* nodo);
+void imprimir_cuadruplas();
 
 #endif // CODEGEN_H

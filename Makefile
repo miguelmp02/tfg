@@ -6,7 +6,8 @@ MKDIR_P = mkdir -p
 OUT_DIR = src/generacion
 EXEC = compiler
 
-OBJS = $(OUT_DIR)/lex.yy.o $(OUT_DIR)/y.tab.o $(OUT_DIR)/symbol_table.o $(OUT_DIR)/semantic.o $(OUT_DIR)/codegen.o $(OUT_DIR)/node.o $(OUT_DIR)/parser.o $(OUT_DIR)/main.o
+#OBJS = $(OUT_DIR)/lex.yy.o $(OUT_DIR)/y.tab.o $(OUT_DIR)/symbol_table.o $(OUT_DIR)/semantic.o $(OUT_DIR)/codegen.o $(OUT_DIR)/node.o $(OUT_DIR)/parser.o $(OUT_DIR)/main.o
+OBJS = $(OUT_DIR)/lex.yy.o $(OUT_DIR)/y.tab.o $(OUT_DIR)/symbol_table.o $(OUT_DIR)/semantic.o $(OUT_DIR)/node.o $(OUT_DIR)/main.o
 
 all: directories $(EXEC)
 
@@ -37,9 +38,6 @@ $(OUT_DIR)/codegen.o: src/codegen.c src/codegen.h
 
 $(OUT_DIR)/node.o: src/node.c src/node.h
 	$(CC) $(CFLAGS) -c src/node.c -o $@
-
-$(OUT_DIR)/parser.o: src/parser.c src/parser.h
-	$(CC) $(CFLAGS) -c src/parser.c -o $@
 	
 $(OUT_DIR)/main.o: src/main.c src/codegen.h
 	$(CC) $(CFLAGS) -c src/main.c -o $@

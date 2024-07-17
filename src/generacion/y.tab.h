@@ -54,19 +54,45 @@ extern int yydebug;
     YYEOF = 0,                     /* "end of file"  */
     YYerror = 256,                 /* error  */
     YYUNDEF = 257,                 /* "invalid token"  */
-    NUMBER = 258,                  /* NUMBER  */
-    IDENTIFIER = 259,              /* IDENTIFIER  */
-    EQUAL = 260,                   /* EQUAL  */
-    SEMICOLON = 261,               /* SEMICOLON  */
-    PLUS = 262,                    /* PLUS  */
-    MINUS = 263,                   /* MINUS  */
-    TIMES = 264,                   /* TIMES  */
-    DIVIDE = 265,                  /* DIVIDE  */
-    NEWLINE = 266,                 /* NEWLINE  */
-    LPAREN = 267,                  /* LPAREN  */
-    RPAREN = 268,                  /* RPAREN  */
-    LBRACE = 269,                  /* LBRACE  */
-    RBRACE = 270                   /* RBRACE  */
+    TOK_INT = 258,                 /* TOK_INT  */
+    TOK_BOOLEAN = 259,             /* TOK_BOOLEAN  */
+    TOK_TRUE = 260,                /* TOK_TRUE  */
+    TOK_FALSE = 261,               /* TOK_FALSE  */
+    ARRAY = 262,                   /* ARRAY  */
+    SCANF = 263,                   /* SCANF  */
+    PRINTF = 264,                  /* PRINTF  */
+    PLUS = 265,                    /* PLUS  */
+    MINUS = 266,                   /* MINUS  */
+    TIMES = 267,                   /* TIMES  */
+    DIVIDE = 268,                  /* DIVIDE  */
+    EQUAL = 269,                   /* EQUAL  */
+    SEMICOLON = 270,               /* SEMICOLON  */
+    LPAREN = 271,                  /* LPAREN  */
+    RPAREN = 272,                  /* RPAREN  */
+    LBRACE = 273,                  /* LBRACE  */
+    RBRACE = 274,                  /* RBRACE  */
+    COMMA = 275,                   /* COMMA  */
+    AMPERSAND = 276,               /* AMPERSAND  */
+    AND = 277,                     /* AND  */
+    OR = 278,                      /* OR  */
+    NOT = 279,                     /* NOT  */
+    EQ = 280,                      /* EQ  */
+    NE = 281,                      /* NE  */
+    LT = 282,                      /* LT  */
+    LE = 283,                      /* LE  */
+    GT = 284,                      /* GT  */
+    GE = 285,                      /* GE  */
+    IF = 286,                      /* IF  */
+    ELSE = 287,                    /* ELSE  */
+    FOR = 288,                     /* FOR  */
+    WHILE = 289,                   /* WHILE  */
+    NEWLINE = 290,                 /* NEWLINE  */
+    ERROR_TOKEN = 291,             /* ERROR_TOKEN  */
+    LBRACKET = 292,                /* LBRACKET  */
+    RBRACKET = 293,                /* RBRACKET  */
+    NUMBER = 294,                  /* NUMBER  */
+    IDENTIFIER = 295,              /* IDENTIFIER  */
+    LOWER_THAN_ELSE = 296          /* LOWER_THAN_ELSE  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -75,19 +101,45 @@ extern int yydebug;
 #define YYEOF 0
 #define YYerror 256
 #define YYUNDEF 257
-#define NUMBER 258
-#define IDENTIFIER 259
-#define EQUAL 260
-#define SEMICOLON 261
-#define PLUS 262
-#define MINUS 263
-#define TIMES 264
-#define DIVIDE 265
-#define NEWLINE 266
-#define LPAREN 267
-#define RPAREN 268
-#define LBRACE 269
-#define RBRACE 270
+#define TOK_INT 258
+#define TOK_BOOLEAN 259
+#define TOK_TRUE 260
+#define TOK_FALSE 261
+#define ARRAY 262
+#define SCANF 263
+#define PRINTF 264
+#define PLUS 265
+#define MINUS 266
+#define TIMES 267
+#define DIVIDE 268
+#define EQUAL 269
+#define SEMICOLON 270
+#define LPAREN 271
+#define RPAREN 272
+#define LBRACE 273
+#define RBRACE 274
+#define COMMA 275
+#define AMPERSAND 276
+#define AND 277
+#define OR 278
+#define NOT 279
+#define EQ 280
+#define NE 281
+#define LT 282
+#define LE 283
+#define GT 284
+#define GE 285
+#define IF 286
+#define ELSE 287
+#define FOR 288
+#define WHILE 289
+#define NEWLINE 290
+#define ERROR_TOKEN 291
+#define LBRACKET 292
+#define RBRACKET 293
+#define NUMBER 294
+#define IDENTIFIER 295
+#define LOWER_THAN_ELSE 296
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -95,11 +147,17 @@ union YYSTYPE
 {
 #line 8 "src/syntax.y"
 
-    struct ASTNode* node;  
-    int ival;       
-    char *sval;      
+    int ival;                
+    char* sval;              
+    struct ASTNode* node;    
+    struct Declaration* declaration;
+    struct IfExpr* ifExpr;
+    struct WhileExpr* whileExpr;
+    struct ForLoop* forLoop;
+    struct FunctionCall* functionCall;
+    char* identifier;    
 
-#line 103 "src/generacion/y.tab.h"
+#line 161 "src/generacion/y.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;
