@@ -61,7 +61,7 @@ int yywrap(void);
 "<="    { insert_symbol(yytext, LE); /*printf("LE ");*/ return LE; }
 ">"     { insert_symbol(yytext, GT); /*printf("GT ");*/ return GT; }
 ">="    { insert_symbol(yytext, GE); /*printf("GE ");*/ return GE; }
-.|\n    { printf("Error token: '%s' no reconocido en la línea %d\n", yytext, yylineno); return ERROR_TOKEN; }
+.|\n    { printf("Error token: '%s' no reconocido en la linea %d\n", yytext, yylineno); return ERROR_TOKEN; }
 
 %%
 int yywrap(void) {

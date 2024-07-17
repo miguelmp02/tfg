@@ -97,10 +97,10 @@ void openFileAndProcess(HWND hwnd) {
                 printf("Tabla de simbolos completada de forma correcta.\n");
             } else {
                 if (lexError) {
-                    printf("Error en el análisis léxico.\n");
+                    printf("Error en el analisis lexico.\n");
                 }
                 if (symbolTableError) {
-                    printf("Error en la tabla de símbolos.\n");
+                    printf("Error en la tabla de simbolos.\n");
                 }
             }
         } else {
