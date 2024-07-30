@@ -1,0 +1,14 @@
+main
+{
+
+boolean z;
+
+function boolean fv()
+{
+ return true;
+}
+
+z=fv();
+
+printf z;
+}

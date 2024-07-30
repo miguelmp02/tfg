@@ -1,0 +1,11 @@
+main
+{
+
+	int * pint;
+int j;
+
+
+	j=*pint+*pint;
+
+
+}

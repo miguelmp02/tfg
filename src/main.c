@@ -3,20 +3,24 @@
 #include <stdio.h>
 #include "symbol_table.h" 
 
-extern int yylex();  // Función generada por Flex
-extern char* yytext; // Texto del token actual generado por Flex
-extern FILE* yyin;   // Stream de entrada para Flex
-void yyerror(const char *s);
-
-// Prototipos de funciones de Windows
-LRESULT CALLBACK WindowProcedure(HWND, UINT, WPARAM, LPARAM);
-void openFileAndProcess(HWND);
-
-// Identificadores para los controles
 #define ID_FILE_OPEN 1
 #define ID_FILE_PROCESS 2
 
+extern int yylineno;
+extern int yyparse();
+extern int yylex();  
+extern char* yytext; 
+extern FILE* yyin;   
+
+void yyerror(const char *s);
+
+LRESULT CALLBACK WindowProcedure(HWND, UINT, WPARAM, LPARAM);
+void openFileAndProcess(HWND);
+
 int WINAPI WinMain(HINSTANCE hInst, HINSTANCE hPrevInst, LPSTR args, int ncmdshow) {
+    AllocConsole();
+    freopen("CONOUT$", "w", stdout);
+    freopen("CONOUT$", "w", stderr);
     WNDCLASSW wc = {0};
 
     wc.hbrBackground = (HBRUSH)COLOR_BACKGROUND;
@@ -67,6 +71,7 @@ void openFileAndProcess(HWND hwnd) {
     char file_name[100];
     BOOL lexError = FALSE; 
     BOOL symbolTableError = FALSE;
+    BOOL parseError = FALSE; 
 
     ZeroMemory(&ofn, sizeof(OPENFILENAME));
     ofn.lStructSize = sizeof(OPENFILENAME);
@@ -80,19 +85,27 @@ void openFileAndProcess(HWND hwnd) {
     if (GetOpenFileName(&ofn)) {
         yyin = fopen(ofn.lpstrFile, "r");
         if (yyin) {
+            int result = yyparse();
             int token;
-            while ((token = yylex()) != 0) {
+            while ((token = yylex()) != 0 && !lexError) {
                 //printf("Token: %d (%s)\n", token, yytext);
-                if (token == ERROR_TOKEN) {  // Suponiendo que yylex() puede retornar ERROR_TOKEN
+                if (token == ERROR_TOKEN) {
                     lexError = TRUE;
-                } 
+                }
             }
-            fclose(yyin);
+            if (!lexError) { 
+                if (result == 0) { 
+                    printf("Analisis sintactico completado correctamente.\n");
+                } else {
+                    printf("Error en el analisis sintactico.\n");
+                }
+            }
+
             if (!print_symbol_table()) {
-                    symbolTableError = TRUE;
+                symbolTableError = TRUE;
+                //print_symbol_table();  
             }
-           // print_symbol_table();  // Imprime la tabla de símbolos después del análisis
-           if (!lexError && !symbolTableError) {
+            if (!lexError && !symbolTableError) {
                 printf("Analisis lexico completado de forma correcta.\n");
                 printf("Tabla de simbolos completada de forma correcta.\n");
             } else {
@@ -106,8 +119,10 @@ void openFileAndProcess(HWND hwnd) {
         } else {
             MessageBox(hwnd, "Failed to open the file.", "Error", MB_OK | MB_ICONERROR);
         }
+        
     }
+    fclose(yyin);
 }
 void yyerror(const char *s) {
-    fprintf(stderr, "Error de análisis: %s\n", s);
-}
+    fprintf(stderr, "Error de análisis en la línea %d: %s\n", yylineno, s);
+}   

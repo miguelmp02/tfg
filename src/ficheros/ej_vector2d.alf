@@ -1,0 +1,53 @@
+main
+{
+
+array boolean [4 ,4] v;
+int i,j;
+boolean disyuncion, conjuncion;
+
+// generar el vector
+i=0;
+while ((i<4))
+{
+	j=0;
+	while ((j<4)) HACER
+		SI ((i == 0 ) O (i==2)) ENTONCES
+			v[i,j] = VERDADERO
+		SINO
+			v[i,j] = FALSO
+		FIN;
+		j = j+1
+	FIN;
+	i=i+1
+FIN;
+
+// calcular la disyuncion de los elementos del vector mostrarlo por pantalla
+i = 0;
+disyuncion = FALSO;
+MIENTRAS (i<4) HACER
+j = 0;
+	MIENTRAS (j<4) HACER
+		disyuncion = v[i,j] O disyuncion;
+		j = j+1
+	FIN;
+	i=i+1
+FIN;
+ESCRIBIR disyuncion;
+
+// calcular la conjuncion de los elementos del vector mostrarlo por pantalla
+i = 0;
+conjuncion = FALSO;
+MIENTRAS (i<4) HACER
+j = 0;
+	MIENTRAS (j<4) HACER
+		conjuncion = v[i,j] Y conjuncion;
+		j = j+1
+	FIN;
+	i=i+1
+FIN;
+ESCRIBIR conjuncion
+
+FIN
+
+
+

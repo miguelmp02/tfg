@@ -11,7 +11,7 @@ void insert_symbol(char *name, DataType type) {
     s->type = type;
     s->next = symbolTable;
     symbolTable = s;
-   // printf("Insertado: %s\n", name);
+    //printf("Insertado: %s\n", name);
 }
 
 Symbol *find_symbol(char *name) {
@@ -26,9 +26,9 @@ int print_symbol_table() {
     Symbol *s = symbolTable;
     if (s == NULL) {
         printf("La tabla de símbolos está vacía.\n");
-        return 0; // Indica que la tabla estaba vacía
+        return 0; 
     }
-   // printf("Tabla de Símbolos:\n");
+    //printf("Tabla de Símbolos:\n");
     while (s != NULL) {
         //printf("Nombre: %s, Tipo: %d\n", s->name, s->type);
         s = s->next;

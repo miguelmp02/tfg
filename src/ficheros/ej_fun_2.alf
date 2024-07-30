@@ -1,0 +1,21 @@
+main
+{
+
+int z;
+
+function int factorial(int n)
+	{
+	if ((n==0))
+	{
+		return 1;
+	}
+	else
+	{
+	 return (n*factorial(n-1));
+	}
+	}
+
+z=factorial(6);
+
+printf z;
+}

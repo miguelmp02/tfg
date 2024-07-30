@@ -8,7 +8,8 @@ int yywrap(void);
 %option yylineno
 %%
 
-"if"    { insert_symbol(yytext, IF); /*printf("IF ");*/ return IF; }
+"main"  { insert_symbol(yytext, MAIN); /*printf("MAIN ");*/ return MAIN; }
+"if"    { insert_symbol(yytext, IF); /* printf("IF ");*/ return IF; }
 "else"  { insert_symbol(yytext, ELSE); /*printf("ELSE ");*/ return ELSE; }
 "for"   { insert_symbol(yytext, FOR); /*printf("FOR ");*/ return FOR; }
 "while" { insert_symbol(yytext, WHILE); /*printf("WHILE ");*/ return WHILE; }
@@ -19,25 +20,20 @@ int yywrap(void);
 "array" { insert_symbol(yytext, ARRAY); /*printf("ARRAY ");*/ return ARRAY; }
 "scanf" { insert_symbol(yytext, SCANF); /*printf("SCANF ");*/ return SCANF; }
 "printf" { insert_symbol(yytext, PRINTF); /*printf("PRINTF ");*/ return PRINTF; }
-
 [ \t]+  { /* Ignorar espacios en blanco. */ }
-
 \n      { insert_symbol("NEWLINE", NEWLINE); /*printf("NEWLINE\n");*/ return NEWLINE; }
-
 [0-9]+  {
     yylval.ival = atoi(yytext);
     insert_symbol(yytext, NUMBER);
     /*printf("NUMBER(%s) ", yytext);*/
     return NUMBER;
 }
-
 [a-zA-Z_][a-zA-Z0-9_]* {
     yylval.sval = strdup(yytext);
     insert_symbol(yytext, IDENTIFIER);
     /*printf("IDENTIFIER(%s) ", yytext);*/
     return IDENTIFIER;
 }
-
 "+"     { insert_symbol(yytext, PLUS); /*printf("PLUS ");*/ return PLUS; }
 "-"     { insert_symbol(yytext, MINUS); /*printf("MINUS ");*/ return MINUS; }
 "*"     { insert_symbol(yytext, TIMES); /*printf("TIMES ");*/ return TIMES; }

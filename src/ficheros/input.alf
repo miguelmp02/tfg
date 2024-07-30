@@ -1,0 +1,12 @@
+main
+{
+
+int z;
+int x;
+
+z=0;
+x=2+z;
+
+printf z;
+
+}

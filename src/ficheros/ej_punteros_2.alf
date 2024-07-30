@@ -1,0 +1,42 @@
+main
+{
+ int ****** p6i;
+ int ***** p5i;
+ int **** p4i;
+ int *** p3i;
+ int ** p2i;
+ int * pi;
+ int i;
+ 
+ 
+ scanf i;
+ 
+ pi = malloc;
+ *pi = i;
+ p2i = malloc;
+ *p2i = pi;
+ p3i = malloc;
+ *p3i = p2i; 
+ p4i = malloc;
+ *p4i = p3i; 
+ p5i = malloc;
+ *p5i = p4i; 
+  p6i = malloc;
+ *p6i = p5i;
+ 
+ 
+ printf ******p6i;
+ 
+ free pi;
+ free p2i;
+ free p3i;
+ free p4i;
+ free p5i;
+ free p6i;
+
+}
+ 
+ 
+ 
+ 
+ 

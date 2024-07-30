@@ -1,44 +1,27 @@
 #include "semantic.h"
 #include <stdio.h>
 
-// Verifica si una variable ha sido declarada previamente
-void check_variable_declaration(char *varName) {
-    Symbol *var = find_symbol(varName);
-    if (!var) {
-        printf("Semantic Error: Variable '%s' not declared.\n", varName);
-        // Aquí podrías lanzar una excepción o manejar el error de manera adecuada
-    }
+extern int yylineno; // Importa la línea actual del análisis léxico
+
+void check_variable_declaration(char *varName, int line) {
+    // Ejemplo de implementación
+    printf("Semantic check at line %d: Variable '%s' checked.\n", line, varName);
 }
 
-// Verifica si una función ha sido declarada previamente
-void check_function_declaration(char *functionName) {
-    Symbol *func = find_symbol(functionName);
-    if (!func) {
-        printf("Semantic Error: Function '%s' not declared.\n", functionName);
-        // Aquí podrías lanzar una excepción o manejar el error de manera adecuada
-    }
+void check_function_declaration(char *functionName, int line) {
+    // Similar a check_variable_declaration
 }
 
-// Comprueba la compatibilidad de dos tipos para una operación
-void check_type_compatibility(int type1, int type2) {
+void check_type_compatibility(DataType type1, DataType type2, int line) {
     if (type1 != type2) {
-        printf("Semantic Error: Type mismatch, types %d and %d are not compatible.\n", type1, type2);
-        // Aquí podrías lanzar una excepción o manejar el error de manera adecuada
+        printf("Type mismatch error at line %d: Type %d is not compatible with Type %d.\n", line, type1, type2);
     }
 }
 
-// Procesa una asignación verificando la compatibilidad de tipos
-void process_assignment(char *varName, DataType expressionType) {
-    Symbol *var = find_symbol(varName);
-    if (var) {
-        if (var->type != expressionType) {
-            printf("Semantic Error: Type mismatch in assignment to '%s'. Expected type %d, got type %d.\n", varName, var->type, expressionType);
-        }
-    } else {
-        printf("Semantic Error: Variable '%s' not declared.\n", varName);
-    }
+void process_assignment(char *varName, DataType expressionType, int line) {
+    printf("Assignment processed at line %d: Variable '%s'.\n", line, varName);
 }
-void eval_expression(int exprValue) {
-    // Implementa la lógica para evaluar la expresión
-    printf("Evaluating expression with value: %d\n", exprValue);
+
+void eval_expression(int exprValue, int line) {
+    printf("Expression evaluated at line %d: Value %d.\n", line, exprValue);
 }

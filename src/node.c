@@ -3,6 +3,8 @@
 #include <string.h>
 #include "src/generacion/y.tab.h"
 
+extern int yylineno;
+
 ASTNode* root = NULL;
 
 ASTNode* get_ast_root() {
@@ -62,11 +64,13 @@ struct ASTNode* create_for_node(struct ASTNode* init, struct ASTNode* cond, stru
     }
     return node;
 }
-struct ASTNode* create_function_call_node(char* functionName) {
+struct ASTNode* create_function_call_node(char* functionName, ASTNode** arguments, int argCount) {
     struct ASTNode* node = malloc(sizeof(struct ASTNode));
     if (node) {
         node->type = NODE_FUNCTION_CALL;
         node->data.functionCall.functionName = strdup(functionName);
+        node->data.functionCall.arguments = arguments;
+        node->data.functionCall.argCount = argCount;
     }
     return node;
 }
@@ -87,19 +91,52 @@ struct ASTNode* create_constant_node(int value) {
     return node;
 }
 struct ASTNode* create_assignment_node(char* identifier, struct ASTNode* value) {
-    struct ASTNode* node = malloc(sizeof(struct ASTNode));
-    if (node) {
-        node->type = NODE_ASSIGNMENT;
-        node->data.assignment.identifier = strdup(identifier);
-        node->data.assignment.value = value;
+    if (!identifier || !value) {
+        return NULL;
     }
+    struct ASTNode* node = malloc(sizeof(struct ASTNode));
+    if (!node) {
+        return NULL;
+    }
+    node->type = NODE_ASSIGNMENT;
+    node->data.assignment.identifier = strdup(identifier);
+    node->data.assignment.value = value;
     return node;
 }
 
+struct ASTNode* create_binary_op_node(char* op, struct ASTNode* left, struct ASTNode* right) {
+    if (!left || !right) {
+        return NULL;
+    }
+    struct ASTNode* node = malloc(sizeof(struct ASTNode));
+    if (!node) {
+        return NULL;
+    }
+    node->type = NODE_BINARY_OP;
+    node->data.binary.op = strdup(op);
+    node->data.binary.left = left;
+    node->data.binary.right = right;
+    return node;
+}
+
+struct ASTNode* combine_nodes(struct ASTNode* a, struct ASTNode* b) {
+    if (!a) return b;
+    if (!b) return a;
+
+    struct ASTNode* last = a;
+    while (last && last->sibling) {
+        last = last->sibling;  
+    }
+
+    if (last) {
+        last->sibling = b; 
+    }
+    
+    return a;
+}
 void free_tree(ASTNode* node) {
     if (node == NULL) return;
-
-    // Recursivamente libera nodos hijos basados en el tipo
+    printf("Liberando nodo de tipo %d en la línea %d.\n", node->type, yylineno);
     switch (node->type) {
         case NODE_BINARY_OP:
         case NODE_ASSIGNMENT:
