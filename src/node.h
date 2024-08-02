@@ -7,7 +7,7 @@
 typedef enum {
     NODE_CONSTANT, NODE_IDENTIFIER, NODE_BINARY_OP, NODE_UNARY_OP, NODE_ASSIGNMENT,
     NODE_PROGRAM, NODE_DECLARATION, NODE_IF, NODE_WHILE, NODE_FOR,
-    NODE_FUNCTION_CALL, NODE_PRINTF
+    NODE_FUNCTION_CALL, NODE_PRINTF,  NODE_FUNCTION_DEFINITION, NODE_PARAMETER, NODE_RETURN, NODE_ARGUMENT
 } NodeType;
 
 typedef struct ASTNode {
@@ -52,9 +52,15 @@ typedef struct ASTNode {
             struct ASTNode* right;
             char* op;
         } binary;
-    } data;
-    struct ASTNode* child;   
-    struct ASTNode* sibling;
+        struct {
+            char* type;
+            char* identifier;
+            struct ASTNode* parameters;
+            struct ASTNode* body;
+        } function;
+        struct ASTNode* expression;
+    } data;   
+    struct ASTNode* next;
 } ASTNode;
 
 // Prototipos de funciones
@@ -68,9 +74,15 @@ ASTNode* create_declaration_node(char* type, char* identifier);
 ASTNode* create_if_node(ASTNode* condition, ASTNode* trueBranch, ASTNode* falseBranch);
 ASTNode* create_while_node(ASTNode* condition, ASTNode* body);
 ASTNode* create_for_node(ASTNode* init, ASTNode* cond, ASTNode* iter, ASTNode* body);
-ASTNode* create_function_call_node(char* functionName, ASTNode** arguments, int argCount);
+ASTNode* create_function_call_node(char* functionName, struct ASTNode* arguments);
 ASTNode* create_printf_node(char* identifier);
 ASTNode* combine_nodes(struct ASTNode* a, struct ASTNode* b);
+ASTNode* create_function_node(char* type, char* identifier, ASTNode* parameters, ASTNode* body);
+ASTNode* create_parameter_node(char* type, char* identifier);
+ASTNode* combine_parameter_nodes(ASTNode* a, ASTNode* b);
+ASTNode* combine_argument_nodes(ASTNode* a, ASTNode* b);
+ASTNode* create_return_node(ASTNode* expression);
+ASTNode* create_argument_node(struct ASTNode* expr);
 void free_tree(ASTNode* root);
 
 #endif // NODE_H

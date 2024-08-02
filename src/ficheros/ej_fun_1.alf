@@ -4,11 +4,11 @@ main
 int z;
 
 function int suma(int x ; int y)
-	{
-	int s;
-	s=x+y;
-	return s;
-	}
+{
+int s;
+s=x+y;
+return s;
+}
 
 z=suma(2,3);
 

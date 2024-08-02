@@ -17,6 +17,9 @@ void set_ast_root(ASTNode* new_root) {
 
 struct ASTNode* create_identifier_node(char* identifier) {
     struct ASTNode* node = malloc(sizeof(struct ASTNode));
+    if (node == NULL) {
+        return NULL;
+    }
     if (node) {
         node->type = NODE_IDENTIFIER;
         node->data.sval = strdup(identifier); // Asegúrate de que ASTNode tiene un campo `sval` para char*
@@ -25,17 +28,24 @@ struct ASTNode* create_identifier_node(char* identifier) {
 }
 
 struct ASTNode* create_declaration_node(char* type, char* identifier) {
+    if (type == NULL || identifier == NULL) {
+        return NULL;
+    }
     struct ASTNode* node = malloc(sizeof(struct ASTNode));
     if (node == NULL) {
         return NULL;
     }
-    node->type = NODE_DECLARATION; 
+    node->type = NODE_DECLARATION;
     node->data.declaration.type = strdup(type);
     node->data.declaration.identifier = strdup(identifier);
     return node;
 }
+
 struct ASTNode* create_if_node(struct ASTNode* condition, struct ASTNode* trueBranch, struct ASTNode* falseBranch) {
     struct ASTNode* node = malloc(sizeof(struct ASTNode));
+    if (node == NULL) {
+        return NULL;
+    }
     if (node) {
         node->type = NODE_IF;
         node->data.ifExpr.condition = condition;
@@ -46,6 +56,9 @@ struct ASTNode* create_if_node(struct ASTNode* condition, struct ASTNode* trueBr
 }
 struct ASTNode* create_while_node(struct ASTNode* condition, struct ASTNode* body) {
     struct ASTNode* node = malloc(sizeof(struct ASTNode));
+    if (node == NULL) {
+        return NULL;
+    }
     if (node) {
         node->type = NODE_WHILE;
         node->data.whileExpr.condition = condition;
@@ -55,6 +68,9 @@ struct ASTNode* create_while_node(struct ASTNode* condition, struct ASTNode* bod
 }
 struct ASTNode* create_for_node(struct ASTNode* init, struct ASTNode* cond, struct ASTNode* iter, struct ASTNode* body) {
     struct ASTNode* node = malloc(sizeof(struct ASTNode));
+    if (node == NULL) {
+        return NULL;
+    }
     if (node) {
         node->type = NODE_FOR;
         node->data.forLoop.init = init;
@@ -64,18 +80,33 @@ struct ASTNode* create_for_node(struct ASTNode* init, struct ASTNode* cond, stru
     }
     return node;
 }
-struct ASTNode* create_function_call_node(char* functionName, ASTNode** arguments, int argCount) {
+
+ASTNode* create_function_call_node(char* functionName, ASTNode* arguments) {
+    ASTNode* node = malloc(sizeof(ASTNode));
+    if (node == NULL) {
+        return NULL;
+    }
+    node->type = NODE_FUNCTION_CALL;
+    node->data.functionCall.functionName = strdup(functionName);
+    //node->data.functionCall.arguments = arguments;
+    return node;
+}
+
+struct ASTNode* create_argument_node(struct ASTNode* expr) {
     struct ASTNode* node = malloc(sizeof(struct ASTNode));
     if (node) {
-        node->type = NODE_FUNCTION_CALL;
-        node->data.functionCall.functionName = strdup(functionName);
-        node->data.functionCall.arguments = arguments;
-        node->data.functionCall.argCount = argCount;
+        node->type = NODE_ARGUMENT;  // Asume que tienes un tipo de nodo NODE_ARGUMENT
+        node->data.expression = expr;  // Asume que el nodo tiene un campo 'expression'
+        node->next = NULL;
     }
     return node;
 }
+
 struct ASTNode* create_printf_node(char* identifier) {
     struct ASTNode* node = malloc(sizeof(struct ASTNode));
+    if (node == NULL) {
+        return NULL;
+    }
     if (node) {
         node->type = NODE_PRINTF;
         node->data.identifier = strdup(identifier);  // Asegúrate de que el campo `identifier` exista en `ASTNode`
@@ -84,6 +115,9 @@ struct ASTNode* create_printf_node(char* identifier) {
 }
 struct ASTNode* create_constant_node(int value) {
     struct ASTNode* node = malloc(sizeof(struct ASTNode));
+    if (node == NULL) {
+        return NULL;
+    }
     if (node) {
         node->type = NODE_CONSTANT;
         node->data.ival = value;
@@ -120,23 +154,63 @@ struct ASTNode* create_binary_op_node(char* op, struct ASTNode* left, struct AST
 }
 
 struct ASTNode* combine_nodes(struct ASTNode* a, struct ASTNode* b) {
-    if (!a) return b;
-    if (!b) return a;
+    if (a == NULL) return b;
+    if (b == NULL) return a;
 
     struct ASTNode* last = a;
-    while (last && last->sibling) {
-        last = last->sibling;  
+    //while (last && last->next) {
+    //    last = last->next;  // Asegúrate de que next siempre esté bien inicializado.
+    //}
+    if (last) {
+        last->next = b;  // Solo cambia next si last es un puntero válido.
     }
 
-    if (last) {
-        last->sibling = b; 
-    }
-    
     return a;
 }
+
+ASTNode* create_function_node(char* type, char* identifier, ASTNode* parameters, ASTNode* body) {
+    ASTNode* node = malloc(sizeof(ASTNode));
+    if (!node) {
+        return NULL;
+    }
+    node->type = NODE_FUNCTION_DEFINITION;
+    node->data.function.type = strdup(type);
+    node->data.function.identifier = strdup(identifier);
+    node->data.function.parameters = parameters;
+    node->data.function.body = body;
+    return node;
+}
+
+struct ASTNode* create_parameter_node(char* type, char* identifier) {
+    struct ASTNode* node = malloc(sizeof(struct ASTNode));
+    if (node == NULL) {
+        return NULL;
+    }
+    node->type = NODE_PARAMETER;
+    node->data.declaration.type = strdup(type);
+    node->data.declaration.identifier = strdup(identifier);
+    return node;
+}
+
+ASTNode* combine_parameter_nodes(ASTNode* a, ASTNode* b) {
+    return a;
+}
+
+ASTNode* combine_argument_nodes(ASTNode* a, ASTNode* b) {
+    return a;
+}
+
+ASTNode* create_return_node(ASTNode* expression) {
+    ASTNode* node = malloc(sizeof(ASTNode));
+    if (node) {
+        node->type = NODE_RETURN;
+        node->data.expression = expression;
+    }
+    return node;
+}
+
 void free_tree(ASTNode* node) {
     if (node == NULL) return;
-    printf("Liberando nodo de tipo %d en la línea %d.\n", node->type, yylineno);
     switch (node->type) {
         case NODE_BINARY_OP:
         case NODE_ASSIGNMENT:

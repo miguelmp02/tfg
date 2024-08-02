@@ -6,13 +6,12 @@
 #define ID_FILE_OPEN 1
 #define ID_FILE_PROCESS 2
 
+int has_syntax_error = 0; 
 extern int yylineno;
 extern int yyparse();
 extern int yylex();  
 extern char* yytext; 
 extern FILE* yyin;   
-
-void yyerror(const char *s);
 
 LRESULT CALLBACK WindowProcedure(HWND, UINT, WPARAM, LPARAM);
 void openFileAndProcess(HWND);
@@ -68,7 +67,7 @@ LRESULT CALLBACK WindowProcedure(HWND hwnd, UINT msg, WPARAM wp, LPARAM lp) {
 
 void openFileAndProcess(HWND hwnd) {
     OPENFILENAME ofn;
-    char file_name[100];
+    char file_name[100] = {0};
     BOOL lexError = FALSE; 
     BOOL symbolTableError = FALSE;
     BOOL parseError = FALSE; 
@@ -93,27 +92,25 @@ void openFileAndProcess(HWND hwnd) {
                     lexError = TRUE;
                 }
             }
-            if (!lexError) { 
-                if (result == 0) { 
-                    printf("Analisis sintactico completado correctamente.\n");
-                } else {
-                    printf("Error en el analisis sintactico.\n");
-                }
-            }
+            
 
             if (!print_symbol_table()) {
                 symbolTableError = TRUE;
                 //print_symbol_table();  
             }
-            if (!lexError && !symbolTableError) {
+            if (!lexError && !symbolTableError && !has_syntax_error) {
                 printf("Analisis lexico completado de forma correcta.\n");
                 printf("Tabla de simbolos completada de forma correcta.\n");
+                printf("Analisis sintactico completado de forma correcta.\n");
             } else {
                 if (lexError) {
                     printf("Error en el analisis lexico.\n");
                 }
                 if (symbolTableError) {
                     printf("Error en la tabla de simbolos.\n");
+                }
+                if (has_syntax_error) {
+                    printf("Error en el analisis sintactico.\n");
                 }
             }
         } else {
@@ -122,7 +119,10 @@ void openFileAndProcess(HWND hwnd) {
         
     }
     fclose(yyin);
+    yyin = NULL;
+
 }
 void yyerror(const char *s) {
-    fprintf(stderr, "Error de análisis en la línea %d: %s\n", yylineno, s);
+    fprintf(stderr, "Error de analisis en la linea %d: %s\n", yylineno, s);
+    has_syntax_error = 1; 
 }   

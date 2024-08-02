@@ -1,15 +1,15 @@
 main
 {
 
-boolean z;
+    boolean z;
 
-function boolean fv()
-{
- return true
-}
+    function boolean fv()
+    {
+    return true
+    }
 
-z=fv();
+    z=fv();
 
-printf z
+    printf z
 
 }

@@ -9,6 +9,8 @@ int yywrap(void);
 %%
 
 "main"  { insert_symbol(yytext, MAIN); /*printf("MAIN ");*/ return MAIN; }
+"function"  { insert_symbol(yytext, FUNCTION); /*printf("FUNCTION ");*/ return FUNCTION; }
+"return"  { insert_symbol(yytext, RETURN); /*printf("RETURN ");*/ return RETURN; }
 "if"    { insert_symbol(yytext, IF); /* printf("IF ");*/ return IF; }
 "else"  { insert_symbol(yytext, ELSE); /*printf("ELSE ");*/ return ELSE; }
 "for"   { insert_symbol(yytext, FOR); /*printf("FOR ");*/ return FOR; }
