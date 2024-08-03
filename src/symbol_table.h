@@ -20,5 +20,6 @@ extern Symbol *symbolTable;
 void insert_symbol(char *name, DataType type);
 Symbol *find_symbol(char *name);
 int print_symbol_table();
+DataType convert_data_type(char* type_str);
 
 #endif 

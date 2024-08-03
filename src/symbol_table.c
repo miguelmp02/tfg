@@ -6,12 +6,27 @@
 Symbol *symbolTable = NULL;
 
 void insert_symbol(char *name, DataType type) {
+    Symbol *existing_symbol = find_symbol(name);
+    if (existing_symbol) {
+        fprintf(stderr, "Error semántico: Error identificador \"%s\" ya declarado previamente.\n", name);
+        return;
+    }
     Symbol *s = malloc(sizeof(Symbol));
+    if (s == NULL) {
+        fprintf(stderr, "Error al asignar memoria para el nuevo símbolo.\n");
+        return;
+    }
     s->name = strdup(name);
     s->type = type;
     s->next = symbolTable;
     symbolTable = s;
-    //printf("Insertado: %s\n", name);
+}
+DataType convert_data_type(char* type_str) {
+    if (strcmp(type_str, "int") == 0) return TYPE_INT;
+    if (strcmp(type_str, "float") == 0) return TYPE_FLOAT;
+    if (strcmp(type_str, "char") == 0) return TYPE_CHAR;
+    if (strcmp(type_str, "string") == 0) return TYPE_STRING;
+    return TYPE_INT;
 }
 
 Symbol *find_symbol(char *name) {

@@ -7,6 +7,7 @@
 #define ID_FILE_PROCESS 2
 
 int has_syntax_error = 0; 
+int has_semantic_error = 0; 
 extern int yylineno;
 extern int yyparse();
 extern int yylex();  
@@ -98,10 +99,11 @@ void openFileAndProcess(HWND hwnd) {
                 symbolTableError = TRUE;
                 //print_symbol_table();  
             }
-            if (!lexError && !symbolTableError && !has_syntax_error) {
+            if (!lexError && !symbolTableError && !has_syntax_error && !has_semantic_error) {
                 printf("Analisis lexico completado de forma correcta.\n");
                 printf("Tabla de simbolos completada de forma correcta.\n");
                 printf("Analisis sintactico completado de forma correcta.\n");
+                printf("Analisis semantico completado de forma correcta.\n");
             } else {
                 if (lexError) {
                     printf("Error en el analisis lexico.\n");
@@ -111,6 +113,9 @@ void openFileAndProcess(HWND hwnd) {
                 }
                 if (has_syntax_error) {
                     printf("Error en el analisis sintactico.\n");
+                }
+                 if (has_semantic_error) {
+                    printf("Error en el analisis semantico.\n");
                 }
             }
         } else {
@@ -126,3 +131,7 @@ void yyerror(const char *s) {
     fprintf(stderr, "Error de analisis en la linea %d: %s\n", yylineno, s);
     has_syntax_error = 1; 
 }   
+void yysemanticerror(const char *s) {
+    fprintf(stderr, "Error semantico en la linea %d: %s\n", yylineno, s);
+    has_semantic_error = 1;
+}

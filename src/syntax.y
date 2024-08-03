@@ -2,9 +2,11 @@
 #include "node.h"
 #include <string.h>
 #include <stdio.h>
+#include "symbol_table.h"
 
 extern int yylineno;
 void yyerror(const char *s);
+void yysemanticerror(const char *s);
 int yylex(void);
 %}
 
@@ -169,8 +171,14 @@ pointer_assignment_statement:
 
 declaration_statement:
     type IDENTIFIER SEMICOLON {
-        printf("Declarando variable '%s' de tipo '%s' en la linea %d.\n", $2, $1, yylineno);
-        $$ = create_declaration_node($1, $2, 0);
+        if (find_symbol($2) != NULL) {
+            yysemanticerror("Error semantico: Identificador previamente declarado");
+            printf("Error semantico: Error identificador \"%s\" ya declarado previamente.\n", $2);
+        } else {
+            insert_symbol($2, convert_data_type($1));
+            printf("Declarando variable '%s' de tipo '%s' en la linea %d.\n", $2, $1, yylineno);
+            $$ = create_declaration_node($1, $2, 0);
+        }
     }
     | type IDENTIFIER {
         printf("Error: falta ';' despues de la declaracion de '%s' en la linea %d.\n", $2, yylineno);
@@ -179,8 +187,14 @@ declaration_statement:
         $$ = NULL;
     }
     | type pointer_type IDENTIFIER SEMICOLON {
-        printf("Declarando puntero '%s' de tipo '%s' con %d niveles de puntero en la linea %d.\n", $3, $1, $2->data.pointer_level, yylineno);
-        $$ = create_declaration_node($1, $3, $2->data.pointer_level);
+        if (find_symbol($3) != NULL) {
+            yysemanticerror("Error semantico: Identificador previamente declarado");
+            printf("Error semantico: Error identificador \"%s\" ya declarado previamente.\n", $3);
+        } else {
+            insert_symbol($3, convert_data_type($1));
+            printf("Declarando puntero '%s' de tipo '%s' con %d niveles de puntero en la linea %d.\n", $3, $1, $2->data.pointer_level, yylineno);
+            $$ = create_declaration_node($1, $3, $2->data.pointer_level);
+        }
     }
     | type pointer_type IDENTIFIER {
         printf("Error: falta ';' despues de la declaracion del puntero de '%s' en la linea %d.\n", $3, yylineno);
@@ -189,8 +203,14 @@ declaration_statement:
         $$ = NULL;
     }
     | type AMPERSAND IDENTIFIER SEMICOLON {
-        printf("Declarando variable '%s' de tipo '%s' en la linea %d.\n", $3, $1, yylineno);
-        $$ = create_declaration_node($1, $3, 0);
+        if (find_symbol($3) != NULL) {
+            yysemanticerror("Error semantico: Identificador previamente declarado");
+            printf("Error semantico: Error identificador \"%s\" ya declarado previamente.\n", $3);
+        } else {
+            insert_symbol($3, convert_data_type($1));
+            printf("Declarando variable '%s' de tipo '%s' en la linea %d.\n", $3, $1, yylineno);
+            $$ = create_declaration_node($1, $3, 0);
+        }
     }
     | type AMPERSAND IDENTIFIER {
         printf("Error: falta ';' despues de la declaracion de '%s' en la linea %d.\n", $3, yylineno);
@@ -198,7 +218,6 @@ declaration_statement:
         yyerrok;
         $$ = NULL;
     }   
-     
     ;
 
 array_declaration:
