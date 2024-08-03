@@ -1,10 +1,12 @@
 main
 {
-
+    // Esto es un comentario
     int z;
     int x;
     int c;
 
+    array int [4] v;
+    z=v[i];
     z=0;
     x=2+z;
 
@@ -14,5 +16,23 @@ main
         s=a+b;
         return s;
     }
+    
+    if ((s==0)&&(i==10))
+	    {
+            for ((i>5);(i<10))
+            {
+                return s;
 
+            }
+	    }
+	else
+	    {
+	        return s;
+	    }
+    while ((i<4))
+        {
+        return s;
+        }
+    c=suma(1,2);
+    printf c;
 }

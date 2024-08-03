@@ -22,6 +22,7 @@ int yywrap(void);
 "array" { insert_symbol(yytext, ARRAY); /*printf("ARRAY ");*/ return ARRAY; }
 "scanf" { insert_symbol(yytext, SCANF); /*printf("SCANF ");*/ return SCANF; }
 "printf" { insert_symbol(yytext, PRINTF); /*printf("PRINTF ");*/ return PRINTF; }
+"free"  { insert_symbol(yytext, FREE); /*printf("FREE ");*/ return FREE; }
 [ \t]+  { /* Ignorar espacios en blanco. */ }
 \n      { insert_symbol("NEWLINE", NEWLINE); /*printf("NEWLINE\n");*/ return NEWLINE; }
 [0-9]+  {
@@ -60,6 +61,9 @@ int yywrap(void);
 ">"     { insert_symbol(yytext, GT); /*printf("GT ");*/ return GT; }
 ">="    { insert_symbol(yytext, GE); /*printf("GE ");*/ return GE; }
 .|\n    { printf("Error token: '%s' no reconocido en la linea %d\n", yytext, yylineno); return ERROR_TOKEN; }
+
+"//"[^"\n"]*    { /* Ignorar comentario de una línea */ }
+
 
 %%
 int yywrap(void) {

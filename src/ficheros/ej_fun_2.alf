@@ -11,9 +11,9 @@ function int factorial(int n)
 	}
 	else
 	{
-	 return (n*factorial(n-1));
+		return (n*factorial(n-1));
 	}
-	}
+}
 
 z=factorial(6);
 

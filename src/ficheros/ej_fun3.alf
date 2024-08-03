@@ -3,13 +3,13 @@ main
 
     boolean z;
 
-    function boolean fv()
+    function boolean fv ()
     {
-    return true
+    return true;
     }
 
     z=fv();
 
-    printf z
+    printf z;
 
 }

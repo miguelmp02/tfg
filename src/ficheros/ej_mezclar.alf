@@ -3,9 +3,13 @@
 main
 {
 
-	array int [5] v1, v2;
+	array int [5] v1;
+	array int [5] v2;
 	array int [10] v3;
-	int i, i1, i2, i3;
+	int i;
+	int i1;
+	int i2;
+	int i3;
 
 	// Inicialización de los vectores
 	
@@ -15,8 +19,8 @@ main
 		v2[ i ] = 2 * i;
 	}
 
-	cprintf v1;
-	cprintf v2;
+	printf v1;
+	printf v2;
 	
 	i1 = 0;
 	i2 = 0;
@@ -27,7 +31,7 @@ main
 	{
 		if ( (i1<5) && (i2<5) )
 			{
-				if (( v1[i1] < v2[i2] ))
+				if (( v1) < (v2) )
 				{
 					v3[i3] = v1[i1];
 					i1 = i1+1;
@@ -52,12 +56,15 @@ main
 							v3[i3] = v1[i1];
 							i1=i1+1;
 						}
+					else {
+						return i2;
+					}
 				}
 			}
 		i3 = i3 + 1;
 	}
 
-	cprintf v3;
+	printf v3;
 
 }
 

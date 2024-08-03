@@ -27,7 +27,7 @@ struct ASTNode* create_identifier_node(char* identifier) {
     return node;
 }
 
-struct ASTNode* create_declaration_node(char* type, char* identifier) {
+struct ASTNode* create_declaration_node(char* type, char* identifier, int pointer_level) {
     if (type == NULL || identifier == NULL) {
         return NULL;
     }
@@ -38,6 +38,8 @@ struct ASTNode* create_declaration_node(char* type, char* identifier) {
     node->type = NODE_DECLARATION;
     node->data.declaration.type = strdup(type);
     node->data.declaration.identifier = strdup(identifier);
+    node->data.declaration.pointer_level = pointer_level; 
+
     return node;
 }
 
@@ -66,19 +68,69 @@ struct ASTNode* create_while_node(struct ASTNode* condition, struct ASTNode* bod
     }
     return node;
 }
-struct ASTNode* create_for_node(struct ASTNode* init, struct ASTNode* cond, struct ASTNode* iter, struct ASTNode* body) {
+struct ASTNode* create_for_node(struct ASTNode* cond, struct ASTNode* body) {
     struct ASTNode* node = malloc(sizeof(struct ASTNode));
     if (node == NULL) {
         return NULL;
     }
     if (node) {
         node->type = NODE_FOR;
-        node->data.forLoop.init = init;
         node->data.forLoop.cond = cond;
-        node->data.forLoop.iter = iter;
         node->data.forLoop.body = body;
     }
     return node;
+}
+
+struct ASTNode* create_array_node(char* type, struct ASTNode* dimensions, char* identifier) {
+    struct ASTNode* node = malloc(sizeof(struct ASTNode));
+    if (node == NULL) {
+        return NULL;
+    }
+    node->type = NODE_ARRAY;
+    node->data.array.type = strdup(type);
+    node->data.array.dimensions = dimensions;
+    node->data.array.identifier = strdup(identifier);
+    return node;
+}
+
+struct ASTNode* create_dimension_list(struct ASTNode* first, struct ASTNode* next) {
+    struct ASTNode* list = malloc(sizeof(struct ASTNode));
+    if (list == NULL) {
+        return NULL;
+    }
+    list->type = NODE_DIMENSION_LIST;
+    list->data.dimensions.first = first;
+    list->data.dimensions.next = next;
+    return list;
+}
+
+struct ASTNode* create_array_access_node(char* arrayName, struct ASTNode* index) {
+    struct ASTNode* node = malloc(sizeof(struct ASTNode));
+    if (node) {
+        node->type = NODE_ARRAY_ACCESS;
+        node->data.arrayAccess.arrayName = strdup(arrayName);
+        node->data.arrayAccess.index = index;
+    }
+    return node;
+}
+
+struct ASTNode* combine_expressions(struct ASTNode* left, struct ASTNode* right) {
+    if (left == NULL || right == NULL) {
+        fprintf(stderr, "Error: Intento de combinar expresiones nulas.\n");
+        return NULL;
+    }
+
+    struct ASTNode* combined_node = malloc(sizeof(struct ASTNode));
+    if (combined_node == NULL) {
+        return NULL;
+    }
+    combined_node->type = NODE_BINARY_OP; 
+    combined_node->data.binary.left = left;
+    combined_node->data.binary.right = right;
+    combined_node->data.binary.op = "+";  // Ejemplo: operación de suma
+    combined_node->next = NULL;  // Asegurar que el campo 'next' está limpio
+
+    return combined_node;
 }
 
 ASTNode* create_function_call_node(char* functionName, ASTNode* arguments) {
@@ -109,10 +161,36 @@ struct ASTNode* create_printf_node(char* identifier) {
     }
     if (node) {
         node->type = NODE_PRINTF;
-        node->data.identifier = strdup(identifier);  // Asegúrate de que el campo `identifier` exista en `ASTNode`
+        node->data.identifier = strdup(identifier); 
     }
     return node;
 }
+
+struct ASTNode* create_scanf_node(char* identifier) {
+    struct ASTNode* node = malloc(sizeof(struct ASTNode));
+    if (node == NULL) {
+        return NULL;
+    }
+    if (node) {
+        node->type = NODE_SCANF;
+        node->data.identifier = strdup(identifier);  
+    }
+    return node;
+}   
+
+struct ASTNode* create_scanf_node_array(struct ASTNode* array_access) {
+    if (array_access == NULL || array_access->type != NODE_IDENTIFIER) {
+        return NULL;
+    }
+    struct ASTNode* node = malloc(sizeof(struct ASTNode));
+    if (node == NULL) {
+        return NULL;
+    }
+    node->type = NODE_SCANF;
+    node->data.identifier = strdup(array_access->data.identifier);
+    return node;
+}
+
 struct ASTNode* create_constant_node(int value) {
     struct ASTNode* node = malloc(sizeof(struct ASTNode));
     if (node == NULL) {
@@ -124,6 +202,18 @@ struct ASTNode* create_constant_node(int value) {
     }
     return node;
 }
+
+struct ASTNode* create_assignment_node_ampersand(char* identifier, char* target) {
+    struct ASTNode* node = malloc(sizeof(struct ASTNode));
+    if (node == NULL) {
+        return NULL;
+    }
+    node->type = NODE_ASSIGNMENT_AMPERSAND;
+    node->data.assignment.identifier = strdup(identifier);
+    node->data.assignment.value = create_identifier_node(target); 
+    return node;
+}
+
 struct ASTNode* create_assignment_node(char* identifier, struct ASTNode* value) {
     if (!identifier || !value) {
         return NULL;
@@ -137,7 +227,26 @@ struct ASTNode* create_assignment_node(char* identifier, struct ASTNode* value) 
     node->data.assignment.value = value;
     return node;
 }
+struct ASTNode* create_assignment_node_array(ASTNode* array_access_node, ASTNode* expression) {
+    if (!array_access_node || !expression) {
+        return NULL;
+    }
+    char* identifier = extract_identifier(array_access_node); 
 
+    ASTNode* node = malloc(sizeof(ASTNode));
+    if (node) {
+        node->type = NODE_ASSIGNMENT;
+        node->data.assignment.identifier = strdup(identifier);
+        node->data.assignment.value = expression;
+    }
+    return node;
+}
+char* extract_identifier(struct ASTNode* node) {
+    if (node && node->type == NODE_IDENTIFIER) {
+        return strdup(node->data.identifier);
+    }
+    return NULL;
+}
 struct ASTNode* create_binary_op_node(char* op, struct ASTNode* left, struct ASTNode* right) {
     if (!left || !right) {
         return NULL;
@@ -206,6 +315,46 @@ ASTNode* create_return_node(ASTNode* expression) {
         node->type = NODE_RETURN;
         node->data.expression = expression;
     }
+    return node;
+}
+
+struct ASTNode* create_pointer_assignment_node(char* identifier, struct ASTNode* value) {
+    struct ASTNode* node = malloc(sizeof(struct ASTNode));
+    if (!node) {
+        return NULL;
+    }
+    node->type = NODE_POINTER_ASSIGNMENT; // Asegúrate de definir este tipo en tu NodeType enum
+    node->data.assignment.identifier = strdup(identifier);
+    node->data.assignment.value = value;
+    return node;
+}
+
+struct ASTNode* create_free_node(char* identifier) {
+    struct ASTNode* node = malloc(sizeof(struct ASTNode));
+    if (node == NULL) {
+        return NULL;
+    }
+    node->type = NODE_FREE;
+    node->data.identifier = strdup(identifier);
+    return node;
+}
+
+ASTNode* create_pointer_node(int level) {
+    struct ASTNode* node = malloc(sizeof(struct ASTNode));
+    if (node == NULL) {
+        return NULL; 
+    }
+    node->type = NODE_POINTER;
+    node->data.pointer_level = level;
+    node->next = NULL; 
+    return node;
+}
+
+ASTNode* increase_pointer_level(struct ASTNode* node) {
+    if (node == NULL) {
+        return NULL;
+    }
+    node->data.pointer_level += 1;
     return node;
 }
 

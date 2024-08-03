@@ -5,9 +5,9 @@
 #include <stdio.h>
 
 typedef enum {
-    NODE_CONSTANT, NODE_IDENTIFIER, NODE_BINARY_OP, NODE_UNARY_OP, NODE_ASSIGNMENT,
-    NODE_PROGRAM, NODE_DECLARATION, NODE_IF, NODE_WHILE, NODE_FOR,
-    NODE_FUNCTION_CALL, NODE_PRINTF,  NODE_FUNCTION_DEFINITION, NODE_PARAMETER, NODE_RETURN, NODE_ARGUMENT
+    NODE_CONSTANT, NODE_IDENTIFIER, NODE_BINARY_OP, NODE_UNARY_OP, NODE_ASSIGNMENT, NODE_FREE, NODE_ARRAY_ACCESS,NODE_ASSIGNMENT_AMPERSAND,
+    NODE_PROGRAM, NODE_DECLARATION, NODE_IF, NODE_WHILE, NODE_FOR, NODE_POINTER, NODE_POINTER_ASSIGNMENT, NODE_ARRAY, NODE_DIMENSION_LIST,
+    NODE_FUNCTION_CALL, NODE_PRINTF,  NODE_FUNCTION_DEFINITION, NODE_PARAMETER, NODE_RETURN, NODE_ARGUMENT, NODE_SCANF
 } NodeType;
 
 typedef struct ASTNode {
@@ -18,6 +18,7 @@ typedef struct ASTNode {
         char* identifier;
         struct {
             char* type;
+            int pointer_level;
             char* identifier;
         } declaration;
         struct {
@@ -30,9 +31,7 @@ typedef struct ASTNode {
             struct ASTNode* body;
         } whileExpr;
         struct {
-            struct ASTNode* init;
             struct ASTNode* cond;
-            struct ASTNode* iter;
             struct ASTNode* body;
         } forLoop;
         struct {
@@ -45,8 +44,11 @@ typedef struct ASTNode {
             struct ASTNode* value;
         } assignment;
         struct {
-            char* text;   // Para nodos printf
+            char* text; 
         } printfNode;
+        struct {
+            char* text; 
+        } scanfNode;
          struct {
             struct ASTNode* left;
             struct ASTNode* right;
@@ -58,9 +60,24 @@ typedef struct ASTNode {
             struct ASTNode* parameters;
             struct ASTNode* body;
         } function;
+        struct {                    
+            char* type;             
+            struct ASTNode* dimensions;  
+            char* identifier;      
+        } array;
+        struct {                     
+            struct ASTNode* first;   
+            struct ASTNode* next;    
+        } dimensions;
+        struct {
+            char* arrayName;
+            struct ASTNode* index;
+        } arrayAccess;  
         struct ASTNode* expression;
+        int pointer_level;        
     } data;   
     struct ASTNode* next;
+   
 } ASTNode;
 
 // Prototipos de funciones
@@ -70,10 +87,11 @@ ASTNode* create_binary_op_node(char* op, struct ASTNode* left, struct ASTNode* r
 ASTNode* create_unary_op_node(char* op, ASTNode* operand);
 ASTNode* create_program_node(ASTNode* left, ASTNode* right);
 ASTNode* create_assignment_node(char* identifier, ASTNode* expression);
-ASTNode* create_declaration_node(char* type, char* identifier);
+ASTNode* create_assignment_node_array(ASTNode* array_access_node, ASTNode* expression);
+ASTNode* create_declaration_node(char* type, char* identifier, int pointer_level);
 ASTNode* create_if_node(ASTNode* condition, ASTNode* trueBranch, ASTNode* falseBranch);
 ASTNode* create_while_node(ASTNode* condition, ASTNode* body);
-ASTNode* create_for_node(ASTNode* init, ASTNode* cond, ASTNode* iter, ASTNode* body);
+ASTNode* create_for_node(ASTNode* cond, ASTNode* body);
 ASTNode* create_function_call_node(char* functionName, struct ASTNode* arguments);
 ASTNode* create_printf_node(char* identifier);
 ASTNode* combine_nodes(struct ASTNode* a, struct ASTNode* b);
@@ -83,6 +101,19 @@ ASTNode* combine_parameter_nodes(ASTNode* a, ASTNode* b);
 ASTNode* combine_argument_nodes(ASTNode* a, ASTNode* b);
 ASTNode* create_return_node(ASTNode* expression);
 ASTNode* create_argument_node(struct ASTNode* expr);
+ASTNode* create_pointer_assignment_node(char* identifier, ASTNode* value);
+ASTNode* create_free_node(char* identifier);
+ASTNode* create_pointer_node(int level);
+ASTNode* increase_pointer_level(struct ASTNode* node);
+ASTNode* create_function_call_node(char* functionName, struct ASTNode* arguments);
+ASTNode* create_array_node(char* type, struct ASTNode* dimensions, char* identifier);
+ASTNode* create_dimension_list(struct ASTNode* first, struct ASTNode* next);
+ASTNode* create_array_access_node(char* arrayName, struct ASTNode* index);
+ASTNode* combine_expressions(struct ASTNode* left, struct ASTNode* right);
+ASTNode* create_scanf_node(char* identifier);
+ASTNode* create_scanf_node_array(struct ASTNode* array_access);
+ASTNode* create_assignment_node_ampersand(char* identifier, char* target);
+char* extract_identifier(struct ASTNode* node);
 void free_tree(ASTNode* root);
 
 #endif // NODE_H

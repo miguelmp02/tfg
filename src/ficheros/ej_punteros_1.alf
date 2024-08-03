@@ -2,7 +2,7 @@ main
 {
 
 	int * pint;
-int j;
+	int j;
 
 
 	j=*pint+*pint;

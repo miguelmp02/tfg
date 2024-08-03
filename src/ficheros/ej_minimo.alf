@@ -1,13 +1,14 @@
-// ESTE PROGRAMA CALCULA EL MÍNIMO DE UN VECTOR DE 10 POSICIONES
+// ESTE PROGRAMA CALCULA EL Mï¿½NIMO DE UN VECTOR DE 10 POSICIONES
 
 
 main
 {
 	array int[10] v;
-	int i, minimo;
+	int i;
+	int minimo;
 	
 	
-	for ( i = 0 ; 9 )
+	for (( i = 0 ))
 		{
 	   	scanf v[ i ];
 		}
@@ -19,6 +20,10 @@ main
 	   if ((v[ i ]<minimo))
 		{
 	      minimo = v[i];
+		}
+		else
+		{
+			return minimo;
 		}
 	}
 	
