@@ -17,12 +17,16 @@ int yywrap(void);
 "while" {  /*printf("WHILE ");*/ return WHILE; }
 "int"   {  /*printf("INT ");*/ return TOK_INT; }
 "boolean" { /*printf("BOOLEAN ");*/ return TOK_BOOLEAN; }
+"string" { /*printf("STRING ");*/ return TOK_STRING; }
+"float" { /*printf("FLOAT ");*/ return TOK_FLOAT; }
+"char" { /*printf("CHAR ");*/ return TOK_CHAR; }
 "true"  {  /*printf("TRUE ");*/ return TOK_TRUE; }
 "false" {  /*printf("FALSE ");*/ return TOK_FALSE; }
 "array" {  /*printf("ARRAY ");*/ return ARRAY; }
 "scanf" {  /*printf("SCANF ");*/ return SCANF; }
 "printf" { /*printf("PRINTF ");*/ return PRINTF; }
 "free"  {  /*printf("FREE ");*/ return FREE; }
+"malloc"  {  /*printf("MALLOC ");*/ return MALLOC; }
 [ \t]+  { /* Ignorar espacios en blanco. */ }
 \n      { /*printf("NEWLINE\n");*/ return NEWLINE; }
 [0-9]+  {

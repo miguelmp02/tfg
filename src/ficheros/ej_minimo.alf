@@ -17,7 +17,7 @@ main
 	
 	for ( i = 1 ; 9 )
 	{
-	   if ((v[ i ]<minimo))
+	   if ((v[ i ]< minimo))
 		{
 	      minimo = v[i];
 		}

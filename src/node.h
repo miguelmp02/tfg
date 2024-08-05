@@ -5,16 +5,25 @@
 #include <stdio.h>
 
 typedef enum {
-    NODE_CONSTANT, NODE_IDENTIFIER, NODE_BINARY_OP, NODE_UNARY_OP, NODE_ASSIGNMENT, NODE_FREE, NODE_ARRAY_ACCESS,NODE_ASSIGNMENT_AMPERSAND,
+    NODE_CONSTANT, NODE_IDENTIFIER, NODE_BINARY_OP, NODE_UNARY_OP, NODE_ASSIGNMENT, NODE_FREE, NODE_ARRAY_ACCESS, NODE_ASSIGNMENT_AMPERSAND,
     NODE_PROGRAM, NODE_DECLARATION, NODE_IF, NODE_WHILE, NODE_FOR, NODE_POINTER, NODE_POINTER_ASSIGNMENT, NODE_ARRAY, NODE_DIMENSION_LIST,
-    NODE_FUNCTION_CALL, NODE_PRINTF,  NODE_FUNCTION_DEFINITION, NODE_PARAMETER, NODE_RETURN, NODE_ARGUMENT, NODE_SCANF
+    NODE_FUNCTION_CALL, NODE_PRINTF, NODE_FUNCTION_DEFINITION, NODE_PARAMETER, NODE_RETURN, NODE_ARGUMENT, NODE_SCANF
 } NodeType;
 
+typedef enum {
+    TYPE_INT,
+    TYPE_FLOAT,
+    TYPE_CHAR,
+    TYPE_STRING,
+    TYPE_BOOLEAN
+} DataType;
+                                 
 typedef struct ASTNode {
     NodeType type;
+    DataType data_type; 
     union {
-        int ival;                   // Para constantes
-        char* sval;                 // Para identificadores
+        int ival;                  
+        char* sval;                
         char* identifier;
         struct {
             char* type;
@@ -36,7 +45,7 @@ typedef struct ASTNode {
         } forLoop;
         struct {
             char* functionName;
-            struct ASTNode** arguments;
+            struct ASTNode* arguments;
             int argCount;
         } functionCall;
         struct {
@@ -49,7 +58,7 @@ typedef struct ASTNode {
         struct {
             char* text; 
         } scanfNode;
-         struct {
+        struct {
             struct ASTNode* left;
             struct ASTNode* right;
             char* op;
@@ -74,7 +83,11 @@ typedef struct ASTNode {
             struct ASTNode* index;
         } arrayAccess;  
         struct ASTNode* expression;
-        int pointer_level;        
+        int pointer_level;
+        struct {
+            char* identifier;
+            struct ASTNode* expression;     
+        } return_stmt;      
     } data;   
     struct ASTNode* next;
    
@@ -99,7 +112,7 @@ ASTNode* create_function_node(char* type, char* identifier, ASTNode* parameters,
 ASTNode* create_parameter_node(char* type, char* identifier);
 ASTNode* combine_parameter_nodes(ASTNode* a, ASTNode* b);
 ASTNode* combine_argument_nodes(ASTNode* a, ASTNode* b);
-ASTNode* create_return_node(ASTNode* expression);
+ASTNode* create_return_node(char* identifier, ASTNode* expression);
 ASTNode* create_argument_node(struct ASTNode* expr);
 ASTNode* create_pointer_assignment_node(char* identifier, ASTNode* value);
 ASTNode* create_free_node(char* identifier);
@@ -116,4 +129,4 @@ ASTNode* create_assignment_node_ampersand(char* identifier, char* target);
 char* extract_identifier(struct ASTNode* node);
 void free_tree(ASTNode* root);
 
-#endif // NODE_H
+#endif

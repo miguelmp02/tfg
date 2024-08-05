@@ -13,11 +13,11 @@ main
 		while ((j<4)){
 			if ((i == 0 ) || (i==2))
 			{
-				v[i,j] = VERDADERO;
+				v[i,j] = true;
 			}
 			else
 			{
-				v[i,j] = FALSO;
+				v[i,j] = false;
 			}
 		}
 		j = j+1;
@@ -29,7 +29,7 @@ main
 calcular
 {
 	i = 0;
-	disyuncion = FALSO;
+	disyuncion = false;
 	while (i<4) 
 	{
 		j = 0;
@@ -45,7 +45,7 @@ calcular
 escribir
 {
 	i = 0;
-	conjuncion = FALSO;
+	conjuncion = false;
 	while (i<4) 
 	{
 		j = 0;

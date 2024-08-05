@@ -1,6 +1,9 @@
 main
 {
-    int x;
-
-    
+int z
+int x;
+int y;
+x=2+y;
+printf y;
 }
+

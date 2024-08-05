@@ -5,14 +5,16 @@
 #include "symbol_table.h"
 
 extern int yylineno;
+DataType current_function_type;
+DataType data_type;
 void yyerror(const char *s);
 void yysemanticerror(const char *s);
 int yylex(void);
 %}
 
 %token MAIN
-%token FUNCTION RETURN FREE 
-%token TOK_INT TOK_BOOLEAN TOK_TRUE TOK_FALSE ERROR_TOKEN
+%token FUNCTION RETURN FREE MALLOC
+%token TOK_INT TOK_BOOLEAN TOK_CHAR TOK_FLOAT TOK_STRING TOK_TRUE TOK_FALSE ERROR_TOKEN
 %token PLUS MINUS TIMES DIVIDE EQUAL SEMICOLON LPAREN RPAREN LBRACE RBRACE COMMA AMPERSAND AND OR NOT EQ NE LT LE GT GE IF ELSE FOR WHILE LBRACKET RBRACKET ARRAY SCANF PRINTF
 %token NEWLINE
 %token <ival> NUMBER 
@@ -25,6 +27,7 @@ int yylex(void);
 %nonassoc LOWER_THAN_ELSE
 %nonassoc ELSE
 %nonassoc '(' ')'
+
 
 %left PLUS MINUS TIMES DIVIDE AND OR EQ NE LT LE GT GE '+' '-' '*' '/'
 
@@ -50,7 +53,7 @@ int yylex(void);
 %%
 program:
     optional_newlines MAIN optional_newlines LBRACE program_body RBRACE optional_newlines optional_classes{
-        printf("Programa main procesado correctamente en la linea %d.\n", yylineno);
+        //printf("Programa main procesado correctamente en la linea %d.\n", yylineno);
         $$ = $5;
     }
     | optional_newlines MAIN optional_newlines LBRACE program_body {
@@ -70,10 +73,20 @@ optional_newlines:
     | optional_newlines NEWLINE
     ;
 
-optional_classes:
-    | optional_classes IDENTIFIER optional_newlines LBRACE program_body RBRACE optional_newlines
+class_definition:
+    IDENTIFIER optional_newlines LBRACE program_body RBRACE optional_newlines
+    {
+        if (find_symbol($1) != NULL) {
+            yysemanticerror("Error semantico: Identificador de clase previamente declarado");
+        } else {
+            insert_symbol($1,0,0);
+            //printf("Definiendo clase '%s' en la línea %d.\n", $1, yylineno);
+        }
+    }
     ;
-
+optional_classes:
+    | optional_classes class_definition
+    ;
 program_body:
     { $$ = NULL; }
     | program_body statement NEWLINE { $$ = combine_nodes($1, $2); }
@@ -99,23 +112,50 @@ statement:
 
 assignment_statement:
     IDENTIFIER EQUAL expression SEMICOLON {
-        printf("Asignando a '%s' el resultado de la expresion en la linea %d.\n", $1, yylineno);
-        $$ = create_assignment_node($1, $3);
+        Symbol *symbol = find_symbol($1);
+        if (symbol == NULL) {
+            yysemanticerror("Error semantico: Identificador no declarado previamente");
+            printf("Error semantico: Error identificador \"%s\" no declarado previamente.\n", $1);
+        } else {
+            //printf("Asignando a '%s' el resultado de la expresion en la linea %d.\n", $1, yylineno);
+            $$ = create_assignment_node($1, $3);
+        }
     }
     | IDENTIFIER EQUAL function_call SEMICOLON {
-        printf("Asignando a '%s' el resultado de la llamada a funcion en la linea %d.\n", $1, yylineno);
-        $$ = create_assignment_node($1, $3);
+        if (find_symbol($1) == NULL) {
+            yysemanticerror("Error semantico: Identificador no declarado previamente");
+            printf("Error semantico: Error identificador \"%s\" no declarado previamente.\n", $1);
+        } else {
+           // printf("Asignando a '%s' el resultado de la llamada a funcion en la linea %d.\n", $1, yylineno);
+            $$ = create_assignment_node($1, $3);
+        }
     }
     | IDENTIFIER EQUAL array_access SEMICOLON {
-        printf("Asignando a '%s' el resultado de la llamada a array en la linea %d.\n", $1, yylineno);
-        $$ = create_assignment_node($1, $3);
+        if (find_symbol($1) == NULL) {
+            yysemanticerror("Error semantico: Identificador no declarado previamente");
+            printf("Error semantico: Error identificador \"%s\" no declarado previamente.\n", $1);
+        } else {
+            //printf("Asignando a '%s' el resultado de la llamada a array en la linea %d.\n", $1, yylineno);
+            $$ = create_assignment_node($1, $3);
+        }
     }
     | array_access EQUAL expression SEMICOLON {
-        printf("Asignando al array el resultado en la linea %d.\n", $1, yylineno);
+        //printf("Asignando al array el resultado en la linea %d.\n", $1, yylineno);
         $$ = create_assignment_node_array($1, $3);
+        
+    }
+    | IDENTIFIER EQUAL MALLOC SEMICOLON {
+        if (find_symbol($1) == NULL) {
+            yysemanticerror("Error semantico: Identificador no declarado previamente");
+            printf("Error semantico: Error identificador \"%s\" no declarado previamente.\n", $1);
+        } else {
+            //printf("Asignando al identifier malloc en la linea %d.\n", $1, yylineno);
+            $$ = create_assignment_node($1, 0);
+        }
+        
     }
     | array_access EQUAL array_access SEMICOLON {
-        printf("Asignando al array el resultado en la linea %d.\n", $1, yylineno);
+       // printf("Asignando al array el resultado en la linea %d.\n", $1, yylineno);
         $$ = create_assignment_node_array($1, $3);
     }
     | IDENTIFIER EQUAL expression {
@@ -143,7 +183,7 @@ assignment_statement:
         $$ = NULL;
     }
     | IDENTIFIER EQUAL AMPERSAND IDENTIFIER SEMICOLON {
-        printf("Asignando a '%s' la dirección de '%s' en la linea %d.\n", $1, $4, yylineno);
+        //printf("Asignando a '%s' la dirección de '%s' en la linea %d.\n", $1, $4, yylineno);
         $$ = create_assignment_node_ampersand($1, $4);
     }
     ;
@@ -152,14 +192,19 @@ pointer_type:
       TIMES { $$ = create_pointer_node(1); }  
     | pointer_type TIMES {
         $$ = increase_pointer_level($1); 
-        printf("Annadiendo un nivel de puntero, total ahora es %d.\n", $$->data.pointer_level);
+       // printf("Annadiendo un nivel de puntero, total ahora es %d.\n", $$->data.pointer_level);
     }
     ;
 
 pointer_assignment_statement:
     TIMES IDENTIFIER EQUAL expression SEMICOLON {
-        printf("Asignacion de puntero para '%s' en linea %d.\n", $2, yylineno);
-        $$ = create_pointer_assignment_node($2, $4);
+        if (find_symbol($2) == NULL) {
+            yysemanticerror("Error semantico: Identificador no declarado previamente");
+            printf("Error semantico: Error identificador \"%s\" no declarado previamente.\n", $2);
+        } else {
+            //printf("Asignacion de puntero para '%s' en linea %d.\n", $2, yylineno);
+            $$ = create_pointer_assignment_node($2, $4);
+        }
     }
     | TIMES IDENTIFIER EQUAL expression {
         printf("Error: falta ';' despues de la asignacion de '%s' en la linea %d.\n", $2, yylineno);
@@ -175,8 +220,8 @@ declaration_statement:
             yysemanticerror("Error semantico: Identificador previamente declarado");
             printf("Error semantico: Error identificador \"%s\" ya declarado previamente.\n", $2);
         } else {
-            insert_symbol($2, convert_data_type($1));
-            printf("Declarando variable '%s' de tipo '%s' en la linea %d.\n", $2, $1, yylineno);
+            insert_symbol($2, convert_data_type($1),0);
+            //printf("Declarando variable '%s' de tipo '%s' en la linea %d.\n", $2, $1, yylineno);
             $$ = create_declaration_node($1, $2, 0);
         }
     }
@@ -191,8 +236,8 @@ declaration_statement:
             yysemanticerror("Error semantico: Identificador previamente declarado");
             printf("Error semantico: Error identificador \"%s\" ya declarado previamente.\n", $3);
         } else {
-            insert_symbol($3, convert_data_type($1));
-            printf("Declarando puntero '%s' de tipo '%s' con %d niveles de puntero en la linea %d.\n", $3, $1, $2->data.pointer_level, yylineno);
+            insert_symbol($3, convert_data_type($1),0);
+           // printf("Declarando puntero '%s' de tipo '%s' con %d niveles de puntero en la linea %d.\n", $3, $1, $2->data.pointer_level, yylineno);
             $$ = create_declaration_node($1, $3, $2->data.pointer_level);
         }
     }
@@ -207,8 +252,8 @@ declaration_statement:
             yysemanticerror("Error semantico: Identificador previamente declarado");
             printf("Error semantico: Error identificador \"%s\" ya declarado previamente.\n", $3);
         } else {
-            insert_symbol($3, convert_data_type($1));
-            printf("Declarando variable '%s' de tipo '%s' en la linea %d.\n", $3, $1, yylineno);
+            insert_symbol($3, convert_data_type($1),0);
+            //printf("Declarando variable '%s' de tipo '%s' en la linea %d.\n", $3, $1, yylineno);
             $$ = create_declaration_node($1, $3, 0);
         }
     }
@@ -221,11 +266,16 @@ declaration_statement:
     ;
 
 array_declaration:
-    ARRAY type LBRACKET dimension_list RBRACKET IDENTIFIER SEMICOLON{
-        $$ = create_array_node($2, $4, $6);
-        printf("Declaración de array de tipo '%s' con identificador '%s' en la linea %d.\n", $2, $6, yylineno);
+     ARRAY type LBRACKET dimension_list RBRACKET IDENTIFIER SEMICOLON {
+        if (find_symbol($6) != NULL) {
+            yysemanticerror("Error semantico: Identificador previamente declarado");
+            printf("Error semantico: Error identificador \"%s\" ya declarado previamente.\n", $6);
+        } else {
+            insert_symbol($6, convert_data_type($2), 0);
+            $$ = create_array_node($2, $4, $6);
+           // printf("Declaración de array de tipo '%s' con identificador '%s' en la linea %d.\n", $2, $6, yylineno);
+        }
     }
-    ;
     | ARRAY type LBRACKET dimension_list RBRACKET IDENTIFIER{
         printf("Error: falta ';' al final de la array de '%s' en la linea %d.\n", $2, yylineno);
         yyerror("Falta ';' al final de la array");
@@ -235,12 +285,18 @@ array_declaration:
     ;
 
 array_access:
-    IDENTIFIER LBRACKET expression_list RBRACKET{
-        $$ = create_array_access_node($1, $3);
-        printf("Acceso a array '%s' en la linea %d.\n", $1, yylineno);
+    IDENTIFIER LBRACKET expression_list RBRACKET {
+        Symbol *symbol = find_symbol($1);
+        if (symbol == NULL) {
+            yysemanticerror("Error semantico: Identificador no declarado previamente");
+            printf("Error semantico: Error identificador \"%s\" no declarado previamente.\n", $1);
+        } else {
+            $$ = create_array_access_node($1, $3);
+             $$->data_type = symbol->type;
+            //printf("Acceso a array '%s' de tipo '%d' en la linea %d.\n", $1, symbol->type, yylineno);
+        }
     }
     ;
-
 expression_list:
     expression
     | expression_list COMMA expression {
@@ -259,8 +315,13 @@ dimension_list:
     
 printf_statement:
     PRINTF IDENTIFIER SEMICOLON {
-        printf("Llamando a 'printf' con '%s' en la linea %d.\n", $2, yylineno);
-        $$ = create_printf_node($2);
+        if (find_symbol($2) == NULL) {
+            yysemanticerror("Error semantico: Identificador no declarado previamente");
+            printf("Error semantico: Error identificador \"%s\" no declarado previamente.\n", $2);
+        } else {
+            //printf("Llamando a 'printf' con '%s' en la linea %d.\n", $2, yylineno);
+            $$ = create_printf_node($2);
+        }
     }
     | PRINTF IDENTIFIER {
         printf("Error: falta ';' despues de un printf en la linea %d.\n", yylineno);
@@ -269,8 +330,13 @@ printf_statement:
         $$ = NULL;
     }
     | PRINTF pointer_type IDENTIFIER SEMICOLON {
-        printf("Llamando a 'printf' con '%s' en la linea %d.\n", $3, yylineno);
-        $$ = create_printf_node($3);
+        if (find_symbol($3) == NULL) {
+            yysemanticerror("Error semantico: Identificador no declarado previamente");
+            printf("Error semantico: Error identificador \"%s\" no declarado previamente.\n", $3);
+        } else {
+           // printf("Llamando a 'printf' con '%s' en la linea %d.\n", $3, yylineno);
+            $$ = create_printf_node($3);
+        }
     }
     | PRINTF pointer_type IDENTIFIER {
         printf("Error: falta ';' despues de un printf en la linea %d.\n", yylineno);
@@ -282,11 +348,16 @@ printf_statement:
 
 scanf_statement:
     SCANF IDENTIFIER SEMICOLON {
-        printf("Llamando a 'scanf' con '%s' en la linea %d.\n", $2, yylineno);
-        $$ = create_scanf_node($2);
+        if (find_symbol($2) == NULL) {
+            yysemanticerror("Error semantico: Identificador no declarado previamente");
+            printf("Error semantico: Error identificador \"%s\" no declarado previamente.\n", $2);
+        } else {
+            //printf("Llamando a 'scanf' con '%s' en la linea %d.\n", $2, yylineno);
+            $$ = create_scanf_node($2);
+        }
     }
     | SCANF array_access SEMICOLON {
-        printf("Llamando a 'scanf' con '%s' en la linea %d.\n", $2, yylineno);
+        //printf("Llamando a 'scanf' con '%s' en la linea %d.\n", $2, yylineno);
         $$ = create_scanf_node_array($2);
     }
     | SCANF IDENTIFIER {
@@ -305,8 +376,13 @@ scanf_statement:
 
 free_statement:
     FREE IDENTIFIER SEMICOLON {
-        printf("Llamando a 'free' con '%s' en la linea %d.\n", $2, yylineno);
-        $$ = create_free_node($2);
+        if (find_symbol($2) == NULL) {
+            yysemanticerror("Error semantico: Identificador no declarado previamente");
+            printf("Error semantico: Error identificador \"%s\" no declarado previamente.\n", $2);
+        } else {
+           // printf("Llamando a 'free' con '%s' en la linea %d.\n", $2, yylineno);
+            $$ = create_free_node($2);
+        }
     }
     | FREE IDENTIFIER {
         printf("Error: falta ';' despues de un free en la linea %d.\n", yylineno);
@@ -317,22 +393,84 @@ free_statement:
     ;
 
 return_statement:
-    RETURN expression SEMICOLON {
-        printf("Declaracion de retorno en la linea %d.\n", yylineno);
-        $$ = create_return_node($2);
+    RETURN IDENTIFIER SEMICOLON {
+        Symbol *symbol = find_symbol($2);
+        if (symbol == NULL) {
+            yysemanticerror("Error semantico: Identificador no declarado previamente");
+            printf("Error semantico: Identificador \"%s\" no declarado previamente.\n", $2);
+        } else if (symbol->type != current_function_type) {
+            yysemanticerror("Error semantico: Tipo de retorno incompatible.");
+            printf("Error semantico: Tipo de retorno incompatible. Tipo de '%s': %d, Tipo esperado: %d\n", $2, symbol->type, current_function_type);
+            $$ = NULL;           
+        } else {
+           // printf("Declaracion de retorno en la linea %d. Tipo de '%s': %d\n", yylineno, $2, symbol->type);
+            $$ = create_return_node($2, NULL);
+        }
     }
-    | RETURN expression {
+    | RETURN IDENTIFIER {
         printf("Error: falta ';' despues de un return en la linea %d.\n", yylineno);
         yyerror("Falta ';' despues de un return");
         yyerrok;
         $$ = NULL;
     }
+    | RETURN LPAREN function_call RPAREN SEMICOLON {
+        Symbol *symbol = find_symbol($3->data.functionCall.functionName);
+        if (symbol == NULL) {
+            yysemanticerror("Error semantico: Identificador de funcion no declarado previamente");
+            $$ = NULL;
+        } else if (symbol->type != current_function_type) {
+            yysemanticerror("Error semantico: Tipo de retorno incompatible.");
+            printf("Error semantico: Tipo de retorno incompatible. Tipo de funcion '%s': %d, Tipo esperado: %d\n", $3->data.functionCall.functionName, symbol->type, current_function_type);
+            $$ = NULL;
+        } else {
+           // printf("Declaracion de retorno en la linea %d.\n", yylineno);
+            $$ = create_return_node(NULL, $3);
+        }
+    }
+    | RETURN NUMBER SEMICOLON {
+        if (current_function_type != TYPE_INT) {
+            yysemanticerror("Error semantico: Tipo de retorno incompatible.");
+            printf("Error semantico: Tipo de retorno incompatible. Tipo de retorno: int, Tipo esperado: %d\n", current_function_type);
+            $$ = NULL;
+        } else {
+            //printf("Declaracion de retorno en la linea %d.\n", yylineno);
+            $$ = create_constant_node($2);
+        }
+    }
+    | RETURN TOK_TRUE SEMICOLON {
+        if (current_function_type != TYPE_BOOLEAN) {
+            yysemanticerror("Error semantico: Tipo de retorno incompatible.");
+            printf("Error semantico: Tipo de retorno incompatible. Tipo de retorno: boolean, Tipo esperado: %d\n", current_function_type);
+            $$ = NULL;
+        } else {
+            $$ = create_constant_node(1);
+            //printf("Valor booleano 'true' detectado en la linea %d.\n", yylineno);
+        }
+    }
+    | RETURN TOK_FALSE SEMICOLON {
+        if (current_function_type != TYPE_BOOLEAN) {
+            yysemanticerror("Error semantico: Tipo de retorno incompatible.");
+            printf("Error semantico: Tipo de retorno incompatible. Tipo de retorno: boolean, Tipo esperado: %d\n", current_function_type);
+            $$ = NULL;
+        } else {
+            $$ = create_constant_node(0);
+          //  printf("Valor booleano 'false' detectado en la linea %d.\n", yylineno);
+        }
+    }
     ;
 
 function_definition:
-    FUNCTION type IDENTIFIER LPAREN parameter_list RPAREN optional_newlines LBRACE function_body RBRACE{
-        $$ = create_function_node($2, $3, $5, $9);
-        printf("Definicion de funcion '%s' con tipo '%s' y retorno asegurado en la linea %d.\n", $3, $2, yylineno);
+    FUNCTION type IDENTIFIER LPAREN parameter_list RPAREN optional_newlines LBRACE {
+        if (find_symbol($3) != NULL) {
+            yysemanticerror("Error semantico: Identificador de funcion previamente declarado");
+        } else {
+            int num_parameters = count_parameters($5);
+            current_function_type = convert_data_type($2);
+            insert_symbol($3, convert_data_type($2), num_parameters);
+           // printf("Declaracion de funcion '%s' con tipo '%s' en la linea %d.\n", $3, $2, yylineno);
+        }
+    } function_body RBRACE {
+        //printf("Definicion de funcion '%s' con tipo '%s' y retorno asegurado en la linea %d.\n", $3, $2, yylineno);
     }
     | FUNCTION IDENTIFIER LPAREN parameter_list RPAREN optional_newlines LBRACE function_body RBRACE{
         printf("Error: falta definir el tipo de funcion en la linea %d.\n", yylineno);
@@ -363,8 +501,14 @@ parameter_list:
 
 parameter:
     { $$ = NULL; }
-    |type IDENTIFIER {
-        $$ = create_parameter_node($1, $2);
+    | type IDENTIFIER {
+        if (find_symbol($2) != NULL) {
+            yysemanticerror("Error semantico: Identificador previamente declarado");
+            printf("Error semantico: Error identificador \"%s\" ya declarado previamente.\n", $2);
+        } else {
+            insert_symbol($2, convert_data_type($1),0);
+            $$ = create_parameter_node($1, $2);
+        }
     }
     ;
 
@@ -376,10 +520,23 @@ function_body:
     
 function_call:
     IDENTIFIER LPAREN argument_list RPAREN {
-        printf("Llamada a la funcion '%s' con argumentos en la linea %d.\n", $1, yylineno);
-        $$ = create_function_call_node($1, $3);
+        Symbol *symbol = find_symbol($1);
+        if (symbol == NULL) {
+            yysemanticerror("Error semantico: Identificador no declarado previamente");
+            printf("Error semantico: Identificador \"%s\" no declarado previamente.\n", $1);
+        } else {
+            int num_arguments = count_arguments($3);
+            if (num_arguments != symbol->num_parameters) {
+                yysemanticerror("Error semantico: Numero incorrecto de argumentos en la llamada a la funcion");
+                printf("Error semantico: Numero incorrecto de argumentos en la llamada a la funcion '%s'. Esperados %d, encontrados %d en la linea %d.\n", $1, symbol->num_parameters, num_arguments, yylineno);
+            } else {
+              //  printf("Llamada a la funcion '%s' con argumentos en la linea %d.\n", $1, yylineno);
+                $$ = create_function_call_node($1, $3);
+            }
+        }
     }
     ;
+
 
 argument_list:
     { $$ = NULL; }
@@ -392,17 +549,29 @@ argument_list:
 type:
     TOK_INT {
         $$ = strdup("int");
-        printf("Tipo detectado: int en la linea %d.\n", yylineno);
+       // printf("Tipo detectado: int en la linea %d.\n", yylineno);
     }
     | TOK_BOOLEAN {
         $$ = strdup("boolean");
-        printf("Tipo detectado: boolean en la linea %d.\n", yylineno);
+        //printf("Tipo detectado: boolean en la linea %d.\n", yylineno);
+    }
+    | TOK_FLOAT {
+        $$ = strdup("float");
+       // printf("Tipo detectado: boolean en la linea %d.\n", yylineno);
+    }
+    | TOK_CHAR {
+        $$ = strdup("char");
+        //printf("Tipo detectado: boolean en la linea %d.\n", yylineno);
+    }
+    | TOK_STRING {
+        $$ = strdup("string");
+       // printf("Tipo detectado: boolean en la linea %d.\n", yylineno);
     }
     ;
 
 if_statement:
     IF LPAREN expression RPAREN optional_newlines LBRACE if_body RBRACE optional_newlines ELSE optional_newlines LBRACE if_body RBRACE {
-        printf("Entrando a la sentencia 'if-else' en linea %d.\n", yylineno);
+       // printf("Entrando a la sentencia 'if-else' en linea %d.\n", yylineno);
         $$ = create_if_node($3, $7, $13);
     }
     | IF LPAREN expression RPAREN optional_newlines LBRACE if_body RBRACE optional_newlines LBRACE if_body RBRACE {
@@ -421,7 +590,7 @@ if_body:
 
 while_statement:
     WHILE LPAREN argument_while_list RPAREN optional_newlines LBRACE while_body RBRACE {
-        printf("Procesando una sentencia 'while' en la linea %d.\n", yylineno);
+       // printf("Procesando una sentencia 'while' en la linea %d.\n", yylineno);
         $$ = create_while_node($3, $7);
     }
     ;
@@ -440,7 +609,7 @@ while_body:
 
 for_statement:
     FOR LPAREN argument_for_list RPAREN optional_newlines LBRACE for_body RBRACE {
-        printf("Procesando una sentencia 'for' en la linea %d.\n", yylineno);
+       // printf("Procesando una sentencia 'for' en la linea %d.\n", yylineno);
         $$ = create_for_node($3, $7);
     }
     ;
@@ -463,89 +632,231 @@ expression:
         if ($1 == NULL || $3 == NULL) {
             yyerror("Operacion inválida debido a operandos no definidos.");
             $$ = NULL;
+        } else if ($1->data_type != TYPE_INT || $3->data_type != TYPE_INT) {
+            yysemanticerror("Error semantico: Operacion PLUS solo permitida entre enteros.");
+            printf("Error semantico: Operacion PLUS solo permitida entre enteros. Tipo de operando 1: %d, Tipo de operando 2: %d\n", $1->data_type, $3->data_type);
+            $$ = NULL;
         } else {
-            printf("Operacion PLUS en linea %d.\n", yylineno);
+           // printf("Operacion PLUS en linea %d.\n", yylineno);
             $$ = create_binary_op_node("+", $1, $3);
+            $$->data_type = TYPE_INT;
         }
     }
     | expression MINUS expression {
-        printf("Operacion MINUS en linea %d.\n", yylineno);
-        $$ = create_binary_op_node("-", $1, $3);
+        if ($1 == NULL || $3 == NULL) {
+            yyerror("Operacion inválida debido a operandos no definidos.");
+            $$ = NULL;
+        } else if ($1->data_type != TYPE_INT || $3->data_type != TYPE_INT) {
+            yysemanticerror("Error semantico: Operacion MINUS solo permitida entre enteros.");
+            printf("Error semantico: Operacion MINUS solo permitida entre enteros. Tipo de operando 1: %d, Tipo de operando 2: %d\n", $1->data_type, $3->data_type);
+            $$ = NULL;
+        } else {
+           // printf("Operacion MINUS en linea %d.\n", yylineno);
+            $$ = create_binary_op_node("-", $1, $3);
+            $$->data_type = TYPE_INT;
+        }
     }
     | expression TIMES expression {
-        printf("Operacion TIMES en linea %d.\n", yylineno);
-        $$ = create_binary_op_node("*", $1, $3);
-    }
-    | expression TIMES function_call {
-        printf("Operacion TIMES en linea %d.\n", yylineno);
-        $$ = create_binary_op_node("*", $1, $3);
+        if ($1 == NULL || $3 == NULL) {
+            yyerror("Operacion inválida debido a operandos no definidos.");
+            $$ = NULL;
+        } else if ($1->data_type != TYPE_INT || $3->data_type != TYPE_INT) {
+            yysemanticerror("Error semantico: Operacion TIMES solo permitida entre enteros.");
+            printf("Error semantico: Operacion TIMES solo permitida entre enteros. Tipo de operando 1: %d, Tipo de operando 2: %d\n", $1->data_type, $3->data_type);
+            $$ = NULL;
+        } else {
+           // printf("Operacion TIMES en linea %d.\n", yylineno);
+            $$ = create_binary_op_node("*", $1, $3);
+            $$->data_type = TYPE_INT;
+        }
     }
     | expression DIVIDE expression {
-        printf("Operacion DIVIDE en linea %d.\n", yylineno);
-        $$ = create_binary_op_node("/", $1, $3);
+        if ($1 == NULL || $3 == NULL) {
+            yyerror("Operacion inválida debido a operandos no definidos.");
+            $$ = NULL;
+        } else if ($1->data_type != TYPE_INT || $3->data_type != TYPE_INT) {
+            yysemanticerror("Error semantico: Operacion DIVIDE solo permitida entre enteros.");
+            printf("Error semantico: Operacion DIVIDE solo permitida entre enteros. Tipo de operando 1: %d, Tipo de operando 2: %d\n", $1->data_type, $3->data_type);
+            $$ = NULL;
+        } else {
+           // printf("Operacion DIVIDE en linea %d.\n", yylineno);
+            $$ = create_binary_op_node("/", $1, $3);
+            $$->data_type = TYPE_INT;
+        }
     }
     | expression EQUAL expression {
-        printf("Comparacion '=' entre expresiones en la linea %d.\n", yylineno);
-        $$ = create_binary_op_node("=", $1, $3);
+        if ($1 == NULL || $3 == NULL) {
+            yyerror("Comparacion invalida debido a operandos no definidos.");
+            $$ = NULL;
+        } else if ($1->data_type != $3->data_type) {
+            yysemanticerror("Error semantico: Comparacion '=' solo permitida entre operandos del mismo tipo.");
+            printf("Error semantico: Comparacion '=' solo permitida entre operandos del mismo tipo. Tipo de operando 1: %d, Tipo de operando 2: %d\n", $1->data_type, $3->data_type);
+            $$ = NULL;
+        } else {
+           // printf("Comparacion '=' en linea %d.\n", yylineno);
+            $$ = create_binary_op_node("=", $1, $3);
+            $$->data_type = TYPE_BOOLEAN;
+        }
     }
     | expression EQ expression {
-        printf("Comparacion '==' entre expresiones en la linea %d.\n", yylineno);
-        $$ = create_binary_op_node("==", $1, $3);
+        if ($1 == NULL || $3 == NULL) {
+            yyerror("Comparacion inválida debido a operandos no definidos.");
+            $$ = NULL;
+        } else if ($1->data_type != $3->data_type) {
+            yysemanticerror("Error semantico: Comparacion '==' solo permitida entre operandos del mismo tipo.");
+            printf("Error semantico: Comparacion '==' solo permitida entre operandos del mismo tipo. Tipo de operando 1: %d, Tipo de operando 2: %d\n", $1->data_type, $3->data_type);
+            $$ = NULL;
+        } else {
+           // printf("Comparacion '==' en linea %d.\n", yylineno);
+            $$ = create_binary_op_node("==", $1, $3);
+            $$->data_type = TYPE_BOOLEAN;
+        }
     }
     | expression NE expression {
-        printf("Comparacion '!=' entre expresiones en la linea %d.\n", yylineno);
-        $$ = create_binary_op_node("!=", $1, $3);
+        if ($1 == NULL || $3 == NULL) {
+            yyerror("Comparacion inválida debido a operandos no definidos.");
+            $$ = NULL;
+        } else if ($1->data_type != $3->data_type) {
+            yysemanticerror("Error semantico: Comparacion '!=' solo permitida entre operandos del mismo tipo.");
+            printf("Error semantico: Comparacion '!=' solo permitida entre operandos del mismo tipo. Tipo de operando 1: %d, Tipo de operando 2: %d\n", $1->data_type, $3->data_type);
+            $$ = NULL;
+        } else {
+           // printf("Comparacion '!=' en linea %d.\n", yylineno);
+            $$ = create_binary_op_node("!=", $1, $3);
+            $$->data_type = TYPE_BOOLEAN;
+        }
     }
     | expression LT expression {
-        printf("Comparacion '<' entre expresiones en la linea %d.\n", yylineno);
-        $$ = create_binary_op_node("<", $1, $3);
+        if ($1 == NULL || $3 == NULL) {
+            yyerror("Comparacion inválida debido a operandos no definidos.");
+            $$ = NULL;
+        } else if ($1->data_type != TYPE_INT || $3->data_type != TYPE_INT) {
+            yysemanticerror("Error semantico: Comparacion '<' solo permitida entre enteros.");
+            printf("Error semantico: Comparacion '<' solo permitida entre enteros. Tipo de operando 1: %d, Tipo de operando 2: %d\n", $1->data_type, $3->data_type);
+            $$ = NULL;
+        } else {
+           // printf("Comparacion '<' en linea %d.\n", yylineno);
+            $$ = create_binary_op_node("<", $1, $3);
+            $$->data_type = TYPE_BOOLEAN;
+        }
     }
-    | array_access LT expression{
-        printf("Comparacion '<' entre expresiones en la linea %d.\n", yylineno);
-        $$ = create_binary_op_node("<", $1, $3);
+    | array_access LT expression {
+        if ($1 == NULL || $3 == NULL) {
+            yyerror("Comparacion inválida debido a operandos no definidos.");
+            $$ = NULL;
+        } else if ($1->data_type != TYPE_INT || $3->data_type != TYPE_INT) {
+            yysemanticerror("Error semantico: Comparacion '<' solo permitida entre enteros.");
+            printf("Error semantico: Comparacion '<' solo permitida entre enteros. Tipo de operando 1: %d, Tipo de operando 2: %d\n", $1->data_type, $3->data_type);
+            $$ = NULL;
+        } else {
+           // printf("Comparacion '<' en linea %d.\n", yylineno);
+            $$ = create_binary_op_node("<", $1, $3);
+            $$->data_type = TYPE_BOOLEAN;
+        }
     }
     | expression LE expression {
-        printf("Comparacion '=<' entre expresiones en la linea %d.\n", yylineno);
-        $$ = create_binary_op_node("=<", $1, $3);
+        if ($1 == NULL || $3 == NULL) {
+            yyerror("Comparacion inválida debido a operandos no definidos.");
+            $$ = NULL;
+        } else if ($1->data_type != TYPE_INT || $3->data_type != TYPE_INT) {
+            yysemanticerror("Error semantico: Comparacion '<=' solo permitida entre enteros.");
+            printf("Error semantico: Comparacion '<=' solo permitida entre enteros. Tipo de operando 1: %d, Tipo de operando 2: %d\n", $1->data_type, $3->data_type);
+            $$ = NULL;
+        } else {
+           // printf("Comparacion '<=' en linea %d.\n", yylineno);
+            $$ = create_binary_op_node("<=", $1, $3);
+            $$->data_type = TYPE_BOOLEAN;
+        }
     }
     | expression GT expression {
-        printf("Comparacion '>' entre expresiones en la linea %d.\n", yylineno);
-        $$ = create_binary_op_node(">", $1, $3);
+        if ($1 == NULL || $3 == NULL) {
+            yyerror("Comparacion inválida debido a operandos no definidos.");
+            $$ = NULL;
+        } else if ($1->data_type != TYPE_INT || $3->data_type != TYPE_INT) {
+            yysemanticerror("Error semantico: Comparacion '>' solo permitida entre enteros.");
+            printf("Error semantico: Comparacion '>' solo permitida entre enteros. Tipo de operando 1: %d, Tipo de operando 2: %d\n", $1->data_type, $3->data_type);
+            $$ = NULL;
+        } else {
+           // printf("Comparacion '>' en linea %d.\n", yylineno);
+            $$ = create_binary_op_node(">", $1, $3);
+            $$->data_type = TYPE_BOOLEAN;
+        }
     }
     | expression GE expression {
-        printf("Comparacion '>=' entre expresiones en la linea %d.\n", yylineno);
-        $$ = create_binary_op_node(">=", $1, $3);
+        if ($1 == NULL || $3 == NULL) {
+            yyerror("Comparacion inválida debido a operandos no definidos.");
+            $$ = NULL;
+        } else if ($1->data_type != TYPE_INT || $3->data_type != TYPE_INT) {
+            yysemanticerror("Error semantico: Comparacion '>=' solo permitida entre enteros.");
+            printf("Error semantico: Comparacion '>=' solo permitida entre enteros. Tipo de operando 1: %d, Tipo de operando 2: %d\n", $1->data_type, $3->data_type);
+            $$ = NULL;
+        } else {
+           // printf("Comparacion '>=' en linea %d.\n", yylineno);
+            $$ = create_binary_op_node(">=", $1, $3);
+            $$->data_type = TYPE_BOOLEAN;
+        }
     }
     | expression AND expression {
-        printf("Comparacion '&&' entre expresiones en la linea %d.\n", yylineno);
-        $$ = create_binary_op_node("&&", $1, $3);
+        if ($1 == NULL || $3 == NULL) {
+            yyerror("Operacion lógica inválida debido a operandos no definidos.");
+            $$ = NULL;
+        } else if ($1->data_type != TYPE_BOOLEAN || $3->data_type != TYPE_BOOLEAN) {
+            yysemanticerror("Error semantico: Operacion AND solo permitida entre booleanos.");
+            printf("Error semantico: Operacion AND solo permitida entre booleanos. Tipo de operando 1: %d, Tipo de operando 2: %d\n", $1->data_type, $3->data_type);
+            $$ = NULL;
+        } else {
+           // printf("Operacion AND en linea %d.\n", yylineno);
+            $$ = create_binary_op_node("&&", $1, $3);
+            $$->data_type = TYPE_BOOLEAN;
+        }
     }
     | expression OR expression {
-        printf("Comparacion '||' entre expresiones en la linea %d.\n", yylineno);
-        $$ = create_binary_op_node("||", $1, $3);
+        if ($1 == NULL || $3 == NULL) {
+            yyerror("Operacion lógica inválida debido a operandos no definidos.");
+            $$ = NULL;
+        } else if ($1->data_type != TYPE_BOOLEAN || $3->data_type != TYPE_BOOLEAN) {
+            yysemanticerror("Error semantico: Operacion OR solo permitida entre booleanos.");
+            printf("Error semantico: Operacion OR solo permitida entre booleanos. Tipo de operando 1: %d, Tipo de operando 2: %d\n", $1->data_type, $3->data_type);
+            $$ = NULL;
+        } else {
+           // printf("Operacion OR en linea %d.\n", yylineno);
+            $$ = create_binary_op_node("||", $1, $3);
+            $$->data_type = TYPE_BOOLEAN;
+        }
     }
     | NUMBER {
-        printf("Numero detectado: %d en la linea %d.\n", $1, yylineno);
+        //printf("Numero detectado: %d en la linea %d.\n", $1, yylineno);
         $$ = create_constant_node($1);
+        $$->data_type = TYPE_INT;
     }
     | IDENTIFIER {
-        printf("Identificador detectado: %s en la linea %d.\n", $1, yylineno);
-        $$ = create_identifier_node($1);
+        Symbol *symbol = find_symbol($1);
+        if (symbol == NULL) {
+            yysemanticerror("Error semantico: Identificador no declarado previamente");
+            printf("Error semantico en la linea %d: Identificador \"%s\" no declarado previamente.\n", yylineno, $1);
+            $$ = NULL;
+        } else {
+            //printf("Identificador detectado: %s en la linea %d. Tipo: %d\n", $1, yylineno, symbol->type);
+            $$ = create_identifier_node($1);
+            $$->data_type = symbol->type; // Asegurar que el tipo se establece correctamente
+        }
     }
     | TOK_TRUE {
         $$ = create_constant_node(1);
-        printf("Valor booleano 'true' detectado en la linea %d.\n", yylineno);
+        $$->data_type = TYPE_BOOLEAN;
+       // printf("Valor booleano 'true' detectado en la linea %d.\n", yylineno);
     }
     | TOK_FALSE {
         $$ = create_constant_node(0);
-        printf("Valor booleano 'false' detectado en la linea %d.\n", yylineno);
+        $$->data_type = TYPE_BOOLEAN;
+        //printf("Valor booleano 'false' detectado en la linea %d.\n", yylineno);
     }
     | LPAREN expression RPAREN {
-        printf("Evaluando expresion entre parentesis en la linea %d.\n", yylineno);
+       // printf("Evaluando expresion entre parentesis en la linea %d.\n", yylineno);
         $$ = $2;
     }
-    | TIMES expression{
-        printf("Evaluando expresion con punteros en la linea %d.\n", yylineno);
+    | TIMES expression {
+       // printf("Evaluando expresion con punteros en la linea %d.\n", yylineno);
         $$ = $2;
     }
     | error {

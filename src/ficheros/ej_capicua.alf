@@ -18,6 +18,7 @@ main
   	boolean CAPICUA;
   	int & SMALLEST;
   	int I;
+	int i;
 
  
   	scanf NUMCUATROCIFRAS;
