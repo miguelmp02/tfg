@@ -101,9 +101,10 @@ void openFileAndProcess(HWND hwnd) {
             }
             if (!lexError && !symbolTableError && !has_syntax_error && !has_semantic_error) {
                 printf("Analisis lexico completado de forma correcta.\n");
-                printf("Tabla de simbolos completada de forma correcta.\n");
                 printf("Analisis sintactico completado de forma correcta.\n");
+                printf("Tabla de simbolos completada de forma correcta.\n");
                 printf("Analisis semantico completado de forma correcta.\n");
+                printf("<----------Analisis terminados de forma correcta---------->");
             } else {
                 if (lexError) {
                     printf("Error en el analisis lexico.\n");
