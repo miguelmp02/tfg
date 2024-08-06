@@ -1,0 +1,844 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.11.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>TFG - DESARROLLO DE UN COMPILADOR: Referencia de la estructura ASTNode</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">TFG - DESARROLLO DE UN COMPILADOR
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.11.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar',false);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){ initResizable(false); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#pub-attribs">Atributos públicos</a> &#124;
+<a href="struct_a_s_t_node-members.html">Lista de todos los miembros</a>  </div>
+  <div class="headertitle"><div class="title">Referencia de la estructura ASTNode</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="node_8h_source.html">node.h</a>&gt;</code></p>
+<div class="dynheader">
+Diagrama de colaboración de ASTNode:</div>
+<div class="dyncontent">
+<div class="center"><img src="struct_a_s_t_node__coll__graph.png" border="0" usemap="#a_a_s_t_node_coll__map" alt="Collaboration graph"/></div>
+<!-- MAP 0 -->
+</div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Atributos públicos</h2></td></tr>
+<tr class="memitem:a34086f3bc5af008f08f255c8ec57ba21" id="r_a34086f3bc5af008f08f255c8ec57ba21"><td class="memItemLeft" align="right" valign="top"><a class="el" href="node_8h.html#acac9cbaeea226ed297804c012dc12b16">NodeType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a34086f3bc5af008f08f255c8ec57ba21">type</a></td></tr>
+<tr class="separator:a34086f3bc5af008f08f255c8ec57ba21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af29db1c7c9a5e371ab23699de1693acf" id="r_af29db1c7c9a5e371ab23699de1693acf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="node_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af29db1c7c9a5e371ab23699de1693acf">data_type</a></td></tr>
+<tr class="separator:af29db1c7c9a5e371ab23699de1693acf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d2831fbd95f06e0a23f2cc2b20f3454" id="r_a3d2831fbd95f06e0a23f2cc2b20f3454"><td class="memItemLeft" >union {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef3cdfc177e931a886dbc3f900329d8d" id="r_aef3cdfc177e931a886dbc3f900329d8d"><td class="memItemLeft" >&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="#a324ed22b01afeeb7bb16b09e61830899">ival</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:aef3cdfc177e931a886dbc3f900329d8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25dd4f7834352486a3e1bdce8010dfd7" id="r_a25dd4f7834352486a3e1bdce8010dfd7"><td class="memItemLeft" >&#160;&#160;&#160;char *&#160;&#160;&#160;<a class="el" href="#ad695a83567e761d4e2c891d7aa9c0091">sval</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a25dd4f7834352486a3e1bdce8010dfd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdb25c30f4c6192feed18163693d5642" id="r_abdb25c30f4c6192feed18163693d5642"><td class="memItemLeft" >&#160;&#160;&#160;char *&#160;&#160;&#160;<a class="el" href="#aa90c5c8d429832b76b919d28357f1745">identifier</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:abdb25c30f4c6192feed18163693d5642"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab67d0ee2c7ef2432a5e0ae7b0e594b85" id="r_ab67d0ee2c7ef2432a5e0ae7b0e594b85"><td class="memItemLeft" >&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:abc913601839284d4f18762a3f80cc8b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24f485bb9c5a4ed7d9af5679756d437e" id="r_a24f485bb9c5a4ed7d9af5679756d437e"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;char *&#160;&#160;&#160;<a class="el" href="#a629583939d3acaff49edc45b9f80893f">type</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a24f485bb9c5a4ed7d9af5679756d437e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afba1ed544f81275917857d25022676c3" id="r_afba1ed544f81275917857d25022676c3"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="#a2ce830eb78e050e7c2e61da90ff37ea0">pointer_level</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:afba1ed544f81275917857d25022676c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a21fa86d5872ad5e57a5624f059112b30" id="r_a21fa86d5872ad5e57a5624f059112b30"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;char *&#160;&#160;&#160;<a class="el" href="#aa90c5c8d429832b76b919d28357f1745">identifier</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a21fa86d5872ad5e57a5624f059112b30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab67d0ee2c7ef2432a5e0ae7b0e594b85" id="r_ab67d0ee2c7ef2432a5e0ae7b0e594b85"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="#abc913601839284d4f18762a3f80cc8b1">declaration</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:ab67d0ee2c7ef2432a5e0ae7b0e594b85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a1a17e7c7959841b9ea7f8352165aa5" id="r_a5a1a17e7c7959841b9ea7f8352165aa5"><td class="memItemLeft" >&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:aa81bb2d94c9dacc4587114733afc2049"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8d1a558ca2e12d3d34b64e088a1f07e" id="r_ac8d1a558ca2e12d3d34b64e088a1f07e"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#a14e0b4548df283b9b8f807b858d3eb84">condition</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:ac8d1a558ca2e12d3d34b64e088a1f07e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3de9feff891e31119703b3a5c3205111" id="r_a3de9feff891e31119703b3a5c3205111"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#a0c022149a25324d6aaa45c09cf000db6">trueBranch</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a3de9feff891e31119703b3a5c3205111"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe820bf4176e563ca5688ba79ee8c624" id="r_afe820bf4176e563ca5688ba79ee8c624"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#a9ff1a932ea5a87ab5ed73c3d350394a2">falseBranch</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:afe820bf4176e563ca5688ba79ee8c624"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a1a17e7c7959841b9ea7f8352165aa5" id="r_a5a1a17e7c7959841b9ea7f8352165aa5"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="#aa81bb2d94c9dacc4587114733afc2049">ifExpr</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a5a1a17e7c7959841b9ea7f8352165aa5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1747d2104a4df474715a55c5993a0dd3" id="r_a1747d2104a4df474715a55c5993a0dd3"><td class="memItemLeft" >&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a675dc6dbfba114c48c5ed2c37d646355"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4e59618d1af07e3252a4d5c453b5f4b" id="r_ad4e59618d1af07e3252a4d5c453b5f4b"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#a14e0b4548df283b9b8f807b858d3eb84">condition</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:ad4e59618d1af07e3252a4d5c453b5f4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fb58d458c83b3adeeb9bb1c1aa966a2" id="r_a4fb58d458c83b3adeeb9bb1c1aa966a2"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#ae583696cf4fd3f3682ce61668d51beb2">body</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a4fb58d458c83b3adeeb9bb1c1aa966a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1747d2104a4df474715a55c5993a0dd3" id="r_a1747d2104a4df474715a55c5993a0dd3"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="#a675dc6dbfba114c48c5ed2c37d646355">whileExpr</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a1747d2104a4df474715a55c5993a0dd3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93be3c87e092a52a40c5583c62c80d6e" id="r_a93be3c87e092a52a40c5583c62c80d6e"><td class="memItemLeft" >&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a1c04371de9ea47672b7abcc724843799"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e777f4ff421291ba8aadebc37894bec" id="r_a5e777f4ff421291ba8aadebc37894bec"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#a215b3abef69a91c96dc56b5220769496">cond</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a5e777f4ff421291ba8aadebc37894bec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7868ae296c1fc5b3268ff23c5bb7efe0" id="r_a7868ae296c1fc5b3268ff23c5bb7efe0"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#ae583696cf4fd3f3682ce61668d51beb2">body</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a7868ae296c1fc5b3268ff23c5bb7efe0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93be3c87e092a52a40c5583c62c80d6e" id="r_a93be3c87e092a52a40c5583c62c80d6e"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="#a1c04371de9ea47672b7abcc724843799">forLoop</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a93be3c87e092a52a40c5583c62c80d6e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a642dd85c0df8a02a80be4f042d971de6" id="r_a642dd85c0df8a02a80be4f042d971de6"><td class="memItemLeft" >&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a81b39d3f1cfe845d205c0bc482ddfbb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a463d988011ced0996c0f2822665fdf64" id="r_a463d988011ced0996c0f2822665fdf64"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;char *&#160;&#160;&#160;<a class="el" href="#a8fb51111a3077fe5a46120d3d7bca49c">functionName</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a463d988011ced0996c0f2822665fdf64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf79c5d1e9fef0b9f0bb0e6caa401799" id="r_abf79c5d1e9fef0b9f0bb0e6caa401799"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#a6e7240deb7222bc28180da1dd602ccff">arguments</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:abf79c5d1e9fef0b9f0bb0e6caa401799"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e024cdd09e3cb314c245ed427c441f5" id="r_a0e024cdd09e3cb314c245ed427c441f5"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="#abf7c7e207ce08a8cb8e615128b219f35">argCount</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a0e024cdd09e3cb314c245ed427c441f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a642dd85c0df8a02a80be4f042d971de6" id="r_a642dd85c0df8a02a80be4f042d971de6"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="#a81b39d3f1cfe845d205c0bc482ddfbb7">functionCall</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a642dd85c0df8a02a80be4f042d971de6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f794092ec83202cc2df1b9ac628e595" id="r_a1f794092ec83202cc2df1b9ac628e595"><td class="memItemLeft" >&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:abec7295b8debf7b81b9bcc69b9fb4f77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92250b3b5768d6334d003b14a82fc0c2" id="r_a92250b3b5768d6334d003b14a82fc0c2"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;char *&#160;&#160;&#160;<a class="el" href="#aa90c5c8d429832b76b919d28357f1745">identifier</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a92250b3b5768d6334d003b14a82fc0c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc5c121d60a85d6c4a3656022a281e25" id="r_acc5c121d60a85d6c4a3656022a281e25"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#a2dd7af4a125a9d936aa1ad6c7bd86749">value</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:acc5c121d60a85d6c4a3656022a281e25"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f794092ec83202cc2df1b9ac628e595" id="r_a1f794092ec83202cc2df1b9ac628e595"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="#abec7295b8debf7b81b9bcc69b9fb4f77">assignment</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a1f794092ec83202cc2df1b9ac628e595"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b3ccc552551708b9d525e2efd7580e6" id="r_a2b3ccc552551708b9d525e2efd7580e6"><td class="memItemLeft" >&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a566cc39bd73193ae4b6c3e66cfe64531"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e1e6faa30612035d5c6648deee4f313" id="r_a1e1e6faa30612035d5c6648deee4f313"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;char *&#160;&#160;&#160;<a class="el" href="#a2fb77557efaecf6fdbd6692260e85a6d">text</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a1e1e6faa30612035d5c6648deee4f313"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b3ccc552551708b9d525e2efd7580e6" id="r_a2b3ccc552551708b9d525e2efd7580e6"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="#a566cc39bd73193ae4b6c3e66cfe64531">printfNode</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a2b3ccc552551708b9d525e2efd7580e6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d99a36ac2d35f72f6599546474d8859" id="r_a2d99a36ac2d35f72f6599546474d8859"><td class="memItemLeft" >&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a1f04ea5468d87b2a1ef2b898e169b9a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b52b1421fe32266ca41046fcc4f23f1" id="r_a3b52b1421fe32266ca41046fcc4f23f1"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;char *&#160;&#160;&#160;<a class="el" href="#a2fb77557efaecf6fdbd6692260e85a6d">text</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a3b52b1421fe32266ca41046fcc4f23f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d99a36ac2d35f72f6599546474d8859" id="r_a2d99a36ac2d35f72f6599546474d8859"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="#a1f04ea5468d87b2a1ef2b898e169b9a4">scanfNode</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a2d99a36ac2d35f72f6599546474d8859"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee42d84a52f8e40ee792a0ecd47e1caf" id="r_aee42d84a52f8e40ee792a0ecd47e1caf"><td class="memItemLeft" >&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a89c18ee382c8f119a8d63d09e1660719"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09813708979329850b7857172a5475f4" id="r_a09813708979329850b7857172a5475f4"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#a7e8efcf6431aca1ee186e775443abfcc">left</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a09813708979329850b7857172a5475f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad6b4eb261ef08e3b14e4fe810fdaf87" id="r_aad6b4eb261ef08e3b14e4fe810fdaf87"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#ab3fac314ab87bbccda872cde9678b5b3">right</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:aad6b4eb261ef08e3b14e4fe810fdaf87"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf5c550b09f808dddca01941ad550e0a" id="r_abf5c550b09f808dddca01941ad550e0a"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;char *&#160;&#160;&#160;<a class="el" href="#a9e19d9d53241850463f6a43d5121ec0d">op</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:abf5c550b09f808dddca01941ad550e0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee42d84a52f8e40ee792a0ecd47e1caf" id="r_aee42d84a52f8e40ee792a0ecd47e1caf"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="#a89c18ee382c8f119a8d63d09e1660719">binary</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:aee42d84a52f8e40ee792a0ecd47e1caf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1a5b7785fed1c6f64be91cc024f98d1" id="r_ad1a5b7785fed1c6f64be91cc024f98d1"><td class="memItemLeft" >&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:ac2ec0c21b1824cedfaf546fee7bdd830"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4d4a4987c590f4a9309f194bc581311" id="r_ab4d4a4987c590f4a9309f194bc581311"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;char *&#160;&#160;&#160;<a class="el" href="#a629583939d3acaff49edc45b9f80893f">type</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:ab4d4a4987c590f4a9309f194bc581311"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab30e413e46a040ac68365f902ad763e0" id="r_ab30e413e46a040ac68365f902ad763e0"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;char *&#160;&#160;&#160;<a class="el" href="#aa90c5c8d429832b76b919d28357f1745">identifier</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:ab30e413e46a040ac68365f902ad763e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08a002c11f0bbec49cea2a7fa3a6bf01" id="r_a08a002c11f0bbec49cea2a7fa3a6bf01"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#aec62b1d2a795d3c3d04a519c851d0902">parameters</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a08a002c11f0bbec49cea2a7fa3a6bf01"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a26696368765b3e79a0766a2b82e942e7" id="r_a26696368765b3e79a0766a2b82e942e7"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#ae583696cf4fd3f3682ce61668d51beb2">body</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a26696368765b3e79a0766a2b82e942e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1a5b7785fed1c6f64be91cc024f98d1" id="r_ad1a5b7785fed1c6f64be91cc024f98d1"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="#ac2ec0c21b1824cedfaf546fee7bdd830">function</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:ad1a5b7785fed1c6f64be91cc024f98d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83750b8f1f590009f1d5b18b5a8fc60d" id="r_a83750b8f1f590009f1d5b18b5a8fc60d"><td class="memItemLeft" >&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a7ea4ae3413e1f04cff8db438c9ecaee4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6c5eddd58752f35cceffc5cf34bb3012" id="r_a6c5eddd58752f35cceffc5cf34bb3012"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;char *&#160;&#160;&#160;<a class="el" href="#a629583939d3acaff49edc45b9f80893f">type</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a6c5eddd58752f35cceffc5cf34bb3012"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25597a4994245d65676320ae1c771b76" id="r_a25597a4994245d65676320ae1c771b76"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#a4733242ed096e8d4d116e3232cc90703">dimensions</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a25597a4994245d65676320ae1c771b76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc32b4ad3392ed07e2c7a9bc747b39e9" id="r_adc32b4ad3392ed07e2c7a9bc747b39e9"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;char *&#160;&#160;&#160;<a class="el" href="#aa90c5c8d429832b76b919d28357f1745">identifier</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:adc32b4ad3392ed07e2c7a9bc747b39e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a83750b8f1f590009f1d5b18b5a8fc60d" id="r_a83750b8f1f590009f1d5b18b5a8fc60d"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="#a7ea4ae3413e1f04cff8db438c9ecaee4">array</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a83750b8f1f590009f1d5b18b5a8fc60d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cbc2f3a52a8b9e723d77bac3c23d827" id="r_a5cbc2f3a52a8b9e723d77bac3c23d827"><td class="memItemLeft" >&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a2920bddb73ff42dd1483d9b185c6e8df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5740b91ab6a4801e4f53b62f3bb283d9" id="r_a5740b91ab6a4801e4f53b62f3bb283d9"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#aa9ebd8183b53454c1bd2913870726c77">first</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a5740b91ab6a4801e4f53b62f3bb283d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2e119f42a773b9e0ebf8ed96d3888d90" id="r_a2e119f42a773b9e0ebf8ed96d3888d90"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#ac0a70d42e58343d802496a8bd5f7b19a">next</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a2e119f42a773b9e0ebf8ed96d3888d90"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5cbc2f3a52a8b9e723d77bac3c23d827" id="r_a5cbc2f3a52a8b9e723d77bac3c23d827"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="#a2920bddb73ff42dd1483d9b185c6e8df">dimensions</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a5cbc2f3a52a8b9e723d77bac3c23d827"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88a282d19f23d97c7323105d02ab0e85" id="r_a88a282d19f23d97c7323105d02ab0e85"><td class="memItemLeft" >&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:afbf03e87a196250f2fd2cbcfc39f1b35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a24fcb29f0187c9510b882a49bfc4577d" id="r_a24fcb29f0187c9510b882a49bfc4577d"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;char *&#160;&#160;&#160;<a class="el" href="#af5c14e85b44a54c1a5ad9dbebc0e1468">arrayName</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a24fcb29f0187c9510b882a49bfc4577d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6390e0a9b3f6219be922308cf3cefd7e" id="r_a6390e0a9b3f6219be922308cf3cefd7e"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#aacbf590e75a93525a20eac9a6598e7f9">index</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a6390e0a9b3f6219be922308cf3cefd7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88a282d19f23d97c7323105d02ab0e85" id="r_a88a282d19f23d97c7323105d02ab0e85"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="#afbf03e87a196250f2fd2cbcfc39f1b35">arrayAccess</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a88a282d19f23d97c7323105d02ab0e85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94d29093f390973833bf0b57b3bfff47" id="r_a94d29093f390973833bf0b57b3bfff47"><td class="memItemLeft" >&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#ac718da402ea7b916f2461bec22baa056">expression</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a94d29093f390973833bf0b57b3bfff47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53e3a600d9d390ae2a1006f78792cf98" id="r_a53e3a600d9d390ae2a1006f78792cf98"><td class="memItemLeft" >&#160;&#160;&#160;int&#160;&#160;&#160;<a class="el" href="#a2ce830eb78e050e7c2e61da90ff37ea0">pointer_level</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a53e3a600d9d390ae2a1006f78792cf98"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66d102b6e82ecf67bb3b8e48b7839c89" id="r_a66d102b6e82ecf67bb3b8e48b7839c89"><td class="memItemLeft" >&#160;&#160;&#160;struct {&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a7bca42be5dba01ee28819b174f824b84"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8d9cdf39db7dcbb65f359f4ed85e08d" id="r_af8d9cdf39db7dcbb65f359f4ed85e08d"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;char *&#160;&#160;&#160;<a class="el" href="#aa90c5c8d429832b76b919d28357f1745">identifier</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:af8d9cdf39db7dcbb65f359f4ed85e08d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac43280d3f31c3d0cc34e5743a26b055" id="r_aac43280d3f31c3d0cc34e5743a26b055"><td class="memItemLeft" >&#160;&#160;&#160;&#160;&#160;&#160;struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> *&#160;&#160;&#160;<a class="el" href="#ac718da402ea7b916f2461bec22baa056">expression</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:aac43280d3f31c3d0cc34e5743a26b055"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a66d102b6e82ecf67bb3b8e48b7839c89" id="r_a66d102b6e82ecf67bb3b8e48b7839c89"><td class="memItemLeft" valign="top">&#160;&#160;&#160;}&#160;&#160;&#160;<a class="el" href="#a7bca42be5dba01ee28819b174f824b84">return_stmt</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a66d102b6e82ecf67bb3b8e48b7839c89"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d2831fbd95f06e0a23f2cc2b20f3454" id="r_a3d2831fbd95f06e0a23f2cc2b20f3454"><td class="memItemLeft" valign="top">}&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d2831fbd95f06e0a23f2cc2b20f3454">data</a>&#160;</td><td class="memItemRight" valign="bottom"></td></tr>
+<tr class="separator:a3d2831fbd95f06e0a23f2cc2b20f3454"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Documentación de datos miembro</h2>
+<a id="abf7c7e207ce08a8cb8e615128b219f35" name="abf7c7e207ce08a8cb8e615128b219f35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abf7c7e207ce08a8cb8e615128b219f35">&#9670;&#160;</a></span>argCount</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ASTNode::argCount</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a6e7240deb7222bc28180da1dd602ccff" name="a6e7240deb7222bc28180da1dd602ccff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e7240deb7222bc28180da1dd602ccff">&#9670;&#160;</a></span>arguments</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a>* ASTNode::arguments</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7ea4ae3413e1f04cff8db438c9ecaee4" name="a7ea4ae3413e1f04cff8db438c9ecaee4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ea4ae3413e1f04cff8db438c9ecaee4">&#9670;&#160;</a></span>[struct]</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct  { ... }  ASTNode::array</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="afbf03e87a196250f2fd2cbcfc39f1b35" name="afbf03e87a196250f2fd2cbcfc39f1b35"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afbf03e87a196250f2fd2cbcfc39f1b35">&#9670;&#160;</a></span>[struct]</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct  { ... }  ASTNode::arrayAccess</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af5c14e85b44a54c1a5ad9dbebc0e1468" name="af5c14e85b44a54c1a5ad9dbebc0e1468"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af5c14e85b44a54c1a5ad9dbebc0e1468">&#9670;&#160;</a></span>arrayName</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* ASTNode::arrayName</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abec7295b8debf7b81b9bcc69b9fb4f77" name="abec7295b8debf7b81b9bcc69b9fb4f77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abec7295b8debf7b81b9bcc69b9fb4f77">&#9670;&#160;</a></span>[struct]</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct  { ... }  ASTNode::assignment</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a89c18ee382c8f119a8d63d09e1660719" name="a89c18ee382c8f119a8d63d09e1660719"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89c18ee382c8f119a8d63d09e1660719">&#9670;&#160;</a></span>[struct]</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct  { ... }  ASTNode::binary</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ae583696cf4fd3f3682ce61668d51beb2" name="ae583696cf4fd3f3682ce61668d51beb2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae583696cf4fd3f3682ce61668d51beb2">&#9670;&#160;</a></span>body</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a>* ASTNode::body</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a215b3abef69a91c96dc56b5220769496" name="a215b3abef69a91c96dc56b5220769496"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a215b3abef69a91c96dc56b5220769496">&#9670;&#160;</a></span>cond</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a>* ASTNode::cond</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a14e0b4548df283b9b8f807b858d3eb84" name="a14e0b4548df283b9b8f807b858d3eb84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a14e0b4548df283b9b8f807b858d3eb84">&#9670;&#160;</a></span>condition</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a>* ASTNode::condition</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a3d2831fbd95f06e0a23f2cc2b20f3454" name="a3d2831fbd95f06e0a23f2cc2b20f3454"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3d2831fbd95f06e0a23f2cc2b20f3454">&#9670;&#160;</a></span>[union]</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">union  { ... }  ASTNode::data</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="af29db1c7c9a5e371ab23699de1693acf" name="af29db1c7c9a5e371ab23699de1693acf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af29db1c7c9a5e371ab23699de1693acf">&#9670;&#160;</a></span>data_type</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="node_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</a> ASTNode::data_type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="abc913601839284d4f18762a3f80cc8b1" name="abc913601839284d4f18762a3f80cc8b1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abc913601839284d4f18762a3f80cc8b1">&#9670;&#160;</a></span>[struct]</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct  { ... }  ASTNode::declaration</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4733242ed096e8d4d116e3232cc90703" name="a4733242ed096e8d4d116e3232cc90703"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4733242ed096e8d4d116e3232cc90703">&#9670;&#160;</a></span>dimensions <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a>* ASTNode::dimensions</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2920bddb73ff42dd1483d9b185c6e8df" name="a2920bddb73ff42dd1483d9b185c6e8df"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2920bddb73ff42dd1483d9b185c6e8df">&#9670;&#160;</a></span>[struct] <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct  { ... }  ASTNode::dimensions</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac718da402ea7b916f2461bec22baa056" name="ac718da402ea7b916f2461bec22baa056"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac718da402ea7b916f2461bec22baa056">&#9670;&#160;</a></span>expression</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a>* ASTNode::expression</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9ff1a932ea5a87ab5ed73c3d350394a2" name="a9ff1a932ea5a87ab5ed73c3d350394a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ff1a932ea5a87ab5ed73c3d350394a2">&#9670;&#160;</a></span>falseBranch</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a>* ASTNode::falseBranch</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa9ebd8183b53454c1bd2913870726c77" name="aa9ebd8183b53454c1bd2913870726c77"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa9ebd8183b53454c1bd2913870726c77">&#9670;&#160;</a></span>first</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a>* ASTNode::first</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1c04371de9ea47672b7abcc724843799" name="a1c04371de9ea47672b7abcc724843799"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1c04371de9ea47672b7abcc724843799">&#9670;&#160;</a></span>[struct]</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct  { ... }  ASTNode::forLoop</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac2ec0c21b1824cedfaf546fee7bdd830" name="ac2ec0c21b1824cedfaf546fee7bdd830"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac2ec0c21b1824cedfaf546fee7bdd830">&#9670;&#160;</a></span>[struct]</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct  { ... }  ASTNode::function</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a81b39d3f1cfe845d205c0bc482ddfbb7" name="a81b39d3f1cfe845d205c0bc482ddfbb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a81b39d3f1cfe845d205c0bc482ddfbb7">&#9670;&#160;</a></span>[struct]</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct  { ... }  ASTNode::functionCall</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a8fb51111a3077fe5a46120d3d7bca49c" name="a8fb51111a3077fe5a46120d3d7bca49c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8fb51111a3077fe5a46120d3d7bca49c">&#9670;&#160;</a></span>functionName</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* ASTNode::functionName</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa90c5c8d429832b76b919d28357f1745" name="aa90c5c8d429832b76b919d28357f1745"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa90c5c8d429832b76b919d28357f1745">&#9670;&#160;</a></span>identifier</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* ASTNode::identifier</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aa81bb2d94c9dacc4587114733afc2049" name="aa81bb2d94c9dacc4587114733afc2049"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa81bb2d94c9dacc4587114733afc2049">&#9670;&#160;</a></span>[struct]</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct  { ... }  ASTNode::ifExpr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aacbf590e75a93525a20eac9a6598e7f9" name="aacbf590e75a93525a20eac9a6598e7f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacbf590e75a93525a20eac9a6598e7f9">&#9670;&#160;</a></span>index</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a>* ASTNode::index</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a324ed22b01afeeb7bb16b09e61830899" name="a324ed22b01afeeb7bb16b09e61830899"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a324ed22b01afeeb7bb16b09e61830899">&#9670;&#160;</a></span>ival</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ASTNode::ival</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7e8efcf6431aca1ee186e775443abfcc" name="a7e8efcf6431aca1ee186e775443abfcc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e8efcf6431aca1ee186e775443abfcc">&#9670;&#160;</a></span>left</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a>* ASTNode::left</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ac0a70d42e58343d802496a8bd5f7b19a" name="ac0a70d42e58343d802496a8bd5f7b19a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0a70d42e58343d802496a8bd5f7b19a">&#9670;&#160;</a></span>next</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a> * ASTNode::next</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a9e19d9d53241850463f6a43d5121ec0d" name="a9e19d9d53241850463f6a43d5121ec0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e19d9d53241850463f6a43d5121ec0d">&#9670;&#160;</a></span>op</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* ASTNode::op</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aec62b1d2a795d3c3d04a519c851d0902" name="aec62b1d2a795d3c3d04a519c851d0902"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aec62b1d2a795d3c3d04a519c851d0902">&#9670;&#160;</a></span>parameters</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a>* ASTNode::parameters</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2ce830eb78e050e7c2e61da90ff37ea0" name="a2ce830eb78e050e7c2e61da90ff37ea0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ce830eb78e050e7c2e61da90ff37ea0">&#9670;&#160;</a></span>pointer_level</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int ASTNode::pointer_level</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a566cc39bd73193ae4b6c3e66cfe64531" name="a566cc39bd73193ae4b6c3e66cfe64531"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a566cc39bd73193ae4b6c3e66cfe64531">&#9670;&#160;</a></span>[struct]</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct  { ... }  ASTNode::printfNode</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7bca42be5dba01ee28819b174f824b84" name="a7bca42be5dba01ee28819b174f824b84"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bca42be5dba01ee28819b174f824b84">&#9670;&#160;</a></span>[struct]</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct  { ... }  ASTNode::return_stmt</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ab3fac314ab87bbccda872cde9678b5b3" name="ab3fac314ab87bbccda872cde9678b5b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab3fac314ab87bbccda872cde9678b5b3">&#9670;&#160;</a></span>right</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a>* ASTNode::right</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a1f04ea5468d87b2a1ef2b898e169b9a4" name="a1f04ea5468d87b2a1ef2b898e169b9a4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1f04ea5468d87b2a1ef2b898e169b9a4">&#9670;&#160;</a></span>[struct]</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct  { ... }  ASTNode::scanfNode</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="ad695a83567e761d4e2c891d7aa9c0091" name="ad695a83567e761d4e2c891d7aa9c0091"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad695a83567e761d4e2c891d7aa9c0091">&#9670;&#160;</a></span>sval</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* ASTNode::sval</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2fb77557efaecf6fdbd6692260e85a6d" name="a2fb77557efaecf6fdbd6692260e85a6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2fb77557efaecf6fdbd6692260e85a6d">&#9670;&#160;</a></span>text</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* ASTNode::text</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a0c022149a25324d6aaa45c09cf000db6" name="a0c022149a25324d6aaa45c09cf000db6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0c022149a25324d6aaa45c09cf000db6">&#9670;&#160;</a></span>trueBranch</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a>* ASTNode::trueBranch</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a34086f3bc5af008f08f255c8ec57ba21" name="a34086f3bc5af008f08f255c8ec57ba21"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34086f3bc5af008f08f255c8ec57ba21">&#9670;&#160;</a></span>type <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="node_8h.html#acac9cbaeea226ed297804c012dc12b16">NodeType</a> ASTNode::type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a629583939d3acaff49edc45b9f80893f" name="a629583939d3acaff49edc45b9f80893f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a629583939d3acaff49edc45b9f80893f">&#9670;&#160;</a></span>type <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">char* ASTNode::type</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a2dd7af4a125a9d936aa1ad6c7bd86749" name="a2dd7af4a125a9d936aa1ad6c7bd86749"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2dd7af4a125a9d936aa1ad6c7bd86749">&#9670;&#160;</a></span>value</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct <a class="el" href="struct_a_s_t_node.html">ASTNode</a>* ASTNode::value</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a675dc6dbfba114c48c5ed2c37d646355" name="a675dc6dbfba114c48c5ed2c37d646355"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a675dc6dbfba114c48c5ed2c37d646355">&#9670;&#160;</a></span>[struct]</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">struct  { ... }  ASTNode::whileExpr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<hr/>La documentación de esta estructura está generada del siguiente archivo:<ul>
+<li>src/<a class="el" href="node_8h_source.html">node.h</a></li>
+</ul>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>

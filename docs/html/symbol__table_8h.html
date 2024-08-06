@@ -1,0 +1,308 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.11.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>TFG - DESARROLLO DE UN COMPILADOR: Referencia del archivo src/symbol_table.h</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">TFG - DESARROLLO DE UN COMPILADOR
+   </div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generado por Doxygen 1.11.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Buscar',false);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){ initResizable(false); });
+/* @license-end */
+</script>
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Cargando...</div>
+<div class="SRStatus" id="Searching">Buscando...</div>
+<div class="SRStatus" id="NoMatches">Nada coincide</div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="nav-path" class="navpath">
+  <ul>
+<li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li>  </ul>
+</div>
+</div><!-- top -->
+<div id="doc-content">
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Clases</a> &#124;
+<a href="#typedef-members">typedefs</a> &#124;
+<a href="#func-members">Funciones</a> &#124;
+<a href="#var-members">Variables</a>  </div>
+  <div class="headertitle"><div class="title">Referencia del archivo symbol_table.h</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &quot;<a class="el" href="node_8h_source.html">node.h</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Gráfico de dependencias incluidas en symbol_table.h:</div>
+<div class="dyncontent">
+<div class="center"><img src="symbol__table_8h__incl.png" border="0" usemap="#asrc_2symbol__table_8h" alt=""/></div>
+<!-- MAP 0 -->
+</div>
+</div><div class="textblock"><div class="dynheader">
+Gráfico de los archivos que directa o indirectamente incluyen a este archivo:</div>
+<div class="dyncontent">
+<div class="center"><img src="symbol__table_8h__dep__incl.png" border="0" usemap="#asrc_2symbol__table_8hdep" alt=""/></div>
+<!-- MAP 1 -->
+</div>
+</div>
+<p><a href="symbol__table_8h_source.html">Ir al código fuente de este archivo.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Clases</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">struct &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="struct_symbol.html">Symbol</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="typedef-members" name="typedef-members"></a>
+typedefs</h2></td></tr>
+<tr class="memitem:ac1b95cde05bdecd202e6f33298f78a17" id="r_ac1b95cde05bdecd202e6f33298f78a17"><td class="memItemLeft" align="right" valign="top">typedef struct Symbol&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac1b95cde05bdecd202e6f33298f78a17">Symbol</a></td></tr>
+<tr class="separator:ac1b95cde05bdecd202e6f33298f78a17"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
+Funciones</h2></td></tr>
+<tr class="memitem:a7f7cbaabf5959fda3e2f9d02d840d400" id="r_a7f7cbaabf5959fda3e2f9d02d840d400"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f7cbaabf5959fda3e2f9d02d840d400">insert_symbol</a> (char *name, <a class="el" href="node_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</a> type, int num_parameters)</td></tr>
+<tr class="separator:a7f7cbaabf5959fda3e2f9d02d840d400"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b10301ca9304ce7fb4c9b59a1eec7c1" id="r_a4b10301ca9304ce7fb4c9b59a1eec7c1"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_symbol.html">Symbol</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4b10301ca9304ce7fb4c9b59a1eec7c1">find_symbol</a> (char *name)</td></tr>
+<tr class="separator:a4b10301ca9304ce7fb4c9b59a1eec7c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3aa9ef270862d4b4763644d9ae25a966" id="r_a3aa9ef270862d4b4763644d9ae25a966"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3aa9ef270862d4b4763644d9ae25a966">print_symbol_table</a> ()</td></tr>
+<tr class="separator:a3aa9ef270862d4b4763644d9ae25a966"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a42cd06f2552569b906899adfd14c69ca" id="r_a42cd06f2552569b906899adfd14c69ca"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a42cd06f2552569b906899adfd14c69ca">count_parameters</a> (<a class="el" href="struct_a_s_t_node.html">ASTNode</a> *parameter_list)</td></tr>
+<tr class="separator:a42cd06f2552569b906899adfd14c69ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea43bcdaa88a4f3a828278cd0a3acb5d" id="r_aea43bcdaa88a4f3a828278cd0a3acb5d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea43bcdaa88a4f3a828278cd0a3acb5d">count_arguments</a> (<a class="el" href="struct_a_s_t_node.html">ASTNode</a> *argument_list)</td></tr>
+<tr class="separator:aea43bcdaa88a4f3a828278cd0a3acb5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9aeda4c2823d9137305ce1a69702b680" id="r_a9aeda4c2823d9137305ce1a69702b680"><td class="memItemLeft" align="right" valign="top"><a class="el" href="node_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9aeda4c2823d9137305ce1a69702b680">convert_data_type</a> (char *type_str)</td></tr>
+<tr class="separator:a9aeda4c2823d9137305ce1a69702b680"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="var-members" name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:ab04637b46cb9f679cae6b765838ef25d" id="r_ab04637b46cb9f679cae6b765838ef25d"><td class="memItemLeft" align="right" valign="top"><a class="el" href="struct_symbol.html">Symbol</a> *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab04637b46cb9f679cae6b765838ef25d">symbolTable</a></td></tr>
+<tr class="separator:ab04637b46cb9f679cae6b765838ef25d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Documentación de «typedef»</h2>
+<a id="ac1b95cde05bdecd202e6f33298f78a17" name="ac1b95cde05bdecd202e6f33298f78a17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac1b95cde05bdecd202e6f33298f78a17">&#9670;&#160;</a></span>Symbol</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">typedef struct Symbol Symbol</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentación de funciones</h2>
+<a id="a9aeda4c2823d9137305ce1a69702b680" name="a9aeda4c2823d9137305ce1a69702b680"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9aeda4c2823d9137305ce1a69702b680">&#9670;&#160;</a></span>convert_data_type()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="node_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</a> convert_data_type </td>
+          <td>(</td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>type_str</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="aea43bcdaa88a4f3a828278cd0a3acb5d" name="aea43bcdaa88a4f3a828278cd0a3acb5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aea43bcdaa88a4f3a828278cd0a3acb5d">&#9670;&#160;</a></span>count_arguments()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int count_arguments </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_a_s_t_node.html">ASTNode</a> *</td>          <td class="paramname"><span class="paramname"><em>argument_list</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a42cd06f2552569b906899adfd14c69ca" name="a42cd06f2552569b906899adfd14c69ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a42cd06f2552569b906899adfd14c69ca">&#9670;&#160;</a></span>count_parameters()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int count_parameters </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_a_s_t_node.html">ASTNode</a> *</td>          <td class="paramname"><span class="paramname"><em>parameter_list</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a4b10301ca9304ce7fb4c9b59a1eec7c1" name="a4b10301ca9304ce7fb4c9b59a1eec7c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b10301ca9304ce7fb4c9b59a1eec7c1">&#9670;&#160;</a></span>find_symbol()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_symbol.html">Symbol</a> * find_symbol </td>
+          <td>(</td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a7f7cbaabf5959fda3e2f9d02d840d400" name="a7f7cbaabf5959fda3e2f9d02d840d400"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7f7cbaabf5959fda3e2f9d02d840d400">&#9670;&#160;</a></span>insert_symbol()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void insert_symbol </td>
+          <td>(</td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="node_8h.html#ad8ed01ff3ff33333d8e19db4d2818bb6">DataType</a></td>          <td class="paramname"><span class="paramname"><em>type</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>num_parameters</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<div class="dynheader">
+Gráfico de llamadas de esta función:</div>
+<div class="dyncontent">
+<div class="center"><img src="symbol__table_8h_a7f7cbaabf5959fda3e2f9d02d840d400_cgraph.png" border="0" usemap="#asymbol__table_8h_a7f7cbaabf5959fda3e2f9d02d840d400_cgraph" alt=""/></div>
+<!-- MAP 2 -->
+</div>
+
+</div>
+</div>
+<a id="a3aa9ef270862d4b4763644d9ae25a966" name="a3aa9ef270862d4b4763644d9ae25a966"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3aa9ef270862d4b4763644d9ae25a966">&#9670;&#160;</a></span>print_symbol_table()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int print_symbol_table </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<h2 class="groupheader">Documentación de variables</h2>
+<a id="ab04637b46cb9f679cae6b765838ef25d" name="ab04637b46cb9f679cae6b765838ef25d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab04637b46cb9f679cae6b765838ef25d">&#9670;&#160;</a></span>symbolTable</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_symbol.html">Symbol</a>* symbolTable</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">extern</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+</div>
+</div>
+</div><!-- contents -->
+<!-- start footer part -->
+<hr class="footer"/><address class="footer"><small>
+Generado por&#160;<a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.11.0
+</small></address>
+</div><!-- doc-content -->
+</body>
+</html>
