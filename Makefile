@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -I. -g -Isrc/
+CFLAGS = -I. -g -Isrc/ `pkg-config --cflags gtk+-3.0`
 FLEX = flex
 BISON = bison
 MKDIR_P = mkdir -p
@@ -16,7 +16,7 @@ ${OUT_DIR}:
 	${MKDIR_P} ${OUT_DIR}
 
 $(EXEC): $(OBJS)
-	$(CC) -o $@ $(OBJS) -lcomdlg32
+	$(CC) -o $@ $(OBJS) `pkg-config --libs gtk+-3.0`
 
 $(OUT_DIR)/y.tab.o $(OUT_DIR)/y.tab.h: src/syntax.y
 	$(BISON) -yd -o $(OUT_DIR)/y.tab.c src/syntax.y
@@ -53,10 +53,9 @@ generate_docs:
 # Regla para abrir la documentación
 open_docs:
 	@echo "Abriendo la documentación en el navegador..."
-	start docs/html/index.html
+	xdg-open docs/html/index.html &
 	
 # Regla principal para documentación que limpia, genera y abre la documentación
 docs: clean_docs generate_docs open_docs
-
 
 .PHONY: all clean directories

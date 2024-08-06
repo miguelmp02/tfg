@@ -204,13 +204,13 @@ assignment_statement:
         $$ = NULL;
     }
     | IDENTIFIER EQUAL array_access {
-        printf("Error: falta ';' despues del array en la linea %d.\n", $1, yylineno);
+        printf("Error: falta ';' despues del array en la linea %d.\n", yylineno);
         yyerror("Falta ';' despues del array");
         yyerrok;
         $$ = NULL;
     }
     | array_access EQUAL expression {
-        printf("Error: falta ';' despues de la asignacion en la linea %d.\n", $1, yylineno);
+        printf("Error: falta ';' despues de la asignacion en la linea %d.\n", yylineno);
         yyerror("Falta ';' despues de la asignacion");
         yyerrok;
         $$ = NULL;
