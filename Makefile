@@ -46,8 +46,16 @@ clean_docs:
 	rm -rf src/docs
 
 # Regla para generar la documentación
-docs: clean_docs
+generate_docs:
 	@echo "Generando la documentación con Doxygen..."
 	doxygen src/Doxyfile $(EXEC)
+
+# Regla para abrir la documentación
+open_docs:
+	@echo "Abriendo la documentación en el navegador..."
+	start src/docs/html/index.html
+# Regla principal para documentación que limpia, genera y abre la documentación
+docs: clean_docs generate_docs open_docs
+
 
 .PHONY: all clean directories
