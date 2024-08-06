@@ -1,9 +1,0 @@
-<map id="src/symbol_table.h" name="src/symbol_table.h">
-<area shape="rect" id="Node000001" title=" " alt="" coords="14,5,145,32"/>
-<area shape="rect" id="Node000002" href="$node_8h.html" title=" " alt="" coords="50,80,110,107"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="82,33,82,64,77,64,77,33"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="5,155,69,181"/>
-<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="75,109,54,143,50,140,70,106"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="92,155,152,181"/>
-<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="89,106,110,140,105,143,85,109"/>
-</map>
