@@ -18,13 +18,13 @@ ${OUT_DIR}:
 $(EXEC): $(OBJS)
 	$(CC) -o $@ $(OBJS) `pkg-config --libs gtk+-3.0`
 
-$(OUT_DIR)/y.tab.o $(OUT_DIR)/y.tab.h: src/syntax.y
-	$(BISON) -yd -o $(OUT_DIR)/y.tab.c src/syntax.y
-	$(CC) $(CFLAGS) -c $(OUT_DIR)/y.tab.c -o $(OUT_DIR)/y.tab.o
-
 $(OUT_DIR)/lex.yy.o: src/lex.l $(OUT_DIR)/y.tab.h
 	$(FLEX) -o $(OUT_DIR)/lex.yy.c src/lex.l
 	$(CC) $(CFLAGS) -c $(OUT_DIR)/lex.yy.c -o $@
+
+$(OUT_DIR)/y.tab.o $(OUT_DIR)/y.tab.h: src/syntax.y
+	$(BISON) -yd -o $(OUT_DIR)/y.tab.c src/syntax.y
+	$(CC) $(CFLAGS) -c $(OUT_DIR)/y.tab.c -o $(OUT_DIR)/y.tab.o
 
 $(OUT_DIR)/symbol_table.o: src/symbol_table.c src/symbol_table.h
 	$(CC) $(CFLAGS) -c src/symbol_table.c -o $@
