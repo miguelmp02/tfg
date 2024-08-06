@@ -1,133 +1,111 @@
 #include "codegen.h"
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
-// Asumiendo un tamaño máximo para el arreglo de cuádruplas
-#define MAX_CUADRUPLES 1024
-Cuadrupla cuadruplas[MAX_CUADRUPLES];
-int contador_cuadruplas = 0;
+#define MAX_QUADS 1000
 
-// Agregar una cuádrupla al arreglo de cuádruplas
-void agregar_cuadrupla(char* op, char* arg1, char* arg2, char* resultado) {
-    if (contador_cuadruplas < MAX_CUADRUPLES) {
-        Cuadrupla c = {strdup(op), strdup(arg1), strdup(arg2), strdup(resultado)};
-        cuadruplas[contador_cuadruplas++] = c;
+Quadruple quads[MAX_QUADS];
+int quad_index = 0;
+
+void generate_quad(Operation op, char *arg1, char *arg2, char *result) {
+    if (quad_index >= MAX_QUADS) {
+        fprintf(stderr, "Error: Exceeded maximum number of quadruples\n");
+        exit(1);
+    }
+    quads[quad_index].op = op;
+    quads[quad_index].arg1 = strdup(arg1);
+    quads[quad_index].arg2 = strdup(arg2);
+    quads[quad_index].result = strdup(result);
+    quad_index++;
+}
+
+void print_quads(FILE *objfilefile) {
+    for (int i = 0; i < quad_index; i++) {
+        fprintf(objfilefile, "(%d) %s, %s, %s, %s\n", i, 
+            operation_to_string(quads[i].op), 
+            quads[i].arg1, quads[i].arg2, quads[i].result);
     }
 }
 
-// Generar código desde el árbol AST
-void generar_codigo_desde_arbol(struct ASTNode* nodo) {
-    if (nodo == NULL) return;
-
-    char temp[100];  // Para generar nombres temporales para resultados intermedios
-
-    switch (nodo->type) {
-    /*    case NODE_ASSIGNMENT:
-            // Suponiendo que nodo->data.assignment.expression es un char* o similar
-            agregar_cuadrupla("=", nodo->data.assignment.identifier, "", nodo->data.assignment.expression);
-            break;
-
-        case NODE_BINARY_OP:
-            // Generar código para la expresión izquierda y derecha primero
-            generar_codigo_desde_arbol(nodo->data.binary.left);
-            generar_codigo_desde_arbol(nodo->data.binary.right);
-            // Suponiendo que se crean temporales para almacenar resultados intermedios
-            sprintf(temp, "t%d", contador_cuadruplas);  // Crear un nuevo temporal
-            agregar_cuadrupla(nodo->data.binary.op, 
-                              nodo->data.binary.left->data.identifier,  // asumiendo que estos son identificadores o temporales
-                              nodo->data.binary.right->data.identifier, 
-                              temp);
-            break;
-
-        case NODE_UNARY_OP:
-            // Generar código para el operando primero
-            generar_codigo_desde_arbol(nodo->data.unary.operand);
-            sprintf(temp, "t%d", contador_cuadruplas);
-            agregar_cuadrupla(nodo->data.unary.op, 
-                              nodo->data.unary.operand->data.identifier, 
-                              "", 
-                              temp);
-            break;
-        */
-        case NODE_IF:
-            // Generar código para la condición
-            generar_codigo_desde_arbol(nodo->data.ifExpr.condition);
-            // Usar una etiqueta para manejar el flujo de control
-            agregar_cuadrupla("ifFalse", nodo->data.ifExpr.condition->data.identifier, "goto", "L1");
-            // Código para el cuerpo del if
-            generar_codigo_desde_arbol(nodo->data.ifExpr.trueBranch);
-            agregar_cuadrupla("goto", "L2", "", "");
-            agregar_cuadrupla("label", "L1", "", "");
-            // Código para el else si existe
-            if (nodo->data.ifExpr.falseBranch) {
-                generar_codigo_desde_arbol(nodo->data.ifExpr.falseBranch);
-            }
-            agregar_cuadrupla("label", "L2", "", "");
-            break;
-
-        case NODE_WHILE:
-            // Similar al if, pero con bucles
-            agregar_cuadrupla("label", "L1", "", "");
-            generar_codigo_desde_arbol(nodo->data.whileExpr.condition);
-            agregar_cuadrupla("ifFalse", nodo->data.whileExpr.condition->data.identifier, "goto", "L2");
-            generar_codigo_desde_arbol(nodo->data.whileExpr.body);
-            agregar_cuadrupla("goto", "L1", "", "");
-            agregar_cuadrupla("label", "L2", "", "");
-            break;
-
-        case NODE_DECLARATION:
-            // No se genera una cuádrupla para una declaración típica, pero puedes necesitar inicializar variables
-            if (nodo->data.declaration.identifier != NULL) {
-                generar_codigo_desde_arbol(nodo->data.declaration.identifier);
-                sprintf(temp, "t%d", contador_cuadruplas);
-                agregar_cuadrupla("=", nodo->data.declaration.identifier, temp, "");
-            }
-            if (nodo->data.declaration.type != NULL) {
-                generar_codigo_desde_arbol(nodo->data.declaration.type);
-                sprintf(temp, "t%d", contador_cuadruplas);
-                agregar_cuadrupla("=", nodo->data.declaration.type, temp, "");
-            }
-            break;
-
-        /*case NODE_FUNCTION_CALL:
-            // Si la función retorna un valor, manejar el resultado
-            if (nodo->data.functionCall.hasReturnValue) {
-                sprintf(temp, "t%d", contador_cuadruplas);
-                agregar_cuadrupla("call", nodo->data.functionCall.functionName, "", temp);
-            } else {
-                agregar_cuadrupla("call", nodo->data.functionCall.functionName, "", "");
-            }
-            // Generar cuádruplas para cada argumento
-            for (int i = 0; i < nodo->data.functionCall.argCount; i++) {
-                generar_codigo_desde_arbol(nodo->data.functionCall.arguments[i]);
-            }
-            break;
-
-        case NODE_PRINTF:
-            // Generar cuádruplas para cada argumento en una llamada printf
-            for (int i = 0; i < nodo->data.funcCall.argCount; i++) {
-                generar_codigo_desde_arbol(nodo->data.funcCall.arguments[i]);
-                sprintf(temp, "param t%d", contador_cuadruplas);
-                agregar_cuadrupla("param", nodo->data.funcCall.arguments[i]->data.identifier, "", temp);
-            }
-            agregar_cuadrupla("call", "printf", "", "");
-            break; */
-
-
-        default:
-            fprintf(stderr, "Tipo de nodo desconocido\n");
-            break;
+const char* operation_to_string(Operation op) {
+    switch (op) {
+        case OP_LABEL: return "OP_LABEL";
+        case OP_ADD: return "ADD";
+        case OP_SUB: return "SUB";
+        case OP_MUL: return "MUL";
+        case OP_DIV: return "DIV";
+        case OP_ASSIGN: return "ASSIGN";
+        case OP_JUMP: return "JUMP";
+        case OP_JUMP_IF_FALSE: return "JUMP_IF_FALSE";
+        case OP_LT: return "LT";
+        case OP_LE: return "LE";
+        case OP_GT: return "GT";
+        case OP_GE: return "GE";
+        case OP_EQ: return "EQ";
+        case OP_NE: return "NE";
+        case OP_AND: return "AND";
+        case OP_OR: return "OR";
+        case OP_NOT: return "NOT";
+        default: return "UNKNOWN";
     }
 }
 
-// Imprimir todas las cuádruplas generadas
-void imprimir_cuadruplas() {
-    for (int i = 0; i < contador_cuadruplas; i++) {
-        printf("%s, %s, %s, %s\n",
-               cuadruplas[i].op,
-               cuadruplas[i].arg1,
-               cuadruplas[i].arg2,
-               cuadruplas[i].resultado);
+void generate_object_code(FILE *objfile) {
+    for (int i = 0; i < quad_index; i++) {
+        Quadruple q = quads[i];
+        switch (q.op) {
+            case OP_ADD:
+                fprintf(objfile, "ADD %s, %s, %s\n", q.arg1, q.arg2, q.result);
+                break;
+            case OP_SUB:
+                fprintf(objfile, "SUB %s, %s, %s\n", q.arg1, q.arg2, q.result);
+                break;
+            case OP_MUL:
+                fprintf(objfile, "MUL %s, %s, %s\n", q.arg1, q.arg2, q.result);
+                break;
+            case OP_DIV:
+                fprintf(objfile, "DIV %s, %s, %s\n", q.arg1, q.arg2, q.result);
+                break;
+            case OP_ASSIGN:
+                fprintf(objfile, "MOV %s, %s\n", q.arg1, q.result);
+                break;
+            case OP_JUMP:
+                fprintf(objfile, "JMP %s\n", q.result);
+                break;
+            case OP_JUMP_IF_FALSE:
+                fprintf(objfile, "JZ %s, %s\n", q.arg1, q.result);
+                break;
+            case OP_LABEL:
+                fprintf(objfile, "%s:\n", q.arg1);
+                break;
+            case OP_LT:
+                fprintf(objfile, "CMP_LT %s, %s, %s\n", q.arg1, q.arg2, q.result);
+                break;
+            case OP_LE:
+                fprintf(objfile, "CMP_LE %s, %s, %s\n", q.arg1, q.arg2, q.result);
+                break;
+            case OP_GT:
+                fprintf(objfile, "CMP_GT %s, %s, %s\n", q.arg1, q.arg2, q.result);
+                break;
+            case OP_GE:
+                fprintf(objfile, "CMP_GE %s, %s, %s\n", q.arg1, q.arg2, q.result);
+                break;
+            case OP_EQ:
+                fprintf(objfile, "CMP_EQ %s, %s, %s\n", q.arg1, q.arg2, q.result);
+                break;
+            case OP_NE:
+                fprintf(objfile, "CMP_NE %s, %s, %s\n", q.arg1, q.arg2, q.result);
+                break;
+            case OP_AND:
+                fprintf(objfile, "AND %s, %s, %s\n", q.arg1, q.arg2, q.result);
+                break;
+            case OP_OR:
+                fprintf(objfile, "OR %s, %s, %s\n", q.arg1, q.arg2, q.result);
+                break;
+            default:
+                fprintf(objfile, "UNKNOWN %s, %s, %s, %s\n", operation_to_string(q.op), q.arg1, q.arg2, q.result);
+                break;
+        }
     }
 }

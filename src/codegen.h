@@ -1,19 +1,26 @@
 #ifndef CODEGEN_H
 #define CODEGEN_H
 
-#include "node.h"  // Asumiendo que node.h contiene la definición de ASTNode
+#include "node.h"
 
-// Estructura para representar una cuádrupla
-typedef struct Cuadrupla {
-    char* op;     // Operador
-    char* arg1;   // Primer argumento
-    char* arg2;   // Segundo argumento
-    char* resultado;  // Resultado
-} Cuadrupla;
+typedef enum {
+    OP_ADD, OP_SUB, OP_MUL, OP_DIV,
+    OP_ASSIGN, OP_JUMP, OP_JUMP_IF_FALSE,
+    OP_LT, OP_LE, OP_GT, OP_GE, OP_EQ, OP_NE,
+    OP_AND, OP_OR, OP_NOT, OP_LABEL
+} Operation;
 
-// Funciones para la generación de cuádruplas
-void agregar_cuadrupla(char* op, char* arg1, char* arg2, char* resultado);
-void generar_codigo_desde_arbol(struct ASTNode* nodo);
-void imprimir_cuadruplas();
+typedef struct {
+    Operation op;
+    char *arg1;
+    char *arg2;
+    char *result;
+} Quadruple;
 
-#endif // CODEGEN_H
+void generate_quad(Operation op, char *arg1, char *arg2, char *result);
+void print_quads(FILE *outfile);
+const char* operation_to_string(Operation op);
+//codigo objeto
+void generate_object_code(FILE *objfile);
+
+#endif

@@ -249,13 +249,6 @@ struct ASTNode* create_assignment_node_array(ASTNode* array_access_node, ASTNode
     return node;
 }
 
-char* extract_identifier(struct ASTNode* node) {
-    if (node && node->type == NODE_IDENTIFIER) {
-        return strdup(node->data.identifier);
-    }
-    return NULL;
-}
-
 struct ASTNode* create_binary_op_node(char* op, struct ASTNode* left, struct ASTNode* right) {
     if (!left || !right) {
         return NULL;
@@ -455,4 +448,30 @@ void free_tree(ASTNode* node) {
             break;
     }
     free(node);  // Finalmente, libera el nodo mismo
+}
+
+int label_counter = 0;
+
+int new_label() {
+    return label_counter++;
+}
+
+char* extract_identifier(struct ASTNode* node) {
+    if (node == NULL) {
+        return NULL;
+    }
+    switch (node->type) {
+        case NODE_IDENTIFIER:
+            return node->data.identifier;
+        case NODE_CONSTANT:
+            {
+                static char buffer[20];
+                snprintf(buffer, sizeof(buffer), "%d", node->data.ival);
+                return buffer;
+            }
+        case NODE_ARRAY_ACCESS:
+            return node->data.arrayAccess.arrayName;
+        default:
+            return NULL;
+    }
 }

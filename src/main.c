@@ -2,6 +2,7 @@
 #include "generacion/y.tab.h"
 #include <stdio.h>
 #include "symbol_table.h" 
+#include "codegen.h"
 
 #define ID_FILE_OPEN 1
 #define ID_FILE_PROCESS 2
@@ -82,6 +83,17 @@ void openFileAndProcess(HWND hwnd) {
     ofn.lpstrFilter = "All files\0*.*\0Source files\0*.TXT\0";
     ofn.nFilterIndex = 1;
 
+    FILE *outfile = fopen("src/compilado/codigo_intermedio.txt", "w");
+    if (outfile == NULL) {
+        MessageBox(hwnd, "Failed to open the output file.", "Error", MB_OK | MB_ICONERROR);
+        return;
+    }
+    FILE *objfile = fopen("src/compilado/codigo_objeto.txt", "w");
+    if (objfile == NULL) {
+        fclose(outfile);
+        MessageBox(hwnd, "Failed to open the output file.", "Error", MB_OK | MB_ICONERROR);
+        return;
+    }
     if (GetOpenFileName(&ofn)) {
         yyin = fopen(ofn.lpstrFile, "r");
         if (yyin) {
@@ -104,7 +116,13 @@ void openFileAndProcess(HWND hwnd) {
                 printf("Analisis sintactico completado de forma correcta.\n");
                 printf("Tabla de simbolos completada de forma correcta.\n");
                 printf("Analisis semantico completado de forma correcta.\n");
-                printf("<----------Analisis terminados de forma correcta---------->");
+                printf("<---------- Analisis terminados de forma correcta ---------->\n");
+                printf("Codigo Intermedio Generado de forma correcta\n");
+                printf("Codigo Objeto Generado de forma correcta\n");
+                printf("<---------- Generacion de codigo de forma correcta ---------->\n");
+                print_quads(outfile); 
+                generate_object_code(objfile);
+                printf("\n-------------- FICHERO COMPILADO CORRECTAMENTE --------------\n");
             } else {
                 if (lexError) {
                     printf("Error en el analisis lexico.\n");
@@ -124,6 +142,8 @@ void openFileAndProcess(HWND hwnd) {
         }
         
     }
+    fclose(outfile);
+    fclose(objfile);
     fclose(yyin);
     yyin = NULL;
 

@@ -7,7 +7,7 @@ OUT_DIR = src/generacion
 EXEC = compiler
 
 #OBJS = $(OUT_DIR)/lex.yy.o $(OUT_DIR)/y.tab.o $(OUT_DIR)/symbol_table.o $(OUT_DIR)/semantic.o $(OUT_DIR)/codegen.o $(OUT_DIR)/node.o $(OUT_DIR)/parser.o $(OUT_DIR)/main.o
-OBJS = $(OUT_DIR)/lex.yy.o $(OUT_DIR)/y.tab.o $(OUT_DIR)/symbol_table.o $(OUT_DIR)/node.o $(OUT_DIR)/main.o
+OBJS = $(OUT_DIR)/lex.yy.o $(OUT_DIR)/y.tab.o $(OUT_DIR)/symbol_table.o $(OUT_DIR)/node.o $(OUT_DIR)/codegen.o $(OUT_DIR)/main.o
 
 all: directories $(EXEC)
 

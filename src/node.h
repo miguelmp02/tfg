@@ -127,6 +127,7 @@ ASTNode* create_scanf_node(char* identifier);
 ASTNode* create_scanf_node_array(struct ASTNode* array_access);
 ASTNode* create_assignment_node_ampersand(char* identifier, char* target);
 char* extract_identifier(struct ASTNode* node);
+int new_label();
 void free_tree(ASTNode* root);
 
 #endif
