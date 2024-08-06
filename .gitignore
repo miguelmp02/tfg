@@ -1,4 +1,4 @@
 /src/generacion/*
 /src/compilado/*
-/src/docs/*
+/src/docs
 compiler.exe
