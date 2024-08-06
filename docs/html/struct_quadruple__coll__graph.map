@@ -1,7 +1,0 @@
-<map id="Quadruple" name="Quadruple">
-<area shape="rect" id="Node000001" title=" " alt="" coords="45,171,117,240"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,5,75,75"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="51,74,71,154,66,155,46,75"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="99,5,146,75"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="117,75,97,155,91,154,112,74"/>
-</map>
