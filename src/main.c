@@ -30,6 +30,14 @@ void yysemanticerror(const char *s) {
 }
 
 int main(int argc, char *argv[]) {
+    if (argc > 1) {
+        // Modo de línea de comandos
+        const char *filename = argv[1];
+        process_file(filename, NULL);
+        return 0;
+    }
+
+    // Modo gráfico
     GtkWidget *window;
     GtkWidget *button;
     GtkWidget *grid;
@@ -78,7 +86,7 @@ void process_file(const char *filename, GtkWidget *window) {
     FILE *outfile = fopen("src/compilado/codigo_intermedio.txt", "w");
     if (outfile == NULL) {
         fprintf(stderr, "Failed to open the output file.\n");
-        gtk_widget_destroy(window); // Cierra la ventana principal
+        if (window) gtk_widget_destroy(window); // Cierra la ventana principal
         return;
     }
 
@@ -86,7 +94,7 @@ void process_file(const char *filename, GtkWidget *window) {
     if (objfile == NULL) {
         fclose(outfile);
         fprintf(stderr, "Failed to open the output file.\n");
-        gtk_widget_destroy(window); // Cierra la ventana principal
+        if (window) gtk_widget_destroy(window); // Cierra la ventana principal
         return;
     }
 
@@ -143,7 +151,7 @@ void process_file(const char *filename, GtkWidget *window) {
     yyin = NULL;
     cleanup();
 
-    gtk_widget_destroy(window); // Cierra la ventana principal después de procesar el archivo
+    if (window) gtk_widget_destroy(window); // Cierra la ventana principal después de procesar el archivo
 }
 
 void cleanup() {
