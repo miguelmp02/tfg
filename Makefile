@@ -53,7 +53,7 @@ generate_docs:
 # Regla para abrir la documentación
 open_docs:
 	@echo "Abriendo la documentación en el navegador..."
-	xdg-open docs/html/index.html &
+	./open_docs.sh
 	
 # Regla principal para documentación que limpia, genera y abre la documentación
 docs: clean_docs generate_docs open_docs
