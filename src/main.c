@@ -18,6 +18,7 @@ extern FILE* yyin;
 void open_file_dialog(GtkWidget *widget, gpointer window);
 void process_file(const char *filename, GtkWidget *window);
 void cleanup();
+void show_message_dialog(GtkWidget *parent, const char *message, GtkMessageType message_type);
 
 void yyerror(const char *s) {
     fprintf(stderr, "Error de analisis en la linea %d: %s\n", yylineno, s);
@@ -40,21 +41,30 @@ int main(int argc, char *argv[]) {
     // Modo gráfico
     GtkWidget *window;
     GtkWidget *button;
+    GtkWidget *label;
     GtkWidget *grid;
 
     gtk_init(&argc, &argv);
 
     window = gtk_window_new(GTK_WINDOW_TOPLEVEL);
-    gtk_window_set_title(GTK_WINDOW(window), "Code Analyzer");
+    gtk_window_set_title(GTK_WINDOW(window), "Compilador de Miguel Merino Plaza");
     gtk_window_set_default_size(GTK_WINDOW(window), 280, 200);
     gtk_container_set_border_width(GTK_CONTAINER(window), 10);
 
     grid = gtk_grid_new();
     gtk_container_add(GTK_CONTAINER(window), grid);
 
+    // Crear el mensaje de bienvenida
+    label = gtk_label_new("Bienvenido al compilador: ");
+    gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 1, 1);
+
+    label = gtk_label_new("Haga click en el botón Open File y seleccione un fichero. ");
+    gtk_grid_attach(GTK_GRID(grid), label, 0, 1, 1, 1);
+
+    // Crear el botón "Open File"
     button = gtk_button_new_with_label("Open File");
     g_signal_connect(button, "clicked", G_CALLBACK(open_file_dialog), window);
-    gtk_grid_attach(GTK_GRID(grid), button, 0, 0, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), button, 0, 2, 1, 1);
 
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
@@ -127,6 +137,9 @@ void process_file(const char *filename, GtkWidget *window) {
             print_quads(outfile); 
             generate_object_code(objfile);
             printf("\n-------------- FICHERO COMPILADO CORRECTAMENTE --------------\n");
+            
+            // Mostrar mensaje de éxito
+            show_message_dialog(window, "El fichero ha sido compilado con éxito, código intermedio y objeto generados correctamente en carpeta src/compilado", GTK_MESSAGE_INFO);
         } else {
             if (lexError) {
                 printf("Error en el analisis lexico.\n");
@@ -152,6 +165,14 @@ void process_file(const char *filename, GtkWidget *window) {
     cleanup();
 
     if (window) gtk_widget_destroy(window); // Cierra la ventana principal después de procesar el archivo
+}
+
+void show_message_dialog(GtkWidget *parent, const char *message, GtkMessageType message_type) {
+    GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(parent),
+        GTK_DIALOG_DESTROY_WITH_PARENT, message_type, GTK_BUTTONS_OK, "%s", message);
+    gtk_window_set_title(GTK_WINDOW(dialog), "Compilador de Miguel Merino Plaza");
+    gtk_dialog_run(GTK_DIALOG(dialog));
+    gtk_widget_destroy(dialog);
 }
 
 void cleanup() {
