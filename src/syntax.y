@@ -706,7 +706,7 @@ for_body:
 expression:
     expression PLUS expression {
         if ($1 == NULL || $3 == NULL) {
-            yyerror("Operacion inválida debido a operandos no definidos.");
+            yyerror("Operacion invalida debido a operandos no definidos.");
             $$ = NULL;
         } else if ($1->data_type != TYPE_INT || $3->data_type != TYPE_INT) {
             yysemanticerror("Error semantico: Operacion PLUS solo permitida entre enteros.");
@@ -721,7 +721,7 @@ expression:
     }
     | expression MINUS expression {
         if ($1 == NULL || $3 == NULL) {
-            yyerror("Operacion inválida debido a operandos no definidos.");
+            yyerror("Operacion invalida debido a operandos no definidos.");
             $$ = NULL;
         } else if ($1->data_type != TYPE_INT || $3->data_type != TYPE_INT) {
             yysemanticerror("Error semantico: Operacion MINUS solo permitida entre enteros.");
@@ -736,7 +736,7 @@ expression:
     }
     | expression TIMES expression {
         if ($1 == NULL || $3 == NULL) {
-            yyerror("Operacion inválida debido a operandos no definidos.");
+            yyerror("Operacion invalida debido a operandos no definidos.");
             $$ = NULL;
         } else if ($1->data_type != TYPE_INT || $3->data_type != TYPE_INT) {
             yysemanticerror("Error semantico: Operacion TIMES solo permitida entre enteros.");
@@ -751,7 +751,7 @@ expression:
     }
     | expression DIVIDE expression {
         if ($1 == NULL || $3 == NULL) {
-            yyerror("Operacion inválida debido a operandos no definidos.");
+            yyerror("Operacion invalida debido a operandos no definidos.");
             $$ = NULL;
         } else if ($1->data_type != TYPE_INT || $3->data_type != TYPE_INT) {
             yysemanticerror("Error semantico: Operacion DIVIDE solo permitida entre enteros.");
@@ -766,7 +766,7 @@ expression:
     }
     | expression EQUAL expression {
         if ($1 == NULL || $3 == NULL) {
-            yyerror("Comparacion inválida debido a operandos no definidos.");
+            yyerror("Comparacion invalida debido a operandos no definidos.");
             $$ = NULL;
         } else if ($1->data_type != $3->data_type) {
             yysemanticerror("Error semantico: Comparacion '=' solo permitida entre operandos del mismo tipo.");
@@ -781,7 +781,7 @@ expression:
     }
      | expression EQ expression {
         if ($1 == NULL || $3 == NULL) {
-            yyerror("Comparacion inválida debido a operandos no definidos.");
+            yyerror("Comparacion invalida debido a operandos no definidos.");
             $$ = NULL;
         } else if ($1->data_type != $3->data_type) {
             yysemanticerror("Error semantico: Comparacion '==' solo permitida entre operandos del mismo tipo.");
@@ -796,7 +796,7 @@ expression:
     }
     | expression NE expression {
         if ($1 == NULL || $3 == NULL) {
-            yyerror("Comparacion inválida debido a operandos no definidos.");
+            yyerror("Comparacion invalida debido a operandos no definidos.");
             $$ = NULL;
         } else if ($1->data_type != $3->data_type) {
             yysemanticerror("Error semantico: Comparacion '!=' solo permitida entre operandos del mismo tipo.");
@@ -811,7 +811,7 @@ expression:
     }
     | expression LT expression {
         if ($1 == NULL || $3 == NULL) {
-            yyerror("Comparacion inválida debido a operandos no definidos.");
+            yyerror("Comparacion invalida debido a operandos no definidos.");
             $$ = NULL;
         } else if ($1->data_type != TYPE_INT || $3->data_type != TYPE_INT) {
             yysemanticerror("Error semantico: Comparacion '<' solo permitida entre enteros.");
@@ -826,7 +826,7 @@ expression:
     }
     | array_access LT expression {
         if ($1 == NULL || $3 == NULL) {
-            yyerror("Comparacion inválida debido a operandos no definidos.");
+            yyerror("Comparacion invalida debido a operandos no definidos.");
             $$ = NULL;
         } else if ($1->data_type != TYPE_INT || $3->data_type != TYPE_INT) {
             yysemanticerror("Error semantico: Comparacion '<' solo permitida entre enteros.");
@@ -841,7 +841,7 @@ expression:
     }
     | expression LE expression {
         if ($1 == NULL || $3 == NULL) {
-            yyerror("Comparacion inválida debido a operandos no definidos.");
+            yyerror("Comparacion invalida debido a operandos no definidos.");
             $$ = NULL;
         } else if ($1->data_type != TYPE_INT || $3->data_type != TYPE_INT) {
             yysemanticerror("Error semantico: Comparacion '<=' solo permitida entre enteros.");
@@ -856,7 +856,7 @@ expression:
     }
     | expression GT expression {
         if ($1 == NULL || $3 == NULL) {
-            yyerror("Comparacion inválida debido a operandos no definidos.");
+            yyerror("Comparacion invalida debido a operandos no definidos.");
             $$ = NULL;
         } else if ($1->data_type != TYPE_INT || $3->data_type != TYPE_INT) {
             yysemanticerror("Error semantico: Comparacion '>' solo permitida entre enteros.");
@@ -871,7 +871,7 @@ expression:
     }
      | expression GE expression {
         if ($1 == NULL || $3 == NULL) {
-            yyerror("Comparacion inválida debido a operandos no definidos.");
+            yyerror("Comparacion invalida debido a operandos no definidos.");
             $$ = NULL;
         } else if ($1->data_type != TYPE_INT || $3->data_type != TYPE_INT) {
             yysemanticerror("Error semantico: Comparacion '>=' solo permitida entre enteros.");
@@ -886,7 +886,7 @@ expression:
     }
     | expression AND expression {
         if ($1 == NULL || $3 == NULL) {
-            yyerror("Operacion lógica inválida debido a operandos no definidos.");
+            yyerror("Operacion lógica invalida debido a operandos no definidos.");
             $$ = NULL;
         } else if ($1->data_type != TYPE_BOOLEAN || $3->data_type != TYPE_BOOLEAN) {
             yysemanticerror("Error semantico: Operacion AND solo permitida entre booleanos.");
@@ -901,7 +901,7 @@ expression:
     }
     | expression OR expression {
         if ($1 == NULL || $3 == NULL) {
-            yyerror("Operacion lógica inválida debido a operandos no definidos.");
+            yyerror("Operacion lógica invalida debido a operandos no definidos.");
             $$ = NULL;
         } else if ($1->data_type != TYPE_BOOLEAN || $3->data_type != TYPE_BOOLEAN) {
             yysemanticerror("Error semantico: Operacion OR solo permitida entre booleanos.");
