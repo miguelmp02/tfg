@@ -55,16 +55,13 @@ int main(int argc, char *argv[]) {
     gtk_container_add(GTK_CONTAINER(window), grid);
 
     // Crear el mensaje de bienvenida
-    label = gtk_label_new("Bienvenido al compilador: ");
+    label = gtk_label_new("Bienvenido, haga click en el botón Open File y seleccione un fichero!");
     gtk_grid_attach(GTK_GRID(grid), label, 0, 0, 1, 1);
-
-    label = gtk_label_new("Haga click en el botón Open File y seleccione un fichero. ");
-    gtk_grid_attach(GTK_GRID(grid), label, 0, 1, 1, 1);
 
     // Crear el botón "Open File"
     button = gtk_button_new_with_label("Open File");
     g_signal_connect(button, "clicked", G_CALLBACK(open_file_dialog), window);
-    gtk_grid_attach(GTK_GRID(grid), button, 0, 2, 1, 1);
+    gtk_grid_attach(GTK_GRID(grid), button, 0, 1, 1, 1);
 
     g_signal_connect(window, "destroy", G_CALLBACK(gtk_main_quit), NULL);
 
@@ -95,7 +92,7 @@ void open_file_dialog(GtkWidget *widget, gpointer window) {
 void process_file(const char *filename, GtkWidget *window) {
     FILE *outfile = fopen("src/compilado/codigo_intermedio.txt", "w");
     if (outfile == NULL) {
-        fprintf(stderr, "Failed to open the output file.\n");
+        show_message_dialog(window, "Error: No se pudo abrir el archivo de salida.", GTK_MESSAGE_ERROR);
         if (window) gtk_widget_destroy(window); // Cierra la ventana principal
         return;
     }
@@ -103,7 +100,7 @@ void process_file(const char *filename, GtkWidget *window) {
     FILE *objfile = fopen("src/compilado/codigo_objeto.txt", "w");
     if (objfile == NULL) {
         fclose(outfile);
-        fprintf(stderr, "Failed to open the output file.\n");
+        show_message_dialog(window, "Error: No se pudo abrir el archivo de objeto.", GTK_MESSAGE_ERROR);
         if (window) gtk_widget_destroy(window); // Cierra la ventana principal
         return;
     }
@@ -125,7 +122,15 @@ void process_file(const char *filename, GtkWidget *window) {
             symbolTableError = TRUE;
         }
 
-        if (!lexError && !symbolTableError && !has_syntax_error && !has_semantic_error) {
+        if (lexError) {
+            show_message_dialog(window, "Error en el análisis léxico.", GTK_MESSAGE_ERROR);
+        } else if (symbolTableError) {
+            show_message_dialog(window, "Error en la tabla de símbolos.", GTK_MESSAGE_ERROR);
+        } else if (has_syntax_error) {
+            show_message_dialog(window, "Error en el análisis sintáctico.", GTK_MESSAGE_ERROR);
+        } else if (has_semantic_error) {
+            show_message_dialog(window, "Error en el análisis semántico.", GTK_MESSAGE_ERROR);
+        } else {
             printf("Analisis lexico completado de forma correcta.\n");
             printf("Analisis sintactico completado de forma correcta.\n");
             printf("Tabla de simbolos completada de forma correcta.\n");
@@ -140,22 +145,9 @@ void process_file(const char *filename, GtkWidget *window) {
             
             // Mostrar mensaje de éxito
             show_message_dialog(window, "El fichero ha sido compilado con éxito, código intermedio y objeto generados correctamente en carpeta src/compilado", GTK_MESSAGE_INFO);
-        } else {
-            if (lexError) {
-                printf("Error en el analisis lexico.\n");
-            }
-            if (symbolTableError) {
-                printf("Error en la tabla de simbolos.\n");
-            }
-            if (has_syntax_error) {
-                printf("Error en el analisis sintactico.\n");
-            }
-            if (has_semantic_error) {
-                printf("Error en el analisis semantico.\n");
-            }
         }
     } else {
-        fprintf(stderr, "Failed to open the input file.\n");
+        show_message_dialog(window, "Error: No se pudo abrir el archivo de entrada.", GTK_MESSAGE_ERROR);
     }
 
     fclose(outfile);
