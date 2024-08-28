@@ -91,6 +91,10 @@ void open_file_dialog(GtkWidget *widget, gpointer window) {
 
 void process_file(const char *filename, GtkWidget *window) {
     FILE *outfile = fopen("src/compilado/codigo_intermedio.txt", "w");
+    if (window == NULL) {
+        gtk_init_check(NULL, NULL);  // Intentar inicializar GTK solo si es necesario
+    }
+
     if (outfile == NULL) {
         show_message_dialog(window, "Error: No se pudo abrir el archivo de salida.", GTK_MESSAGE_ERROR);
         if (window) gtk_widget_destroy(window); // Cierra la ventana principal
