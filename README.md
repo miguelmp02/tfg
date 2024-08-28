@@ -15,3 +15,12 @@ Este TFG se centra en el desarrollo de un compilador funcional que transforma un
 
 #### Requisitos
 - El requisito más importante es el del sistema que utiliza el dispositivo. Este proyecto es compatible con Windows (mediante el uso de MSYS2, máquina virtual...) y Linux
+- Herramientas: make (para ejecutar el Makefile), Flex, Bison, Gtk (para la interfaz), Doxygen y Graphviz (para la documentación)
+
+##### Instalación previa
+Tenemos tres opciones para la instalación:
+1. Utilizar Windows con una Máquina Virtual: Descargar Oracle VM VirtualBox y descargar un disco como Ubuntu. Una vez descargado, creamos una nueva máquina virtual con el Ubuntu. Desde Ubuntu clonar el repositorio. Una vez clonado, tenemos dos opciones:
+- Descargar las herramientas una a una con el apt install, o
+- Utilizar el Dockerfile: Descargar Docker Desktop **docker login** para logearse en la cuenta de Docker Desktop **docker build -t tfg .** para crear la imagen **docker run -it ubuntu:20.04 /bin/bash** para ejecutarla
+2. Utilizar Windows con MSYS2 (Usada y probada): Esta instalación está descrita paso a paso en la memoria del TFG
+3. Utilizar Linux: Procedimiento igual al primero
