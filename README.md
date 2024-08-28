@@ -12,3 +12,6 @@ Este TFG se centra en el desarrollo de un compilador funcional que transforma un
 ### Documentación proyecto
 1. **chmod +x open_docs.sh** Para dar permisos al fichero open_docs.sh que se encarga de la compatibilidad con varios sistemas definidos a la hora de abrir el index.html en el navegador del sistema.
 2. **make docs** Genera la documentación entera del proyecto (realiza limpieza de los docs generados anteriormente, ejecutar Doxygen y lo abre en el navegador del ordenador que se esté usando), pudiendo observar cada clase, diagramas...
+
+#### Requisitos
+- El requisito más importante es el del sistema que utiliza el dispositivo. Este proyecto es compatible con Windows (mediante el uso de MSYS2, máquina virtual...) y Linux
